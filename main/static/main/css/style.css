@@ -1,0 +1,354 @@
+/* --- Подключение кастомных шрифтов --- */
+
+/* SUNDAY FONT */
+@font-face {
+    font-family: 'SUNDAY'; /* Имя, которое будем использовать в CSS */
+    src: url('../fonts/Sunday-Regular.otf') format('opentype'); /* Относительный путь к файлу */
+    font-weight: normal; /* или 400 */
+    font-style: normal;
+    font-display: swap; 
+}
+
+/* FortuneC FONT - Regular */
+@font-face {
+    font-family: 'FortuneC';
+    src: url('../fonts/Fortunec.otf') format('opentype');
+    font-weight: normal; /* или 400 */
+    font-style: normal;
+    font-display: swap;
+}
+
+/* FortuneC FONT - Italic */
+@font-face {
+    font-family: 'FortuneC';
+    src: url('../fonts/Fortunec_italic.otf') format('opentype');
+    font-weight: normal; /* или 400 */
+    font-style: italic;
+    font-display: swap;
+}
+
+/* FortuneC FONT - Bold */
+@font-face {
+    font-family: 'FortuneC';
+    src: url('../fonts/Fortunec_bold.otf') format('opentype');
+    font-weight: bold; /* или 700 */
+    font-style: normal;
+    font-display: swap;
+}
+
+/* FortuneC FONT - Bold Italic */
+@font-face {
+    font-family: 'FortuneC';
+    src: url('../fonts/Fortunec_bolditalic.otf') format('opentype');
+    font-weight: bold; /* или 700 */
+    font-style: italic;
+    font-display: swap;
+}
+
+/* --- Глобальные переменные --- */
+:root {
+    /* Шрифты */
+    --font-sunday: 'SUNDAY', 'Montserrat', sans-serif;       
+    --font-fortunec: 'FortuneC', 'Open Sans', sans-serif; 
+    
+    /* Цвета */
+    --color-white: #FFFFFF;         
+    --color-green-light: #44A56B;   
+    --color-green-medium: #1E5C37;  
+    --color-green-dark: #14301F;    
+    --color-black: #010101;         
+
+    --color-button-bg: #44A56B;     
+    --color-button-text: #FFFFFF;   
+
+    /* Размеры шрифтов (1rem = 16px) */
+    --fs-slogan: 3.125rem;            /* 50px */
+    --fs-text-under-slogan: 1.9375rem; /* 31px */
+    --fs-nav-links: 1.3125rem;        /* 21px */
+    --fs-section-title: 2.8125rem;    /* 45px */
+    --fs-subsection-title: 1.9375rem; /* 31px */
+    --fs-body: 1.3125rem;             /* 21px */
+    --fs-price: 3.3125rem;            /* 53px */
+}
+
+/* --- Базовый сброс и стили --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px; 
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-fortunec); 
+    font-size: var(--fs-body);
+    font-weight: normal; /* Используем FortuneC Regular по умолчанию */
+    line-height: 1.6;
+    color: var(--color-white);
+    background-color: var(--color-black);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 { 
+    font-family: var(--font-sunday); 
+    font-weight: normal; /* SUNDAY Regular по умолчанию */
+    line-height: 1.2;
+    color: var(--color-white); /* По умолчанию заголовки белые */
+}
+
+h2 { /* Заголовки секций */
+    font-size: var(--fs-section-title);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 2.5rem; 
+}
+
+a {
+    color: inherit; 
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    width: 90%;
+    max-width: 1300px; 
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* --- Стили для Шапки (Header) --- */
+#site-header {
+    padding: 0.75rem 0; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--color-black); 
+    border-bottom: 1px solid rgba(70, 165, 107, 0.2); /* Слегка видимая зеленая линия */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#site-header .logo img {
+    height: 70px; /* Подбери по макету */
+}
+
+#site-header .main-nav {
+    margin-left: auto; 
+    margin-right: 1rem; /* Уменьшил отступ, чтобы соцсети и бургер поместились */
+}
+
+#site-header .main-nav ul {
+    display: flex;
+    gap: 1.5rem; /* Уменьшил немного gap */
+}
+
+#site-header .main-nav a {
+    font-family: var(--font-fortunec); 
+    font-size: var(--fs-nav-links);
+    font-weight: normal; /* FortuneC Regular */
+    text-transform: none; 
+    color: var(--color-white);
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+#site-header .main-nav a:hover {
+     color: var(--color-green-light); 
+}
+
+#site-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem; 
+}
+
+#site-header .social-icons-header {
+    display: flex;
+    gap: 0.75rem; 
+}
+#site-header .social-icons-header img {
+    height: 64px; 
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+#site-header .social-icons-header a:hover img {
+    opacity: 1;
+}
+
+#site-header .burger-menu {
+    display: flex; /* Пока всегда виден для теста, потом @media */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px; 
+    height: 20px; 
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+#site-header .burger-menu span {
+    width: 100%;
+    height: 2px; 
+    background-color: var(--color-white);
+    border-radius: 10px;
+}
+
+/* --- Секция "О нас" (со слоганом) --- */
+.section-about-us {
+    min-height: 80vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 120px; /* Отступ от плавающей шапки, примерно высота шапки + запас */
+    background-color: var(--color-black); 
+}
+
+.section-about-us .slogan {
+    font-family: var(--font-sunday); 
+    font-size: var(--fs-slogan);
+    color: var(--color-green-light); 
+    font-weight: normal; /* SUNDAY Regular */
+    text-transform: uppercase;
+    margin-bottom: 2rem; 
+    line-height: 1.1;
+}
+
+.section-about-us .about-us-text { 
+    font-family: var(--font-fortunec); 
+    font-size: var(--fs-text-under-slogan); 
+    font-weight: normal; /* FortuneC Regular */
+    max-width: 70ch; 
+    line-height: 1.7;
+}
+.section-about-us .about-us-text p {
+    margin-bottom: 1em;
+}
+
+/* --- Кнопки --- */
+.btn {
+    display: inline-block;
+    padding: 0.75em 1.5em; 
+    background-color: var(--color-button-bg); 
+    color: var(--color-button-text); 
+    font-family: var(--font-fortunec); 
+    font-size: var(--fs-nav-links);
+    font-weight: bold; /* Кнопки обычно с жирным текстом, используем FortuneC Bold */
+    text-align: center;
+    border: 2px solid var(--color-button-bg);
+    border-radius: 5px; 
+    text-transform: uppercase; 
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.btn:hover, .btn:focus {
+    background-color: transparent;
+    color: var(--color-button-bg); 
+    transform: translateY(-2px);
+    outline: none;
+}
+
+/* --- Общие стили для секций (можно будет расширять) --- */
+main section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    position: relative; /* Для возможного позиционирования фоновых элементов */
+}
+
+/* Стили для секции "Что мы предлагаем" (начало) */
+.section-features {
+    /* Здесь будем добавлять стили для фона-круга и сетки элементов */
+}
+
+.features-grid {
+    display: grid; /* Будем использовать Grid или Flexbox для расположения элементов */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Адаптивные колонки */
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.feature-item {
+    text-align: center;
+    /* Стили для круглого фона иконки, если нужно */
+}
+
+.feature-item .feature-icon-wrapper {
+    width: 100px; /* Примерный размер круга для иконки, подбери по макету */
+    height: 100px;
+    background-color: var(--color-green-medium); /* Зеленый фон для круга */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 1rem auto; /* Центрируем круг и отступ снизу */
+    border: 3px solid var(--color-green-light); /* Обводка как на макете */
+}
+
+.feature-item .feature-icon-wrapper img {
+    max-height: 50%; /* Чтобы иконка не вылезала за круг */
+    max-width: 50%;
+}
+
+.feature-item h3 {
+    font-family: var(--font-sunday); /* Или FortuneC Bold, если заголовки элементов другие */
+    font-size: var(--fs-subsection-title);
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+}
+
+.feature-item p {
+    font-family: var(--font-fortunec);
+    font-size: var(--fs-body); /* Размер текста в круге, или основной текст */
+    color: var(--color-white);
+    line-height: 1.5;
+}
+
+/* Стили для секции "Запись на игру" (начало) */
+.section-booking .booking-content {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+.section-booking .booking-image-carousel {
+    flex: 1; /* Займет доступное место */
+    text-align: center; /* Для центрирования картинки, если она меньше */
+}
+.section-booking .booking-image-carousel img {
+    border-radius: 50%; /* Если главное изображение тоже в круге */
+    max-width: 350px; /* Ограничим размер, подбери по макету */
+}
+
+.section-booking .booking-info {
+    flex: 1;
+}
+.section-booking .booking-info p {
+    margin-bottom: 1rem;
+}

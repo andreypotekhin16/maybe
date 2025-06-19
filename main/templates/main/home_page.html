@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}</title>
+    
+    <!-- Подключаем шрифты (пока предполагаем Montserrat и Open Sans из Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header id="site-header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#about-us-section">Что мы предлагаем</a></li>
+                    <li><a href="#booking-section">Запись на игру</a></li>
+                    <li><a href="#orbibol-section">Орбибол</a></li>
+                    <li><a href="#games-section">Игры</a></li>
+                    <li><a href="#market-section">Маркет</a></li>
+                    <li><a href="#gallery-section">Фото и видео галерея</a></li>
+                    <li><a href="#contacts-section">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <div class="social-icons-header">
+                    <a href="https://vk.com/games_pd" target="_blank"><img src="{% static 'main/images/icon_vk.svg' %}" alt="VK"></a>
+                    <a href="URL_YOUTUBE" target="_blank"><img src="{% static 'main/images/icon_youtube.png' %}" alt="YouTube"></a>
+                    <a href="https://t.me/mg_maybe" target="_blank"><img src="{% static 'main/images/icon_telegram.png' %}" alt="Telegram"></a>
+                </div>
+                <button class="burger-menu" aria-label="Открыть меню">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Секция "О нас" (со слоганом) -->
+        <section id="about-us-section" class="section-about-us">
+            <div class="container">
+                {% if company_profile and company_profile.motto %}
+                    <h1 class="slogan">{{ company_profile.motto }}</h1>
+                {% else %}
+                    <h1 class="slogan">MAYBE - КЛЮЧ К ТВОИМ ЭМОЦИЯМ!</h1> 
+                {% endif %}
+               
+                {% if company_profile and company_profile.about_us_text %}
+                    <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
+                {% else %}
+                    <div class="about-us-text">
+                        <p>Мы – команда молодых инициативных мастеров, которая делает разноформатные ролевые игры для детей и взрослых.</p>
+                        <p>Полное погружение в новые миры, уникальные истории и костюмы. Яркие впечатления, неожиданные повороты на грани реальности уже ждут вас.</p>
+                        <p>Откройте себя заново!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Секция "Что мы предлагаем" -->
+        <section id="features-section" class="section-features">
+            <div class="container">
+                <h2>Что мы предлагаем</h2>
+                <div class="features-grid">
+                    {# Здесь будут 5-6 круглых блоков с иконками и текстом #}
+                    {# Пример одного блока (повторить для каждого): #}
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            <img src="{% static 'main/images/icon_author_worlds.svg' %}" alt="Авторские миры">
+                        </div>
+                        <h3>Авторские миры</h3>
+                        <p>С нами вы сможете погрузиться в абсолютно новые вселенные, примерить на себя любую роль!</p>
+                    </div>
+                    {# ... еще 5 таких блоков ... #}
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Запись на игру" -->
+        <section id="booking-section" class="section-booking">
+            <div class="container">
+                <h2>Запись на игру</h2>
+                <div class="booking-content">
+                    <div class="booking-image-carousel">
+                        {# Большой круг и два по бокам #}
+                        <img src="{% static 'main/images/booking_center_art.png' %}" alt="Запись на игру арт">
+                    </div>
+                    <div class="booking-info">
+                        <p>За широким дубовым столом сидели...</p> {# Текст из ТЗ #}
+                        <p>Когда: Игра 1: ..., Игра 2: ...</p>
+                        <p>Жанры: ... Цена: ...</p>
+                        <a href="#" class="btn">Записаться на игру</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        {# ... Другие секции (Орбибол, Игры, Маркет, Галерея, Контакты) будут добавляться аналогично ... #}
+
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <p>© {% now "Y" %} {% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'main/js/main.js' %}"></script>
+</body>
+</html>
