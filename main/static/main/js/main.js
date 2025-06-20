@@ -46,31 +46,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- Инициализация Swiper-карусели для секции "Запись на игру" ---
-    const bookingSwiper = new Swiper('.booking-swiper', {
+    const swiperContainer = document.querySelector('.booking-swiper');
+
+    const bookingSwiper = new Swiper(swiperContainer, {
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
-        
-        // ВАЖНО: Устанавливаем 3, чтобы был один центральный слайд и два по бокам, как на вашем дизайне.
-        // С четным числом (например, 2) эффект coverflow с центрированием работает некорректно.
         slidesPerView: 3, 
-        
         loop: true,
         slideToClickedSlide: true,
 
         // Настройки для эффекта "coverflow"
         coverflowEffect: {
             rotate: 0,
-            
-            // Это расстояние между слайдами. Отрицательное значение сближает их.
-            stretch: -30, 
-            
+            stretch: -150, 
             depth: 100, 
             modifier: 1,
-            
-            // Это масштаб боковых слайдов. 0.7 = 70% от размера центрального (на 30% меньше).
             scale: 0.7, 
-            
             slideShadows: false, 
         },
 
@@ -80,9 +72,53 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: '.booking-carousel-nav-next',
+            prevEl: '.booking-carousel-nav-prev',
+        },
+
+        on: {
+            loopFix: function () {
+                swiperContainer.classList.add('swiper-no-transition');
+            },
+            slideChangeTransitionStart: function() {
+                swiperContainer.classList.remove('swiper-no-transition');
+            },
         },
     });
+
+    // --- ИЗМЕНЕНИЕ: Логика для увеличения боковых слайдов при наведении ---
+    const navPrev = document.querySelector('.booking-carousel-nav-prev');
+    const navNext = document.querySelector('.booking-carousel-nav-next');
+
+    if (navPrev && navNext && swiperContainer) {
+        // Наведение на левую область
+        navPrev.addEventListener('mouseenter', () => {
+            const prevSlide = swiperContainer.querySelector('.swiper-slide-prev');
+            if (prevSlide) prevSlide.classList.add('is-hovered');
+        });
+        // Увод курсора с левой области
+        navPrev.addEventListener('mouseleave', () => {
+            const prevSlide = swiperContainer.querySelector('.swiper-slide-prev');
+            if (prevSlide) prevSlide.classList.remove('is-hovered');
+        });
+
+        // Наведение на правую область
+        navNext.addEventListener('mouseenter', () => {
+            const nextSlide = swiperContainer.querySelector('.swiper-slide-next');
+            if (nextSlide) nextSlide.classList.add('is-hovered');
+        });
+        // Увод курсора с правой области
+        navNext.addEventListener('mouseleave', () => {
+            const nextSlide = swiperContainer.querySelector('.swiper-slide-next');
+            if (nextSlide) nextSlide.classList.remove('is-hovered');
+        });
+
+        // Также нужно убирать класс при смене слайда, на всякий случай
+        bookingSwiper.on('slideChange', function() {
+            document.querySelectorAll('.booking-carousel-item.is-hovered').forEach(el => {
+                el.classList.remove('is-hovered');
+            });
+        });
+    }
 
 });

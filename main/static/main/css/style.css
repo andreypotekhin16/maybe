@@ -130,200 +130,21 @@ ul { list-style: none; }
 main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
 
 /* --- Секция "Запись на игру" (Карусель) --- */
-.section-booking {
-    position: relative;
-}
-/* Псевдо-элементы для создания градиента по бокам, чтобы скрыть лишние слайды */
-.section-booking::before,
-.section-booking::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 20%; /* Ширина зоны затемнения */
-    z-index: 2; /* Должны быть над слайдами, но под стрелками */
-    pointer-events: none; /* Чтобы не мешали кликам по слайдеру */
-}
-.section-booking::before {
-    left: 0;
-    background: linear-gradient(to right, var(--color-black-bg) 30%, transparent 100%);
-}
-.section-booking::after {
-    right: 0;
-    background: linear-gradient(to left, var(--color-black-bg) 30%, transparent 100%);
-}
-
-
 .booking-carousel-wrapper {
     position: relative;
-}
-
-.booking-swiper {
-    width: 100%;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-.booking-carousel-item { /* Класс для .swiper-slide */
-    background-position: center;
-    background-size: cover;
-    /* ИЗМЕНЕНИЕ: Значительно уменьшаем размер слайда */
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;/* --- Подключение кастомных шрифтов --- */
-@font-face {font-family: 'SUNDAY';src: url('../fonts/Sunday-Regular.otf') format('opentype'),url('../fonts/Sunday-Regular.ttf') format('truetype');font-weight: normal;font-style: normal;font-display: swap;}
-@font-face {font-family: 'FortuneC';src: url('../fonts/Fortunec.otf') format('opentype');font-weight: normal;font-style: normal;font-display: swap;}
-@font-face {font-family: 'FortuneC';src: url('../fonts/Fortunec_italic.otf') format('opentype');font-weight: normal;font-style: italic;font-display: swap;}
-@font-face {font-family: 'FortuneC';src: url('../fonts/Fortunec_bold.otf') format('opentype');font-weight: bold;font-style: normal;font-display: swap;}
-@font-face {font-family: 'FortuneC';src: url('../fonts/Fortunec_bolditalic.otf') format('opentype');font-weight: bold;font-style: italic;font-display: swap;}
-
-/* --- Глобальные переменные --- */
-:root {
-    --font-sunday: 'SUNDAY', 'Montserrat', sans-serif;       
-    --font-fortunec: 'FortuneC', 'Open Sans', sans-serif; 
-    --color-white: #FFFFFF;         
-    --color-green-accent: #44A56B;   
-    --color-green-bg: #1E5C37;      
-    --color-green-dark-bg: #14301F; 
-    --color-black-bg: #010101;      
-    --color-pink-accent: #D90C6B; /* ЗАМЕНИ НА СВОЙ ТОЧНЫЙ HEX РОЗОВОГО! */
-    --color-green-accent-rgb: 68, 165, 107;
-    --fs-main-slogan: 2.8125rem;      
-    --fs-about-text: 1.3125rem;       
-    --fs-section-title: 2.8125rem;    
-    --fs-subsection-title: 1.9375rem; 
-    --fs-body: 1.3125rem;             
-    --fs-button: 1.3125rem;           
-    --header-padding-normal: 1rem;    
-    --header-padding-hover: 2.5rem;   
-    --logo-height-normal: 40px;       
-    --logo-height-hover: 70px;        
-    --nav-font-size-normal: 1.125rem; 
-    --nav-font-size-hover: 1.3125rem; 
-    --social-icon-size-normal: 22px;
-    --social-icon-size-hover: 26px;
-    --burger-height-normal: 20px;
-    --burger-width-normal: 28px;
-    --burger-line-height-normal: 2.5px;
-    --burger-height-hover: 24px;      
-    --burger-width-hover: 32px;       
-    --burger-line-height-hover: 3px;  
-    --header-transition-duration: 0.4s; 
-}
-
-/* --- Базовый сброс и стили --- */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
-body {
-    font-family: var(--font-fortunec); font-size: var(--fs-body); font-weight: normal; 
-    line-height: 1.6; color: var(--color-white); background-color: var(--color-black-bg);
-    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-    padding-top: 2rem; 
-}
-h1, h2, h3, h4, h5, h6 { font-family: var(--font-sunday); font-weight: normal; line-height: 1.2; color: var(--color-white); }
-h2 { font-size: var(--fs-section-title); text-transform: uppercase; text-align: center; margin-bottom: 4rem; }
-a { color: inherit; text-decoration: none; }
-img { max-width: 100%; height: auto; display: block; }
-ul { list-style: none; }
-.container { width: 90%; max-width: 1300px; margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; }
-
-/* --- Стили для Шапки (Header) --- */
-#site-header { 
-    padding: var(--header-padding-normal) 0; position: fixed; top: 0; left: 0; width: 100%;
-    z-index: 1000; background-color: var(--color-black-bg); 
-    transform: translateY(-100%); 
-    transition: padding var(--header-transition-duration) ease-in-out, transform var(--header-transition-duration) ease-in-out;
-}
-#site-header.header-visible { transform: translateY(0); }
-#site-header.header-visible:hover { padding: var(--header-padding-hover) 0; }
-.header-container { display: flex; justify-content: space-between; align-items: center; }
-#site-header .logo img { height: var(--logo-height-normal); transition: height var(--header-transition-duration) ease-in-out; }
-#site-header.header-visible:hover .logo img { height: var(--logo-height-hover); }
-#site-header .main-nav ul { display: flex; gap: 1.8rem; }
-#site-header .main-nav a {
-    font-family: var(--font-fortunec); font-size: var(--nav-font-size-normal); font-weight: normal; 
-    color: var(--color-white); padding: 0.5rem 0;
-    transition: color 0.3s ease, font-size var(--header-transition-duration) ease-in-out;
-}
-#site-header.header-visible:hover .main-nav a { font-size: var(--nav-font-size-hover); }
-#site-header .main-nav a:hover { color: var(--color-green-accent); }
-#site-header .header-right { display: flex; align-items: center; gap: 1.5rem; }
-#site-header .social-icons-header { display: flex; gap: 1rem; }
-#site-header .social-icons-header img {
-    height: var(--social-icon-size-normal); width: var(--social-icon-size-normal); opacity: 0.8;
-    transition: opacity 0.3s ease, height var(--header-transition-duration) ease-in-out, width var(--header-transition-duration) ease-in-out;
-}
-#site-header.header-visible:hover .social-icons-header img { height: var(--social-icon-size-hover); width: var(--social-icon-size-hover); }
-#site-header .social-icons-header a:hover img { opacity: 1; }
-#site-header .burger-menu {
-    display: flex; flex-direction: column; justify-content: space-around;
-    width: var(--burger-width-normal); height: var(--burger-height-normal); 
-    background: transparent; border: none; cursor: pointer; padding: 0; z-index: 10;
-    transition: height var(--header-transition-duration) ease-in-out, width var(--header-transition-duration) ease-in-out;
-}
-#site-header.header-visible:hover .burger-menu { width: var(--burger-width-hover); height: var(--burger-height-hover); }
-#site-header .burger-menu span {
-    width: 100%; height: var(--burger-line-height-normal); background-color: var(--color-white);
-    border-radius: 10px; transition: height var(--header-transition-duration) ease-in-out;
-}
-#site-header.header-visible:hover .burger-menu span { height: var(--burger-line-height-hover); }
-
-/* --- Секция "О нас" (со слоганом) --- */
-.section-about-us {
-    min-height: 80vh; padding-top: 6rem; padding-bottom: 5rem;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; background-color: var(--color-black-bg); position: relative; 
-}
-.section-about-us .slogan {
-    font-family: var(--font-sunday); font-size: var(--fs-main-slogan); color: var(--color-green-accent); 
-    font-weight: normal; text-transform: uppercase; margin-bottom: 2rem; line-height: 1.2;
-}
-.section-about-us .about-us-text { 
-    font-family: var(--font-fortunec); font-size: var(--fs-about-text); font-weight: normal; 
-    color: var(--color-white); max-width: 75ch; line-height: 1.7;
-}
-.section-about-us .about-us-text p { margin-bottom: 1em; }
-.section-about-us .about-us-text p:last-child { margin-bottom: 0; }
-
-/* --- Стили для Кнопок (общие) --- */
-.btn {
-    display: inline-block; padding: 0.8em 1.8em; background-color: var(--color-pink-accent); 
-    color: var(--color-white); font-family: var(--font-fortunec); font-size: var(--fs-button); font-weight: bold; 
-    text-align: center; border: 2px solid var(--color-pink-accent); border-radius: 5px; text-transform: uppercase; 
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    cursor: pointer; letter-spacing: 0.05em;
-}
-.btn:hover, .btn:focus {
-    background-color: var(--color-white); color: var(--color-pink-accent); border-color: var(--color-pink-accent);
-    transform: translateY(-2px); outline: none;
-}
-
-/* --- Общие стили для секций --- */
-main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
-
-/* --- Секция "Запись на игру" (Карусель) --- */
-.section-booking {
-    /* Фон убран, теперь используется фон body */
-    overflow: hidden; /* Важно, чтобы боковые слайды обрезались */
-}
-.booking-carousel-wrapper {
-    position: relative;
-    padding: 2rem 0;
+    padding-bottom: 50px; 
 }
 .booking-swiper {
     width: 100%;
-    padding-top: 50px;
-    padding-bottom: 50px;
 }
-.booking-carousel-item { /* Это класс для .swiper-slide */
+.booking-carousel-item { 
     background-position: center;
     background-size: cover;
-    /* ИЗМЕНЕНИЕ: Уменьшенный размер */
     width: 220px;
     height: 220px;
     border-radius: 50%;
     overflow: hidden;
-    transition: transform 0.4s ease, opacity 0.4s ease;
+    transition: transform 0.4s ease, filter 0.4s ease; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -337,21 +158,25 @@ main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
 .booking-carousel-art {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Картинка полностью заполняет круг */
+    object-fit: cover; 
     transition: transform 0.4s ease;
 }
+
 .booking-carousel-item:hover .booking-carousel-art {
     transform: scale(1.1);
 }
 
-/* Эффекты для неактивных слайдов */
 .booking-carousel-item:not(.swiper-slide-active) {
     filter: brightness(0.7);
+    cursor: pointer; 
 }
 .booking-carousel-item:not(.swiper-slide-active) .booking-carousel-info {
     opacity: 0;
 }
 
+.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-link {
+    pointer-events: none;
+}
 
 .booking-carousel-info {
     position: absolute;
@@ -372,154 +197,55 @@ main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
 .booking-carousel-title {
     font-family: var(--font-fortunec);
     font-weight: bold;
-    font-size: 1.2rem; /* Уменьшил размер шрифта под новый размер слайда */
+    font-size: 1.2rem;
     line-height: 1.2;
     margin: 0;
 }
 .booking-carousel-dates {
     font-family: var(--font-fortunec);
-    font-size: 1rem; /* Уменьшил размер шрифта */
+    font-size: 1rem;
     margin-top: 0.5rem;
 }
 
-/* Стилизация стрелок и пагинации Swiper */
-.booking-swiper .swiper-button-next,
-.booking-swiper .swiper-button-prev {
-    color: var(--color-pink-accent);
-}
-.booking-swiper .swiper-pagination-bullet {
-    background: rgba(255, 255, 255, 0.5);
-    width: 10px;
-    height: 10px;
-}
-.booking-swiper .swiper-pagination-bullet-active {
-    background: var(--color-pink-accent);
-}
-
-
-/* Стили для секции "Орбибол" */
-.section-orbibol {} 
-.section-orbibol h2 {}
-.orbibol-general-info { margin-bottom: 2rem; }
-.orbibol-features { display: flex; gap: 2rem; justify-content: space-around; margin-bottom: 2rem;} 
-.orbibol-feature-item { flex: 1; text-align: center; }
-.orbibol-feature-item h3 { font-size: var(--fs-subsection-title); margin-bottom: 0.5rem; }
-.orbibol-feature-item img { margin: 0 auto 1rem; } 
-
-
-/* Стили для секции "Игры" */
-.section-games {} 
-.section-games h2 {}
-.games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; }
-.game-type-item {
-    background-color: var(--color-pink-accent); padding: 2rem; border-radius: 10px;
-    display: flex; flex-direction: column; align-items: center;
-    text-align: center; color: var(--color-white);
-}
-.game-type-item .game-type-icon-wrapper {
-    width: 80px; height: 80px; background-color: var(--color-green-bg);
-    border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    border: 2px solid var(--color-white); margin-bottom: 1.5rem;
-}
-.game-type-item .game-type-icon-wrapper img { max-height: 40px; max-width: 40px; }
-.game-type-item .game-type-text-content h3 {
-    font-family: var(--font-fortunec); font-size: var(--fs-subsection-title); font-weight: bold;
-    color: var(--color-white); margin-bottom: 0.75rem; text-transform: none;
-}
-.game-type-item .game-type-text-content p {
-    font-family: var(--font-fortunec); font-size: var(--fs-body); font-weight: normal;
-    color: var(--color-white); line-height: 1.5;
-}
-
-/* Секция Контакты */
-.section-contacts {} 
-.section-contacts h2 {}
-.section-contacts p { margin-bottom: 0.75rem; }
-.section-contacts a { color: var(--color-green-accent); text-decoration: underline; }
-.section-contacts a:hover { text-decoration: none; }
-.social-icons-footer a { margin-right: 1rem; text-decoration: none; }
-.social-icons-footer a:last-child { margin-right: 0; }
-
-/* Футер */
-#site-footer-bottom {
-    padding: 2rem 0; text-align: center; font-size: 0.9rem;
-    background-color: var(--color-green-dark-bg); 
-    color: rgba(255,255,255,0.7);
-}
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: filter 0.5s ease;
-    filter: brightness(0.5); /* Все слайды по умолчанию затемнены */
-}
-
-/* Активный слайд становится ярким */
-.swiper-slide-active {
-    filter: brightness(1);
-    cursor: default;
-}
-
-.booking-carousel-item .booking-carousel-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.booking-carousel-art {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.booking-carousel-item:hover .booking-carousel-art {
-    transform: scale(1.1);
-}
-
-.booking-carousel-info {
+/* Невидимые кнопки навигации */
+.booking-carousel-nav-prev,
+.booking-carousel-nav-next {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: 35%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.4);
-    color: var(--color-white);
-    transition: opacity 0.4s ease;
-    opacity: 0; /* Текст по умолчанию скрыт */
+    z-index: 10; 
+    cursor: pointer;
+}
+.booking-carousel-nav-prev {
+    left: 0;
+}
+.booking-carousel-nav-next {
+    right: 0;
 }
 
-/* Показываем текст только на активном (центральном) слайде */
-.swiper-slide-active .booking-carousel-info {
-    opacity: 1;
+/* ИЗМЕНЕНИЕ: Заменяем старое правило на новое, управляемое через JS */
+.booking-carousel-item.is-hovered {
+    transform: scale(0.85); /* Базовый scale у неактивного слайда 0.7, это его увеличит */
+    filter: brightness(1);
 }
 
-/* Стилизация стрелок Swiper */
-.booking-swiper .swiper-button-next,
-.booking-swiper .swiper-button-prev {
-    color: var(--color-pink-accent);
-    z-index: 3; /* Стрелки должны быть над градиентным оверлеем */
-}
-
-/* Стилизация пагинации Swiper */
+/* Пагинация (точки) */
 .booking-swiper .swiper-pagination {
-    bottom: 20px !important; /* Поднимаем точки чуть выше */
+    bottom: 0px !important; 
 }
 .booking-swiper .swiper-pagination-bullet {
     background: rgba(255, 255, 255, 0.5);
     width: 10px;
     height: 10px;
-    opacity: 1;
 }
 .booking-swiper .swiper-pagination-bullet-active {
     background: var(--color-pink-accent);
+}
+
+/* Класс для отключения анимации */
+.swiper-no-transition .swiper-wrapper {
+    transition-duration: 0s !important;
 }
 
 
