@@ -78,22 +78,22 @@
 
 
 
- <!-- Секция "Что мы предлагаем" -->
+        <!-- Секция "Что мы предлагаем" -->
         <section id="features-section" class="section-features">
             <div class="container">
                 <h2>Что мы предлагаем</h2>
                 {% if features %}
                 <div class="features-grid">
-                    {% for feature_item_obj in features %} {# Изменил имя переменной цикла во избежание путаницы с CSS-классом #}
+                    {% for feature in features %}
                     <div class="feature-item">
                         <div class="feature-icon-wrapper">
-                            {% if feature_item_obj.icon %}
-                                <img src="{{ feature_item_obj.icon.url }}" alt="{{ feature_item_obj.title }}">
+                            {% if feature.icon %}
+                                <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
                             {% endif %}
                         </div>
-                        <div class="feature-text-content"> {# Добавил обертку для текста #}
-                            <h3>{{ feature_item_obj.title }}</h3>
-                            <p>{{ feature_item_obj.description|linebreaksbr }}</p>
+                        <div class="feature-text-content">
+                            <h3>{{ feature.title }}</h3>
+                            <p>{{ feature.description|linebreaksbr }}</p>
                         </div>
                     </div>
                     {% endfor %}
@@ -122,14 +122,14 @@
                         <div class="swiper-wrapper">
                             <!-- Слайды Swiper -->
                             {% for service_item in services %}
-                            <div class="swiper-slide booking-carousel-item"> {# Убрали класс booking-carousel-item-single-swiper #}
+                            <div class="swiper-slide booking-carousel-item">
                                 <a href="{{ service_item.vk_link|default:'#' }}" target="_blank" class="booking-carousel-link">
                                     {% if service_item.image %}
                                     <img src="{{ service_item.image.url }}" alt="{{ service_item.name }}" class="booking-carousel-art">
                                     {% else %}
                                     <div class="booking-carousel-art-placeholder">Арт</div>
                                     {% endif %}
-                                    <div class="booking-carousel-info"> {# Текст теперь всегда виден или управляется простым :hover #}
+                                    <div class="booking-carousel-info">
                                         <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
                                         {% if service_item.short_description %}
                                         <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
@@ -166,34 +166,48 @@
         <!-- Раздел Орбибол -->
         <section id="orbibol-section">
             <div class="container">
-                <h2>Орбибол</h2> {# Этот заголовок статичен, как мы и решили #}
+                <h2>Орбибол</h2>
                 {% if orbibol_info %}
                     {% if orbibol_info.general_info %}
                         <p class="orbibol-general-info">{{ orbibol_info.general_info|linebreaksbr }}</p>
                     {% endif %}
                     
-                    <div class="orbibol-features">
-                        <div class="orbibol-feature-item">
-                            {# Здесь должна быть иконка для Сюжетного орбибола, если она статическая #}
-                            {# <img src="{% static 'main/images/icon_plot_orbibol.svg' %}" alt=""> #}
-                            {% if orbibol_info.plot_title %}<h3>{{ orbibol_info.plot_title }}</h3>{% endif %}
-                            {% if orbibol_info.plot_description %}<p>{{ orbibol_info.plot_description|linebreaksbr }}</p>{% endif %}
+                    <div class="orbibol-content-wrapper">
+                        <!-- Сюжетный орбибол -->
+                        <div class="orbibol-item">
+                            <div class="orbibol-icon-wrapper">
+                                {% if orbibol_info.plot_icon %}
+                                    <img src="{{ orbibol_info.plot_icon.url }}" alt="Иконка Сюжетный орбибол">
+                                {% endif %}
+                            </div>
+                            <div class="orbibol-text-content">
+                                {% if orbibol_info.plot_title %}<h3>{{ orbibol_info.plot_title }}</h3>{% endif %}
+                                {% if orbibol_info.plot_description %}<p>{{ orbibol_info.plot_description|linebreaksbr }}</p>{% endif %}
+                            </div>
                         </div>
-                        <div class="orbibol-feature-item">
-                            {# Здесь должна быть иконка для Тактического орбибола, если она статическая #}
-                            {# <img src="{% static 'main/images/icon_tactical_orbibol.svg' %}" alt=""> #}
-                            {% if orbibol_info.tactical_title %}<h3>{{ orbibol_info.tactical_title }}</h3>{% endif %}
-                            {% if orbibol_info.tactical_description %}<p>{{ orbibol_info.tactical_description|linebreaksbr }}</p>{% endif %}
+
+                        <!-- Тактический орбибол -->
+                        <div class="orbibol-item">
+                            <div class="orbibol-icon-wrapper">
+                                {% if orbibol_info.tactical_icon %}
+                                     <img src="{{ orbibol_info.tactical_icon.url }}" alt="Иконка Тактический орбибол">
+                                {% endif %}
+                            </div>
+                            <div class="orbibol-text-content">
+                                {% if orbibol_info.tactical_title %}<h3>{{ orbibol_info.tactical_title }}</h3>{% endif %}
+                                {% if orbibol_info.tactical_description %}<p>{{ orbibol_info.tactical_description|linebreaksbr }}</p>{% endif %}
+                            </div>
                         </div>
                     </div>
 
                     {% if orbibol_info.details_link %}
-                        <div class="text-center" style="margin-top: 2rem;"> {# Для центрирования кнопки #}
-                            <a href="{{ orbibol_info.details_link }}" target="_blank" class="btn">Узнать подробнее</a>
+                        <div class="text-center">
+                            <a href="{{ orbibol_info.details_link }}" target="_blank" class="orbibol-details-link">Узнать подробнее</a>
                         </div>
                     {% endif %}
+
                 {% else %}
-                    <p>Информация об орбиболе скоро появится.</p>
+                    <p class="text-center">Информация об орбиболе скоро появится.</p>
                 {% endif %}
             </div>
         </section>
