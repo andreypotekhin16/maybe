@@ -86,37 +86,44 @@ document.addEventListener('DOMContentLoaded', function() {
         },
     });
 
-    // --- ИЗМЕНЕНИЕ: Логика для увеличения боковых слайдов при наведении ---
+    // --- Логика для увеличения боковых и затемнения центрального слайда при наведении ---
     const navPrev = document.querySelector('.booking-carousel-nav-prev');
     const navNext = document.querySelector('.booking-carousel-nav-next');
 
     if (navPrev && navNext && swiperContainer) {
         // Наведение на левую область
         navPrev.addEventListener('mouseenter', () => {
-            const prevSlide = swiperContainer.querySelector('.swiper-slide-prev');
-            if (prevSlide) prevSlide.classList.add('is-hovered');
+            swiperContainer.querySelector('.swiper-slide-prev')?.classList.add('is-hovered');
+            // ИЗМЕНЕНИЕ: Затемняем центральный слайд
+            swiperContainer.querySelector('.swiper-slide-active')?.classList.add('is-dimmed');
         });
         // Увод курсора с левой области
         navPrev.addEventListener('mouseleave', () => {
-            const prevSlide = swiperContainer.querySelector('.swiper-slide-prev');
-            if (prevSlide) prevSlide.classList.remove('is-hovered');
+            swiperContainer.querySelector('.swiper-slide-prev')?.classList.remove('is-hovered');
+            // ИЗМЕНЕНИЕ: Возвращаем яркость центральному слайду
+            swiperContainer.querySelector('.swiper-slide-active')?.classList.remove('is-dimmed');
         });
 
         // Наведение на правую область
         navNext.addEventListener('mouseenter', () => {
-            const nextSlide = swiperContainer.querySelector('.swiper-slide-next');
-            if (nextSlide) nextSlide.classList.add('is-hovered');
+            swiperContainer.querySelector('.swiper-slide-next')?.classList.add('is-hovered');
+            // ИЗМЕНЕНИЕ: Затемняем центральный слайд
+            swiperContainer.querySelector('.swiper-slide-active')?.classList.add('is-dimmed');
         });
         // Увод курсора с правой области
         navNext.addEventListener('mouseleave', () => {
-            const nextSlide = swiperContainer.querySelector('.swiper-slide-next');
-            if (nextSlide) nextSlide.classList.remove('is-hovered');
+            swiperContainer.querySelector('.swiper-slide-next')?.classList.remove('is-hovered');
+            // ИЗМЕНЕНИЕ: Возвращаем яркость центральному слайду
+            swiperContainer.querySelector('.swiper-slide-active')?.classList.remove('is-dimmed');
         });
 
-        // Также нужно убирать класс при смене слайда, на всякий случай
+        // Также нужно убирать классы при смене слайда, на всякий случай
         bookingSwiper.on('slideChange', function() {
             document.querySelectorAll('.booking-carousel-item.is-hovered').forEach(el => {
                 el.classList.remove('is-hovered');
+            });
+            document.querySelectorAll('.booking-carousel-item.is-dimmed').forEach(el => {
+                el.classList.remove('is-dimmed');
             });
         });
     }

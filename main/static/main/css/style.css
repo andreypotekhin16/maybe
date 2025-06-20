@@ -224,10 +224,15 @@ main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
     right: 0;
 }
 
-/* ИЗМЕНЕНИЕ: Заменяем старое правило на новое, управляемое через JS */
+/* Стили для увеличения боковых слайдов при наведении */
 .booking-carousel-item.is-hovered {
-    transform: scale(0.85); /* Базовый scale у неактивного слайда 0.7, это его увеличит */
+    transform: scale(0.85); 
     filter: brightness(1);
+}
+
+/* ИЗМЕНЕНИЕ: Стили для затемнения центрального слайда */
+.swiper-slide-active.is-dimmed {
+    filter: brightness(0.7);
 }
 
 /* Пагинация (точки) */
