@@ -59,6 +59,13 @@
 
         <section id="about-us-section" class="section-about-us">
             <div class="container">
+
+                <div class="about-us-social-icons">
+                    {% if company_profile and company_profile.vk_profile_link %}<a href="{{ company_profile.vk_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_vk.svg' %}" alt="VK"></a>{% endif %}
+                    {% if company_profile and company_profile.youtube_profile_link %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_youtube.png' %}" alt="YouTube"></a>{% endif %}
+                    {% if company_profile and company_profile.telegram_profile_link %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_telegram.png' %}" alt="Telegram"></a>{% endif %}
+                </div>
+
                 {% if company_profile and company_profile.motto %}
                     <h1 class="slogan">{{ company_profile.motto }}</h1>
                 {% else %}
