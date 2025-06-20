@@ -47,21 +47,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Инициализация Swiper-карусели для секции "Запись на игру" ---
     const bookingSwiper = new Swiper('.booking-swiper', {
-        // Возвращаем простую и надежную конфигурацию
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
-        // Задаем явное количество слайдов
-        slidesPerView: 2,
+        
+        // ВАЖНО: Устанавливаем 3, чтобы был один центральный слайд и два по бокам, как на вашем дизайне.
+        // С четным числом (например, 2) эффект coverflow с центрированием работает некорректно.
+        slidesPerView: 3, 
+        
         loop: true,
         slideToClickedSlide: true,
 
         // Настройки для эффекта "coverflow"
         coverflowEffect: {
             rotate: 0,
-            stretch: 0,
-            depth: 100, // Уменьшаем глубину для более компактного вида
+            
+            // Это расстояние между слайдами. Отрицательное значение сближает их.
+            stretch: -30, 
+            
+            depth: 100, 
             modifier: 1,
+            
+            // Это масштаб боковых слайдов. 0.7 = 70% от размера центрального (на 30% меньше).
+            scale: 0.7, 
+            
             slideShadows: false, 
         },
 
