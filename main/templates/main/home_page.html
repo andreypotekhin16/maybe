@@ -7,16 +7,18 @@
     
     <title>{% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}</title>
     
-    <!-- Подключаем шрифты (пока предполагаем Montserrat и Open Sans из Google Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    
 </head>
 <body>
 
-    <!-- Шапка сайта -->
+
+
     <header id="site-header">
         <div class="container header-container">
             <a href="/" class="logo">
@@ -35,9 +37,9 @@
             </nav>
             <div class="header-right">
                 <div class="social-icons-header">
-                    <a href="https://vk.com/games_pd" target="_blank"><img src="{% static 'main/images/icon_vk.svg' %}" alt="VK"></a>
-                    <a href="URL_YOUTUBE" target="_blank"><img src="{% static 'main/images/icon_youtube.png' %}" alt="YouTube"></a>
-                    <a href="https://t.me/mg_maybe" target="_blank"><img src="{% static 'main/images/icon_telegram.png' %}" alt="Telegram"></a>
+                    {% if company_profile and company_profile.vk_profile_link %}<a href="{{ company_profile.vk_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_vk.svg' %}" alt="VK"></a>{% endif %}
+                    {% if company_profile and company_profile.youtube_profile_link %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_youtube.png' %}" alt="YouTube"></a>{% endif %}
+                    {% if company_profile and company_profile.telegram_profile_link %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_telegram.png' %}" alt="Telegram"></a>{% endif %}
                 </div>
                 <button class="burger-menu" aria-label="Открыть меню">
                     <span></span>
@@ -48,8 +50,13 @@
         </div>
     </header>
 
+
+
+
+
+
     <main>
-        <!-- Секция "О нас" (со слоганом) -->
+
         <section id="about-us-section" class="section-about-us">
             <div class="container">
                 {% if company_profile and company_profile.motto %}
@@ -62,62 +69,230 @@
                     <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
                 {% else %}
                     <div class="about-us-text">
-                        <p>Мы – команда молодых инициативных мастеров, которая делает разноформатные ролевые игры для детей и взрослых.</p>
-                        <p>Полное погружение в новые миры, уникальные истории и костюмы. Яркие впечатления, неожиданные повороты на грани реальности уже ждут вас.</p>
-                        <p>Откройте себя заново!</p>
+                        <p>Мы – команда молодых инициативных мастеров...</p>
                     </div>
                 {% endif %}
             </div>
         </section>
 
-        <!-- Секция "Что мы предлагаем" -->
+
+
+
+ <!-- Секция "Что мы предлагаем" -->
         <section id="features-section" class="section-features">
             <div class="container">
                 <h2>Что мы предлагаем</h2>
+                {% if features %}
                 <div class="features-grid">
-                    {# Здесь будут 5-6 круглых блоков с иконками и текстом #}
-                    {# Пример одного блока (повторить для каждого): #}
+                    {% for feature_item_obj in features %} {# Изменил имя переменной цикла во избежание путаницы с CSS-классом #}
                     <div class="feature-item">
                         <div class="feature-icon-wrapper">
-                            <img src="{% static 'main/images/icon_author_worlds.svg' %}" alt="Авторские миры">
+                            {% if feature_item_obj.icon %}
+                                <img src="{{ feature_item_obj.icon.url }}" alt="{{ feature_item_obj.title }}">
+                            {% endif %}
                         </div>
-                        <h3>Авторские миры</h3>
-                        <p>С нами вы сможете погрузиться в абсолютно новые вселенные, примерить на себя любую роль!</p>
+                        <div class="feature-text-content"> {# Добавил обертку для текста #}
+                            <h3>{{ feature_item_obj.title }}</h3>
+                            <p>{{ feature_item_obj.description|linebreaksbr }}</p>
+                        </div>
                     </div>
-                    {# ... еще 5 таких блоков ... #}
+                    {% endfor %}
                 </div>
+                {% else %}
+                <p class="text-center">Информация о наших предложениях скоро появится.</p>
+                {% endif %}
             </div>
         </section>
 
-        <!-- Секция "Запись на игру" -->
+
+
+
+
+
+
+               <!-- Секция "Запись на игру" -->
         <section id="booking-section" class="section-booking">
             <div class="container">
                 <h2>Запись на игру</h2>
-                <div class="booking-content">
-                    <div class="booking-image-carousel">
-                        {# Большой круг и два по бокам #}
-                        <img src="{% static 'main/images/booking_center_art.png' %}" alt="Запись на игру арт">
+                
+                {% if services %}
+                <div class="booking-carousel-wrapper">
+                    <!-- Обертка для Swiper -->
+                    <div class="swiper booking-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- Слайды Swiper -->
+                            {% for service_item in services %}
+                            <div class="swiper-slide booking-carousel-item"> {# Убрали класс booking-carousel-item-single-swiper #}
+                                <a href="{{ service_item.vk_link|default:'#' }}" target="_blank" class="booking-carousel-link">
+                                    {% if service_item.image %}
+                                    <img src="{{ service_item.image.url }}" alt="{{ service_item.name }}" class="booking-carousel-art">
+                                    {% else %}
+                                    <div class="booking-carousel-art-placeholder">Арт</div>
+                                    {% endif %}
+                                    <div class="booking-carousel-info"> {# Текст теперь всегда виден или управляется простым :hover #}
+                                        <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
+                                        {% if service_item.short_description %}
+                                        <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Стандартные стрелки Swiper -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <!-- Пагинация (точки) -->
+                        <div class="swiper-pagination"></div>
                     </div>
-                    <div class="booking-info">
-                        <p>За широким дубовым столом сидели...</p> {# Текст из ТЗ #}
-                        <p>Когда: Игра 1: ..., Игра 2: ...</p>
-                        <p>Жанры: ... Цена: ...</p>
-                        <a href="#" class="btn">Записаться на игру</a>
-                    </div>
+                    <!-- КАСТОМНЫЕ СТРЕЛКИ УБРАНЫ -->
                 </div>
+                
+                {% if company_profile and company_profile.vk_profile_link %} 
+                <div class="booking-main-button-wrapper">
+                    {# <a href="..." class="btn">Записаться на игру</a> #}
+                </div>
+                {% endif %}
+
+                {% else %}
+                <p class="text-center">Игр для записи пока нет.</p>
+                {% endif %}
             </div>
         </section>
-        
-        {# ... Другие секции (Орбибол, Игры, Маркет, Галерея, Контакты) будут добавляться аналогично ... #}
 
+
+
+
+
+        <!-- Раздел Орбибол -->
+        <section id="orbibol-section">
+            <div class="container">
+                <h2>Орбибол</h2> {# Этот заголовок статичен, как мы и решили #}
+                {% if orbibol_info %}
+                    {% if orbibol_info.general_info %}
+                        <p class="orbibol-general-info">{{ orbibol_info.general_info|linebreaksbr }}</p>
+                    {% endif %}
+                    
+                    <div class="orbibol-features">
+                        <div class="orbibol-feature-item">
+                            {# Здесь должна быть иконка для Сюжетного орбибола, если она статическая #}
+                            {# <img src="{% static 'main/images/icon_plot_orbibol.svg' %}" alt=""> #}
+                            {% if orbibol_info.plot_title %}<h3>{{ orbibol_info.plot_title }}</h3>{% endif %}
+                            {% if orbibol_info.plot_description %}<p>{{ orbibol_info.plot_description|linebreaksbr }}</p>{% endif %}
+                        </div>
+                        <div class="orbibol-feature-item">
+                            {# Здесь должна быть иконка для Тактического орбибола, если она статическая #}
+                            {# <img src="{% static 'main/images/icon_tactical_orbibol.svg' %}" alt=""> #}
+                            {% if orbibol_info.tactical_title %}<h3>{{ orbibol_info.tactical_title }}</h3>{% endif %}
+                            {% if orbibol_info.tactical_description %}<p>{{ orbibol_info.tactical_description|linebreaksbr }}</p>{% endif %}
+                        </div>
+                    </div>
+
+                    {% if orbibol_info.details_link %}
+                        <div class="text-center" style="margin-top: 2rem;"> {# Для центрирования кнопки #}
+                            <a href="{{ orbibol_info.details_link }}" target="_blank" class="btn">Узнать подробнее</a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p>Информация об орбиболе скоро появится.</p>
+                {% endif %}
+            </div>
+        </section>
+
+                       
+
+
+
+       
+        
+                <!-- Секция "Игры" -->
+        <section id="games-section">
+            <div class="container">
+                <h2>Игры</h2>
+                {% if game_types %}
+                <div class="games-grid"> {# Сетка для отображения типов игр #}
+                    {% for game_type in game_types %}
+                    <div class="game-type-item">
+                        <div class="game-type-icon-wrapper">
+                            {% if game_type.icon %}
+                                <img src="{{ game_type.icon.url }}" alt="{{ game_type.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="game-type-text-content">
+                            <h3>{{ game_type.name }}</h3>
+                            <p>{{ game_type.description|linebreaksbr }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-center">Информация о типах игр скоро появится.</p>
+                {% endif %}
+            </div>
+        </section>
+
+
+
+
+
+
+        <section id="market-section">
+            <div class="container">
+                <h2>Маркет</h2>
+                <p>Наши товары скоро появятся здесь...</p>
+            </div>
+        </section>
+
+
+
+
+
+
+        <section id="gallery-section">
+             <div class="container">
+                <h2>Фото и видео галерея</h2>
+                <p>Предисловие...</p>
+            </div>
+        </section>
+
+
+
+
+
+
+        <section id="contacts-section">
+            <div class="container">
+                <h2>Контакты</h2>
+                {% if company_profile %}
+                    {% if company_profile.contact_email %}<p>Email: <a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>{% endif %}
+                    {% if company_profile.contact_phone %}<p>Телефон: <a href="tel:{{ company_profile.contact_phone|slugify }}">{{ company_profile.contact_phone }}</a></p>{% endif %}
+                    {% if company_profile.contact_address %}<p>Адрес: {{ company_profile.contact_address|linebreaksbr }}</p>{% endif %}
+                    
+                    <div class="social-icons-footer" style="margin-top:1rem;">
+                        {% if company_profile.vk_profile_link %}<a href="{{ company_profile.vk_profile_link }}" target="_blank">VK</a>{% endif %}
+                        {% if company_profile.telegram_profile_link %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank">Telegram</a>{% endif %}
+                        {% if company_profile.youtube_profile_link %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank">YouTube</a>{% endif %}
+                        {# Замените текст на иконки, когда они будут готовы #}
+                    </div>
+                {% else %}
+                    <p>Контактная информация скоро появится.</p>
+                {% endif %}
+            </div>
+        </section>
     </main>
 
-    <footer id="site-footer">
+
+
+
+
+
+    <footer id="site-footer-bottom"> {# Изменил id чтобы не конфликтовал с шапкой, если у нее тот же id #}
         <div class="container">
             <p>© {% now "Y" %} {% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
         </div>
     </footer>
 
-    <script src="{% static 'main/js/main.js' %}"></script>
+     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> <!-- Сначала Swiper -->
+    <script src="{% static 'main/js/main.js' %}"></script> <!-- Потом твой main.js -->
 </body>
 </html>
