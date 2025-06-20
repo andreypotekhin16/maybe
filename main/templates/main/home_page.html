@@ -22,11 +22,19 @@
     <header id="site-header">
         <div class="container header-container">
             <a href="/" class="logo">
-                <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
+                {% if company_profile.logo_image %}
+                    <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
+                {% else %}
+                    <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
+                {% endif %}
             </a>
+
+            <div class="header-center-text">May be</div>
+
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#about-us-section">Что мы предлагаем</a></li>
+                    <li><a href="#about-us-section">О нас</a></li>
+                    <li><a href="#features-section">Что мы предлагаем</a></li>
                     <li><a href="#booking-section">Запись на игру</a></li>
                     <li><a href="#orbibol-section">Орбибол</a></li>
                     <li><a href="#games-section">Игры</a></li>
@@ -35,18 +43,6 @@
                     <li><a href="#contacts-section">Контакты</a></li>
                 </ul>
             </nav>
-            <div class="header-right">
-                <div class="social-icons-header">
-                    {% if company_profile and company_profile.vk_profile_link %}<a href="{{ company_profile.vk_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_vk.svg' %}" alt="VK"></a>{% endif %}
-                    {% if company_profile and company_profile.youtube_profile_link %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_youtube.png' %}" alt="YouTube"></a>{% endif %}
-                    {% if company_profile and company_profile.telegram_profile_link %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_telegram.png' %}" alt="Telegram"></a>{% endif %}
-                </div>
-                <button class="burger-menu" aria-label="Открыть меню">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
         </div>
     </header>
 
@@ -55,30 +51,55 @@
 
 
 
-    <main>
+    <main id="main-content">
 
         <section id="about-us-section" class="section-about-us">
             <div class="container">
-
-                <div class="about-us-social-icons">
-                    {% if company_profile and company_profile.vk_profile_link %}<a href="{{ company_profile.vk_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_vk.svg' %}" alt="VK"></a>{% endif %}
-                    {% if company_profile and company_profile.youtube_profile_link %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_youtube.png' %}" alt="YouTube"></a>{% endif %}
-                    {% if company_profile and company_profile.telegram_profile_link %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank"><img src="{% static 'main/images/icon_telegram.png' %}" alt="Telegram"></a>{% endif %}
-                </div>
-
-                {% if company_profile and company_profile.motto %}
-                    <h1 class="slogan">{{ company_profile.motto }}</h1>
-                {% else %}
-                    <h1 class="slogan">MAYBE - КЛЮЧ К ТВОИМ ЭМОЦИЯМ!</h1> 
-                {% endif %}
-               
-                {% if company_profile and company_profile.about_us_text %}
-                    <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
-                {% else %}
-                    <div class="about-us-text">
-                        <p>Мы – команда молодых инициативных мастеров...</p>
+                <div class="about-us-content">
+                    <div class="about-us-social-icons">
+                        {% if company_profile.vk_profile_link %}
+                            <a href="{{ company_profile.vk_profile_link }}" target="_blank">
+                                {% if company_profile.vk_icon %}
+                                    <img src="{{ company_profile.vk_icon.url }}" alt="VK">
+                                {% else %}
+                                    <img src="{% static 'main/images/icon_vk.svg' %}" alt="VK">
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                        {% if company_profile.youtube_profile_link %}
+                            <a href="{{ company_profile.youtube_profile_link }}" target="_blank">
+                                {% if company_profile.youtube_icon %}
+                                    <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                                {% else %}
+                                    <img src="{% static 'main/images/icon_youtube.svg' %}" alt="YouTube">
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                        {% if company_profile.telegram_profile_link %}
+                            <a href="{{ company_profile.telegram_profile_link }}" target="_blank">
+                                {% if company_profile.telegram_icon %}
+                                    <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
+                                {% else %}
+                                    <img src="{% static 'main/images/icon_telegram.svg' %}" alt="Telegram">
+                                {% endif %}
+                            </a>
+                        {% endif %}
                     </div>
-                {% endif %}
+
+                    {% if company_profile and company_profile.motto %}
+                        <h1 class="slogan">{{ company_profile.motto }}</h1>
+                    {% else %}
+                        <h1 class="slogan">MAYBE - КЛЮЧ К ТВОИМ ЭМОЦИЯМ!</h1> 
+                    {% endif %}
+                
+                    {% if company_profile and company_profile.about_us_text %}
+                        <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
+                    {% else %}
+                        <div class="about-us-text">
+                            <p>Мы – команда молодых инициативных мастеров...</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </section>
 
@@ -259,7 +280,29 @@
         <section id="market-section">
             <div class="container">
                 <h2>Маркет</h2>
-                <p>Наши товары скоро появятся здесь...</p>
+                {% if products %}
+                    <div class="market-grid">
+                        {% for product in products %}
+                            <a href="{{ product.link|default:'#' }}" target="_blank" class="product-card">
+                                <div class="product-image-wrapper">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% endif %}
+                                </div>
+                                <h3 class="product-title">{{ product.name }}</h3>
+                                <div class="product-price">{{ product.price }} ₽</div>
+                                <p class="product-description">{{ product.description }}</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    {% if company_profile.market_link %}
+                        <a href="{{ company_profile.market_link }}" target="_blank" class="market-more-link">
+                            Ещё больше товаров
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <p class="text-center">Наши товары скоро появятся здесь...</p>
+                {% endif %}
             </div>
         </section>
 
@@ -271,7 +314,32 @@
         <section id="gallery-section">
              <div class="container">
                 <h2>Фото и видео галерея</h2>
-                <p>Предисловие...</p>
+                {% if company_profile.gallery_description %}
+                    <p class="gallery-description">{{ company_profile.gallery_description|linebreaksbr }}</p>
+                {% endif %}
+
+                {% if gallery_items %}
+                <div class="gallery-grid">
+                    {% for item in gallery_items %}
+                    <div class="gallery-item">
+                        <h3>{{ item.title }}</h3>
+                        <div class="gallery-media-wrapper">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                            {% elif item.video %}
+                                <video autoplay loop muted playsinline>
+                                    <source src="{{ item.video.url }}" type="video/mp4">
+                                    Ваш браузер не поддерживает видео.
+                                </video>
+                            {% endif %}
+                        </div>
+                        <a href="{{ item.order_link }}" target="_blank" class="gallery-order-link">Заказать</a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <p class="text-center">Материалы для галереи скоро появятся.</p>
+                {% endif %}
             </div>
         </section>
 
@@ -288,11 +356,34 @@
                     {% if company_profile.contact_phone %}<p>Телефон: <a href="tel:{{ company_profile.contact_phone|slugify }}">{{ company_profile.contact_phone }}</a></p>{% endif %}
                     {% if company_profile.contact_address %}<p>Адрес: {{ company_profile.contact_address|linebreaksbr }}</p>{% endif %}
                     
-                    <div class="social-icons-footer" style="margin-top:1rem;">
-                        {% if company_profile.vk_profile_link %}<a href="{{ company_profile.vk_profile_link }}" target="_blank">VK</a>{% endif %}
-                        {% if company_profile.telegram_profile_link %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank">Telegram</a>{% endif %}
-                        {% if company_profile.youtube_profile_link %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank">YouTube</a>{% endif %}
-                        {# Замените текст на иконки, когда они будут готовы #}
+                    <div class="social-icons-footer">
+                        {% if company_profile.vk_profile_link %}
+                            <a href="{{ company_profile.vk_profile_link }}" target="_blank">
+                                {% if company_profile.vk_icon %}
+                                    <img src="{{ company_profile.vk_icon.url }}" alt="VK">
+                                {% else %}
+                                    <img src="{% static 'main/images/icon_vk.svg' %}" alt="VK">
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                        {% if company_profile.youtube_profile_link %}
+                            <a href="{{ company_profile.youtube_profile_link }}" target="_blank">
+                                 {% if company_profile.youtube_icon %}
+                                    <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                                {% else %}
+                                    <img src="{% static 'main/images/icon_youtube.svg' %}" alt="YouTube">
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                        {% if company_profile.telegram_profile_link %}
+                            <a href="{{ company_profile.telegram_profile_link }}" target="_blank">
+                                {% if company_profile.telegram_icon %}
+                                    <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
+                                {% else %}
+                                    <img src="{% static 'main/images/icon_telegram.svg' %}" alt="Telegram">
+                                {% endif %}
+                            </a>
+                        {% endif %}
                     </div>
                 {% else %}
                     <p>Контактная информация скоро появится.</p>

@@ -22,20 +22,17 @@
     --fs-subsection-title: 1.9375rem; 
     --fs-body: 1.3125rem;             
     --fs-button: 1.3125rem;           
-    --header-padding-normal: 1rem;    
-    --header-padding-hover: 2.5rem;   
-    --logo-height-normal: 40px;       
-    --logo-height-hover: 70px;        
-    --nav-font-size-normal: 1.125rem; 
-    --nav-font-size-hover: 1.3125rem; 
-    --social-icon-size-normal: 22px;
-    --social-icon-size-hover: 26px;
-    --burger-height-normal: 20px;
-    --burger-width-normal: 28px;
-    --burger-line-height-normal: 2.5px;
-    --burger-height-hover: 24px;      
-    --burger-width-hover: 32px;       
-    --burger-line-height-hover: 3px;  
+    
+    /* Размеры в свернутом состоянии */
+    --header-padding-normal: 0.8rem;
+    --logo-height-normal: 45px;
+    --nav-font-size-normal: 1.2rem; 
+    
+    /* Размеры в развернутом состоянии */
+    --header-padding-hover: 1.2rem;   
+    --logo-height-hover: 80px;        
+    --nav-font-size-hover: 1.4rem; 
+
     --header-transition-duration: 0.4s; 
 }
 
@@ -46,65 +43,102 @@ body {
     font-family: var(--font-fortunec); font-size: var(--fs-body); font-weight: normal; 
     line-height: 1.6; color: var(--color-white); background-color: var(--color-black-bg);
     -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-    padding-top: 2rem; 
+}
+main {
+    transition: padding-top var(--header-transition-duration) ease-in-out;
 }
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-sunday); font-weight: normal; line-height: 1.2; color: var(--color-white); }
 h2 { font-size: var(--fs-section-title); text-transform: uppercase; text-align: center; margin-bottom: 4rem; }
 a { color: inherit; text-decoration: none; }
-img { max-width: 100%; height: auto; display: block; }
+img, video { max-width: 100%; height: auto; display: block; }
 ul { list-style: none; }
 .container { width: 90%; max-width: 1300px; margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; }
 
 /* --- Стили для Шапки (Header) --- */
 #site-header { 
-    padding: var(--header-padding-normal) 0; position: fixed; top: 0; left: 0; width: 100%;
+    padding: var(--header-padding-hover) 0; /* По умолчанию РАЗВЕРНУТА */
+    position: fixed; top: 0; left: 0; width: 100%;
     z-index: 1000; background-color: var(--color-black-bg); 
-    transform: translateY(-100%); 
-    transition: padding var(--header-transition-duration) ease-in-out, transform var(--header-transition-duration) ease-in-out;
+    transition: padding var(--header-transition-duration) ease-in-out;
 }
-#site-header.header-visible { transform: translateY(0); }
-#site-header.header-visible:hover { padding: var(--header-padding-hover) 0; }
-.header-container { display: flex; justify-content: space-between; align-items: center; }
-#site-header .logo img { height: var(--logo-height-normal); transition: height var(--header-transition-duration) ease-in-out; }
-#site-header.header-visible:hover .logo img { height: var(--logo-height-hover); }
-#site-header .main-nav ul { display: flex; gap: 1.8rem; }
+
+.header-container { display: flex; align-items: center; justify-content: space-between; position: relative;}
+
+#site-header .logo img { 
+    height: var(--logo-height-hover); /* По умолчанию большая */
+    transition: height var(--header-transition-duration) ease-in-out; 
+}
+.main-nav {
+    flex-grow: 1; 
+    padding: 0 4rem;
+}
+#site-header .main-nav ul { 
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-start;
+    gap: 0.5rem 3rem; 
+    padding: 0;
+    transition: opacity var(--header-transition-duration) ease;
+}
 #site-header .main-nav a {
-    font-family: var(--font-fortunec); font-size: var(--nav-font-size-normal); font-weight: normal; 
-    color: var(--color-white); padding: 0.5rem 0;
-    transition: color 0.3s ease, font-size var(--header-transition-duration) ease-in-out;
+    font-family: var(--font-fortunec); 
+    font-size: var(--nav-font-size-hover);
+    font-weight: normal; 
+    color: var(--color-white); 
+    padding: 0;
+    transition: color 0.3s ease;
 }
-#site-header.header-visible:hover .main-nav a { font-size: var(--nav-font-size-hover); }
 #site-header .main-nav a:hover { color: var(--color-green-accent); }
-#site-header .header-right { display: flex; align-items: center; gap: 1.5rem; }
-#site-header .social-icons-header { display: flex; gap: 1rem; }
-#site-header .social-icons-header img {
-    height: var(--social-icon-size-normal); width: var(--social-icon-size-normal); opacity: 0.8;
-    transition: opacity 0.3s ease, height var(--header-transition-duration) ease-in-out, width var(--header-transition-duration) ease-in-out;
+
+.header-center-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-fortunec);
+    font-size: var(--nav-font-size-normal);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--header-transition-duration) ease;
 }
-#site-header.header-visible:hover .social-icons-header img { height: var(--social-icon-size-hover); width: var(--social-icon-size-hover); }
-#site-header .social-icons-header a:hover img { opacity: 1; }
-#site-header .burger-menu {
-    display: flex; flex-direction: column; justify-content: space-around;
-    width: var(--burger-width-normal); height: var(--burger-height-normal); 
-    background: transparent; border: none; cursor: pointer; padding: 0; z-index: 10;
-    transition: height var(--header-transition-duration) ease-in-out, width var(--header-transition-duration) ease-in-out;
+
+/* СВЕРНУТОЕ СОСТОЯНИЕ ХЕДЕРА (Состояние 0) */
+#site-header.header-collapsed {
+    padding: var(--header-padding-normal) 0;
 }
-#site-header.header-visible:hover .burger-menu { width: var(--burger-width-hover); height: var(--burger-height-hover); }
-#site-header .burger-menu span {
-    width: 100%; height: var(--burger-line-height-normal); background-color: var(--color-white);
-    border-radius: 10px; transition: height var(--header-transition-duration) ease-in-out;
+#site-header.header-collapsed .logo img {
+    height: var(--logo-height-normal);
 }
-#site-header.header-visible:hover .burger-menu span { height: var(--burger-line-height-hover); }
+#site-header.header-collapsed .main-nav ul {
+    opacity: 0;
+    pointer-events: none;
+}
+#site-header.header-collapsed .header-center-text {
+    opacity: 1;
+    pointer-events: all;
+}
+
 
 /* --- Секция "О нас" (со слоганом) --- */
 .section-about-us {
     min-height: 80vh; padding-top: 6rem; padding-bottom: 5rem;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; background-color: var(--color-black-bg); position: relative; 
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: flex-start; /* Выравнивание по левому краю */
+    text-align: left; /* Выравнивание текста по левому краю */
+    background-color: var(--color-black-bg); 
+    position: relative; 
+}
+.section-about-us .container {
+    width: 100%; /* Чтобы дочерние элементы могли растягиваться */
+}
+.about-us-content {
+    max-width: 65ch; /* Ограничиваем ширину контента для читаемости */
+    margin: 0; /* Убираем авто-отступы, чтобы прижать к левому краю */
 }
 .about-us-social-icons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Иконки слева */
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -119,17 +153,26 @@ ul { list-style: none; }
 }
 
 .section-about-us .slogan {
-    font-family: var(--font-sunday); font-size: var(--fs-main-slogan); color: var(--color-green-accent); 
-    font-weight: normal; text-transform: uppercase; margin-bottom: 2rem; line-height: 1.2;
+    font-family: var(--font-sunday); 
+    font-size: var(--fs-main-slogan); 
+    color: var(--color-green-accent); 
+    font-weight: normal; 
+    text-transform: uppercase; 
+    margin-bottom: 2rem; 
+    line-height: 1.2;
 }
 .section-about-us .about-us-text { 
-    font-family: var(--font-fortunec); font-size: var(--fs-about-text); font-weight: normal; 
-    color: var(--color-white); max-width: 65ch; line-height: 1.7;
-    text-align: left;
-    margin: 0 auto;
+    font-family: var(--font-fortunec); 
+    font-size: var(--fs-about-text); 
+    font-weight: normal; 
+    color: var(--color-white); 
+    line-height: 1.7;
+    text-align: left; /* Явное указание */
+    margin: 0;
 }
 .section-about-us .about-us-text p { margin-bottom: 1em; }
 .section-about-us .about-us-text p:last-child { margin-bottom: 0; }
+
 
 /* --- Стили для Кнопок (общие) --- */
 .btn {
@@ -466,14 +509,161 @@ main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
     color: var(--color-white);
 }
 
+
+/* --- Секция "Маркет" --- */
+#market-section h2 {
+    color: var(--color-white);
+    margin-bottom: 5rem;
+}
+
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.product-card {
+    text-align: center;
+    color: var(--color-white);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image-wrapper {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1.5rem auto;
+    border: 3px solid var(--color-green-accent);
+}
+
+.product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-title {
+    font-family: var(--font-fortunec);
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-price {
+    font-family: var(--font-sunday);
+    font-size: 2.5rem;
+    color: var(--color-green-accent);
+    margin-bottom: 1rem;
+}
+
+.product-description {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    max-width: 35ch;
+    margin: 0 auto;
+}
+
+.market-more-link {
+    display: block;
+    text-align: center;
+    font-family: var(--font-sunday);
+    font-size: 1.25rem;
+    color: var(--color-green-accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.market-more-link:hover {
+    color: var(--color-white);
+    text-decoration: underline;
+}
+
+
+/* --- Секция "Галерея" --- */
+#gallery-section h2 {
+    color: var(--color-white);
+}
+.gallery-description {
+    text-align: center;
+    max-width: 65ch;
+    margin: 0 auto 4rem auto;
+    font-size: 1.25rem;
+    line-height: 1.7;
+}
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 4rem;
+    justify-items: center;
+}
+.gallery-item {
+    text-align: center;
+}
+.gallery-item h3 {
+    font-family: var(--font-fortunec);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    color: var(--color-white);
+    margin-bottom: 2rem;
+}
+.gallery-media-wrapper {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1.5rem auto;
+    border: 3px solid var(--color-green-accent);
+}
+.gallery-media-wrapper img,
+.gallery-media-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.gallery-order-link {
+    font-family: var(--font-sunday);
+    font-size: 1.5rem;
+    color: var(--color-green-accent);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+.gallery-order-link:hover {
+    color: var(--color-white);
+}
+
+
 /* Секция Контакты */
 .section-contacts {} 
 .section-contacts h2 {}
 .section-contacts p { margin-bottom: 0.75rem; }
 .section-contacts a { color: var(--color-green-accent); text-decoration: underline; }
 .section-contacts a:hover { text-decoration: none; }
-.social-icons-footer a { margin-right: 1rem; text-decoration: none; }
-.social-icons-footer a:last-child { margin-right: 0; }
+
+.social-icons-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.social-icons-footer a {
+    text-decoration: none;
+}
+.social-icons-footer img {
+    height: 30px;
+    width: 30px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+.social-icons-footer a:hover img {
+    opacity: 1;
+}
+
 
 /* Футер */
 #site-footer-bottom {
@@ -491,7 +681,16 @@ main section { padding-top: 5rem; padding-bottom: 5rem; position: relative; }
     }
 }
 
+@media (max-width: 992px) {
+    .main-nav {
+        display: none; /* На мобилках навигация будет скрыта до клика (если вернем) */
+    }
+}
+
 @media (max-width: 768px) {
+    .about-us-content {
+        padding: 0 15px; /* Добавляем отступы на мобилках */
+    }
     .orbibol-item {
         flex-direction: column;
         text-align: center;

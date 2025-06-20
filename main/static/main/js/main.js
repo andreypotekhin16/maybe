@@ -1,137 +1,132 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- Логика для шапки (появление/скрытие при скролле) ---
+    // --- Логика для шапки ---
     const siteHeader = document.getElementById('site-header');
+    const mainContent = document.getElementById('main-content');
+    
+    const scrollThreshold = 100; // Порог скролла, после которого хедер начинает сворачиваться
     let lastScrollTop = 0;
-    const scrollDelta = 10; 
-    const showHeaderOffset = 150; 
 
-    if (siteHeader) {
-        if (window.scrollY <= showHeaderOffset || (document.body.scrollHeight <= window.innerHeight)) {
+    // Функция для динамического добавления отступа для контента
+    function updateMainContentPadding() {
+        const headerHeight = siteHeader.offsetHeight;
+        mainContent.style.paddingTop = `${headerHeight}px`;
+    }
+
+    // Отслеживаем изменение размера хедера
+    const headerObserver = new ResizeObserver(() => {
+        updateMainContentPadding();
+    });
+
+    if (siteHeader && mainContent) {
+        headerObserver.observe(siteHeader);
+    }
+    
+    // Функция для управления состоянием хедера при скролле
+    function handleScroll() {
+        let scrollTop = window.scrollY;
+
+        // Показываем/скрываем хедер в зависимости от направления скролла
+        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold * 2) {
+            siteHeader.classList.remove('header-visible');
+        } else {
             siteHeader.classList.add('header-visible');
         }
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.scrollY;
-            if (Math.abs(lastScrollTop - scrollTop) <= scrollDelta) return;
-            if (scrollTop > lastScrollTop && scrollTop > showHeaderOffset) {
-                siteHeader.classList.remove('header-visible');
-            } else {
-                if (scrollTop + window.innerHeight < document.documentElement.scrollHeight || scrollTop <= showHeaderOffset) {
-                    siteHeader.classList.add('header-visible');
-                }
-            }
-            if (scrollTop <= scrollDelta) { 
-                 siteHeader.classList.add('header-visible');
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
-        }, false);
-    } else {
-        console.warn("Элемент шапки с ID 'site-header' не найден.");
+
+        // Сворачиваем/разворачиваем
+        if (scrollTop > scrollThreshold) {
+            siteHeader.classList.add('header-collapsed');
+        } else {
+            siteHeader.classList.remove('header-collapsed');
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }
 
+    // Первоначальная установка состояния
+    siteHeader.classList.add('header-visible'); 
+    handleScroll();
     
-    // --- Код для бургер-меню ---
-    const burgerMenuButton = document.querySelector('.burger-menu');
-    const mainNav = document.querySelector('#site-header .main-nav'); 
+    window.addEventListener('scroll', handleScroll, false);
+    
+    // Наведение на хедер для раскрытия
+    siteHeader.addEventListener('mouseenter', () => {
+        siteHeader.classList.remove('header-collapsed');
+    });
 
-    if (burgerMenuButton && mainNav) {
-        burgerMenuButton.addEventListener('click', function() {
-            mainNav.classList.toggle('active'); 
-            burgerMenuButton.classList.toggle('active'); 
-        });
-    } else {
-        if (!burgerMenuButton) console.warn("Burger menu button '.burger-menu' не найден.");
-        if (!mainNav) console.warn("Main navigation '#site-header .main-nav' для бургер-меню не найдена.");
-    }
-
-
+    siteHeader.addEventListener('mouseleave', () => {
+         if(window.scrollY > scrollThreshold) {
+            siteHeader.classList.add('header-collapsed');
+        }
+    });
+    
     // --- Инициализация Swiper-карусели для секции "Запись на игру" ---
     const swiperContainer = document.querySelector('.booking-swiper');
 
-    const bookingSwiper = new Swiper(swiperContainer, {
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 3, 
-        loop: true,
-        slideToClickedSlide: true,
+    if (swiperContainer) {
+        const bookingSwiper = new Swiper(swiperContainer, {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 3, 
+            loop: true,
+            slideToClickedSlide: true,
 
-        // Настройки для эффекта "coverflow"
-        coverflowEffect: {
-            rotate: 0,
-            stretch: -150, 
-            depth: 100, 
-            modifier: 1,
-            scale: 0.7, 
-            slideShadows: false, 
-        },
-
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-
-        navigation: {
-            nextEl: '.booking-carousel-nav-next',
-            prevEl: '.booking-carousel-nav-prev',
-        },
-
-        on: {
-            loopFix: function () {
-                swiperContainer.classList.add('swiper-no-transition');
+            coverflowEffect: {
+                rotate: 0,
+                stretch: -150, 
+                depth: 100, 
+                modifier: 1,
+                scale: 0.7, 
+                slideShadows: false, 
             },
-            slideChangeTransitionStart: function() {
-                swiperContainer.classList.remove('swiper-no-transition');
+
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
             },
-        },
-    });
 
-    // --- Логика для интерактивности слайдов при наведении ---
-    const navPrev = document.querySelector('.booking-carousel-nav-prev');
-    const navNext = document.querySelector('.booking-carousel-nav-next');
-    
-    // Флаги для отслеживания положения мыши
-    let isMouseOverNavPrev = false;
-    let isMouseOverNavNext = false;
+            navigation: {
+                nextEl: '.booking-carousel-nav-next',
+                prevEl: '.booking-carousel-nav-prev',
+            },
 
-    // Функция для применения эффекта наведения
-    const applyHoverEffects = () => {
-        // Убираем все старые эффекты
-        document.querySelectorAll('.is-hovered, .is-dimmed').forEach(el => {
-            el.classList.remove('is-hovered', 'is-dimmed');
+            on: {
+                loopFix: function () {
+                    if(swiperContainer) swiperContainer.classList.add('swiper-no-transition');
+                },
+                slideChangeTransitionStart: function() {
+                    if(swiperContainer) swiperContainer.classList.remove('swiper-no-transition');
+                },
+            },
         });
+
+        const navPrev = document.querySelector('.booking-carousel-nav-prev');
+        const navNext = document.querySelector('.booking-carousel-nav-next');
         
-        // Применяем новые на основе положения мыши
-        if (isMouseOverNavPrev) {
-            swiperContainer.querySelector('.swiper-slide-prev')?.classList.add('is-hovered');
-            swiperContainer.querySelector('.swiper-slide-active')?.classList.add('is-dimmed');
-        } else if (isMouseOverNavNext) {
-            swiperContainer.querySelector('.swiper-slide-next')?.classList.add('is-hovered');
-            swiperContainer.querySelector('.swiper-slide-active')?.classList.add('is-dimmed');
+        let isMouseOverNavPrev = false;
+        let isMouseOverNavNext = false;
+
+        const applyHoverEffects = () => {
+            document.querySelectorAll('.is-hovered, .is-dimmed').forEach(el => {
+                el.classList.remove('is-hovered', 'is-dimmed');
+            });
+            
+            if (isMouseOverNavPrev) {
+                swiperContainer.querySelector('.swiper-slide-prev')?.classList.add('is-hovered');
+                swiperContainer.querySelector('.swiper-slide-active')?.classList.add('is-dimmed');
+            } else if (isMouseOverNavNext) {
+                swiperContainer.querySelector('.swiper-slide-next')?.classList.add('is-hovered');
+                swiperContainer.querySelector('.swiper-slide-active')?.classList.add('is-dimmed');
+            }
+        };
+        
+        if (navPrev && navNext) {
+            navPrev.addEventListener('mouseenter', () => { isMouseOverNavPrev = true; applyHoverEffects(); });
+            navPrev.addEventListener('mouseleave', () => { isMouseOverNavPrev = false; applyHoverEffects(); });
+            navNext.addEventListener('mouseenter', () => { isMouseOverNavNext = true; applyHoverEffects(); });
+            navNext.addEventListener('mouseleave', () => { isMouseOverNavNext = false; applyHoverEffects(); });
+            bookingSwiper.on('slideChangeTransitionEnd', applyHoverEffects);
         }
-    };
-    
-    if (navPrev && navNext && swiperContainer) {
-        navPrev.addEventListener('mouseenter', () => {
-            isMouseOverNavPrev = true;
-            applyHoverEffects();
-        });
-        navPrev.addEventListener('mouseleave', () => {
-            isMouseOverNavPrev = false;
-            applyHoverEffects();
-        });
-
-        navNext.addEventListener('mouseenter', () => {
-            isMouseOverNavNext = true;
-            applyHoverEffects();
-        });
-        navNext.addEventListener('mouseleave', () => {
-            isMouseOverNavNext = false;
-            applyHoverEffects();
-        });
-
-        // После каждой смены слайда переприменяем эффекты, чтобы восстановить их, если курсор не двигался
-        bookingSwiper.on('slideChangeTransitionEnd', applyHoverEffects);
     }
-
 });
