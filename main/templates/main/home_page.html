@@ -15,8 +15,38 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     
 </head>
-<body>
-
+<body 
+    {% if background_settings %}
+        data-background-enabled="true"
+        data-pattern-url="{{ background_settings.background_pattern.url|default_if_none:'' }}"
+        data-pattern-size="{{ background_settings.pattern_size|default:'200px' }}"
+        data-pattern-opacity="{{ background_settings.pattern_opacity|stringformat:'.2f'|cut:',' }}"
+        data-bg-color="{{ background_settings.background_color|default:'#010101' }}"
+    {% endif %}
+>
+    
+    <div id="animated-background-container">
+        <!-- Этот div будет для статичного паттерна -->
+        <div id="background-pattern"></div>
+        
+        <!-- Анимированные объекты будут создаваться здесь через JS -->
+        {% if background_settings %}
+            {% for obj in background_settings.background_objects.all %}
+                <div class="background-object-placeholder"
+                    data-image-url="{{ obj.image.url }}"
+                    data-width="{{ obj.width }}"
+                    data-top="{{ obj.initial_top }}"
+                    data-left="{{ obj.initial_left }}"
+                    data-z-index="{{ obj.z_index }}"
+                    data-opacity="{{ obj.opacity|stringformat:'.2f'|cut:',' }}"
+                    data-anim-duration="{{ obj.animation_duration }}"
+                    data-anim-delay="{{ obj.animation_delay }}"
+                    data-parallax-target-id="{{ obj.parallax_target_id|default:'' }}"
+                    data-parallax-speed="{{ obj.parallax_speed|stringformat:'.2f'|cut:',' }}"
+                ></div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
 
     <header id="site-header">

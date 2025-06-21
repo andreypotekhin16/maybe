@@ -1,6 +1,7 @@
 # myproject/main/models.py
 
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Service(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название игры/услуги (для Записи на игру)")
@@ -69,7 +70,7 @@ class OrbibolInfo(models.Model):
 
     class Meta:
         verbose_name = "Информация об Орбиболе"
-        verbose_name_plural = "Информация об Орбиболе" # Предполагаем одну запись на сайт
+        verbose_name_plural = "Информация об Орбиболе" 
 
     def __str__(self):
         return "Информация для секции Орбибол"
@@ -132,3 +133,43 @@ class GalleryItem(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class BackgroundSettings(models.Model):
+    name = models.CharField(max_length=100, default="Основные настройки фона", verbose_name="Название набора настроек")
+    background_pattern = models.FileField(upload_to='backgrounds/', blank=True, null=True, verbose_name="Паттерн фона (повторяющееся изображение)", help_text="Это изображение будет повторяться на фоне.")
+    pattern_size = models.CharField(max_length=50, default="200px", verbose_name="Размер паттерна", help_text="CSS значение, например: '200px', '50%', 'cover', 'contain'.")
+    pattern_opacity = models.DecimalField(max_digits=3, decimal_places=2, default=0.3, verbose_name="Прозрачность паттерна (от 0.0 до 1.0)", validators=[MinValueValidator(0), MaxValueValidator(1)])
+    background_color = models.CharField(max_length=20, default="#010101", verbose_name="Основной цвет фона", help_text="CSS цвет, например: '#010101'. Будет под паттерном.")
+
+    class Meta:
+        verbose_name = "Настройки фона"
+        verbose_name_plural = "Настройки фона"
+
+    def __str__(self):
+        return self.name
+
+class BackgroundObject(models.Model):
+    settings = models.ForeignKey(BackgroundSettings, on_delete=models.CASCADE, related_name='background_objects', verbose_name="Набор настроек")
+    name = models.CharField(max_length=100, verbose_name="Название объекта")
+    image = models.FileField(upload_to='backgrounds/objects/', verbose_name="Изображение объекта")
+    width = models.PositiveIntegerField(default=150, verbose_name="Ширина объекта (px)")
+    initial_top = models.CharField(max_length=10, default="50%", verbose_name="Начальная позиция сверху", help_text="CSS значение, например '50%' или '100px'")
+    initial_left = models.CharField(max_length=10, default="50%", verbose_name="Начальная позиция слева", help_text="CSS значение, например '50%' или '100px'")
+    animation_duration = models.PositiveIntegerField(default=20, verbose_name="Длительность анимации (секунд)", help_text="Длительность 'покачивания'. 0 чтобы отключить.")
+    animation_delay = models.PositiveIntegerField(default=0, verbose_name="Задержка перед началом анимации (секунд)")
+    opacity = models.DecimalField(max_digits=3, decimal_places=2, default=0.5, verbose_name="Прозрачность (от 0.0 до 1.0)", validators=[MinValueValidator(0), MaxValueValidator(1)])
+    z_index = models.IntegerField(default=-9, verbose_name="Слой (z-index)", help_text="Чем меньше, тем 'ниже' объект. Паттерн фона на слое -10.")
+    order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок")
+    
+    # НОВЫЕ ПОЛЯ ДЛЯ ПАРАЛЛАКСА
+    parallax_target_id = models.CharField(max_length=100, blank=True, null=True, verbose_name="ID секции для параллакс-эффекта", help_text="Например: 'about-us-section'. Оставьте пустым, чтобы отключить параллакс.")
+    parallax_speed = models.FloatField(default=0.3, verbose_name="Скорость параллакса", help_text="Например: 0.2 (медленнее скролла), 1 (вместе со скроллом), -0.5 (в обратную сторону)")
+
+    class Meta:
+        verbose_name = "Анимированный объект фона"
+        verbose_name_plural = "Анимированные объекты фона"
+        ordering = ['order']
+
+    def __str__(self):
+        return self.name
