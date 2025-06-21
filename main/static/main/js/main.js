@@ -4,12 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const siteHeader = document.getElementById('site-header');
         if (!siteHeader) return;
         const scrollThreshold = 100;
+        const activeThreshold = 10;
+
         function handleScroll() {
-            siteHeader.classList.toggle('header-collapsed', window.scrollY > scrollThreshold);
+            const scrollY = window.scrollY;
+            siteHeader.classList.toggle('header-active', scrollY > activeThreshold);
+            siteHeader.classList.toggle('header-collapsed', scrollY > scrollThreshold);
         }
+    
         window.addEventListener('scroll', handleScroll, { passive: true });
-        siteHeader.addEventListener('mouseenter', () => siteHeader.classList.remove('header-collapsed'));
-        siteHeader.addEventListener('mouseleave', () => handleScroll());
+        
+        siteHeader.addEventListener('mouseenter', () => {
+            siteHeader.classList.add('header-active');
+            siteHeader.classList.remove('header-collapsed');
+        });
+    
+        siteHeader.addEventListener('mouseleave', () => {
+             handleScroll();
+        });
+        
         handleScroll();
     }
 
@@ -21,16 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const bgContainer = document.getElementById('animated-background-container');
         if (!bgContainer) return;
 
-        // 1. Настраиваем статичный фон
+        // 1. Настраиваем фон на body и паттерн
         const patternEl = document.getElementById('background-pattern');
-        if (patternEl && settings.patternUrl) {
+        if (patternEl) {
             body.style.backgroundColor = settings.bgColor;
-            patternEl.style.backgroundImage = `url('${settings.patternUrl}')`;
-            patternEl.style.backgroundSize = settings.patternSize;
-            patternEl.style.opacity = settings.patternOpacity;
+            if (settings.patternUrl) {
+                patternEl.style.backgroundImage = `url('${settings.patternUrl}')`;
+                patternEl.style.backgroundSize = settings.patternSize;
+                patternEl.style.opacity = settings.patternOpacity;
+            }
         }
-
-        // 2. Находим все объекты и делим их на параллакс и обычные
+        
+        // 2. Находим все объекты и делим их на параллакс и просто анимированные
         const objectPlaceholders = document.querySelectorAll('.background-object-placeholder');
         const parallaxObjects = [];
 
@@ -49,18 +64,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Проверяем, это параллакс-объект или просто анимированный
             if (data.parallaxTargetId) {
-                const targetSection = document.getElementById(data.parallaxTargetId);
-                if (targetSection) {
-                    parallaxObjects.push({
-                        element: objDiv,
-                        speed: parseFloat(data.parallaxSpeed) || 0,
-                        target: targetSection
-                    });
-                }
+                objDiv.style.position = 'absolute'; // Параллакс-объекты имеют абсолютное позиционирование
+                parallaxObjects.push({
+                    element: objDiv,
+                    speed: parseFloat(data.parallaxSpeed) || 0,
+                    initialTop: parseFloat(data.top) // предполагаем, что это проценты
+                });
             } else {
+                objDiv.style.position = 'fixed'; // Обычные объекты остаются на месте
                 const animDuration = parseInt(data.animDuration, 10);
                 if (animDuration > 0) {
-                    objDiv.style.animation = `floatAnimation ${animDuration}s ease-in-out ${data.animDelay}s infinite`;
+                    objDiv.style.animation = `floatAnimation ${animDuration}s ease-in-out ${data.animDelay || 0}s infinite`;
                 }
             }
 
@@ -68,17 +82,17 @@ document.addEventListener('DOMContentLoaded', function() {
             placeholder.remove();
         });
 
-        // 3. Запускаем обработчик скролла для параллакса, если есть такие объекты
+        // 3. Запускаем обработчик скролла для параллакса
         if (parallaxObjects.length > 0) {
             function handleParallax() {
                 const scrollY = window.scrollY;
                 parallaxObjects.forEach(obj => {
-                    const translateY = -scrollY * obj.speed;
-                    obj.element.style.transform = `translate(-50%, -50%) translateY(${translateY}px)`;
+                    const translateY = obj.initialTop + (-scrollY * obj.speed / 10); // /10 для более мягкого эффекта
+                    obj.element.style.transform = `translate(-50%, ${translateY}%)`;
                 });
             }
             window.addEventListener('scroll', handleParallax, { passive: true });
-            handleParallax(); // Вызываем один раз для начальной позиции
+            handleParallax(); 
         }
     }
 
