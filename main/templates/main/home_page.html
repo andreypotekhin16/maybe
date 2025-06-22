@@ -175,10 +175,8 @@
                 
                 {% if services %}
                 <div class="booking-carousel-wrapper">
-                    <!-- Обертка для Swiper -->
                     <div class="swiper booking-swiper">
                         <div class="swiper-wrapper">
-                            <!-- Слайды Swiper -->
                             {% for service_item in services %}
                             <div class="swiper-slide booking-carousel-item">
                                 <a href="{{ service_item.vk_link|default:'#' }}" target="_blank" class="booking-carousel-link">
@@ -188,19 +186,26 @@
                                     <div class="booking-carousel-art-placeholder">Арт</div>
                                     {% endif %}
                                     <div class="booking-carousel-info">
-                                        <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
-                                        {% if service_item.short_description %}
-                                        <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
+                                        <!-- Блок с обычным текстом -->
+                                        <div class="info-default">
+                                            <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
+                                            {% if service_item.short_description %}
+                                            <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <!-- Блок с текстом при наведении (если он есть) -->
+                                        {% if service_item.hover_text %}
+                                        <div class="info-hover">
+                                            <p>{{ service_item.hover_text|linebreaksbr }}</p>
+                                        </div>
                                         {% endif %}
                                     </div>
                                 </a>
                             </div>
                             {% endfor %}
                         </div>
-                        <!-- Пагинация (точки) -->
                         <div class="swiper-pagination"></div>
                     </div>
-                    <!-- ИЗМЕНЕНИЕ: Невидимые кнопки для навигации -->
                     <div class="booking-carousel-nav-prev"></div>
                     <div class="booking-carousel-nav-next"></div>
                 </div>

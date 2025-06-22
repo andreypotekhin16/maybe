@@ -122,6 +122,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     nextEl: '.booking-carousel-nav-next',
                     prevEl: '.booking-carousel-nav-prev',
                 },
+                breakpoints: {
+                    320: {
+                        slidesPerView: 1,
+                        coverflowEffect: {
+                            stretch: 0,
+                            depth: 200,
+                            modifier: 1,
+                            scale: 0.85,
+                        },
+                    },
+                    768: {
+                        slidesPerView: 3,
+                         coverflowEffect: {
+                            rotate: 0,
+                            stretch: -150, 
+                            depth: 100, 
+                            modifier: 1,
+                            scale: 0.7, 
+                        },
+                    }
+                }
             });
         }
     }

@@ -6,6 +6,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Service(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название игры/услуги (для Записи на игру)")
     short_description = models.CharField(max_length=255, blank=True, null=True, verbose_name="Краткое описание/даты (для карусели)")
+    # НОВОЕ ПОЛЕ
+    hover_text = models.TextField(verbose_name="Текст при наведении (в карусели)", blank=True, null=True, help_text="Этот текст появится при наведении на центральный слайд. Если пусто, останется краткое описание.")
+    
     detailed_description = models.TextField(verbose_name="Подробное описание (Когда, Жанры, Цена и т.д.)", default="Подробное описание скоро появится.")
     image = models.FileField(upload_to='service_arts/', verbose_name="Арт для игры (для карусели, SVG/PNG)", blank=True, null=True) 
     vk_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на VK для записи")

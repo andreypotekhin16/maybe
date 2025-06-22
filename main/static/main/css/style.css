@@ -97,7 +97,6 @@ ul { list-style: none; }
     transition: padding var(--header-transition-duration) ease-in-out, background-color var(--header-transition-duration) ease-in-out;
 }
 
-/* ИСПРАВЛЕНИЕ: Новый класс для управления фоном шапки */
 #site-header.header-active {
     background-color: var(--color-black-bg);
 }
@@ -141,7 +140,6 @@ ul { list-style: none; }
     transition: opacity var(--header-transition-duration) ease;
 }
 
-/* ИСПРАВЛЕНИЕ: Этот класс теперь отвечает ТОЛЬКО за размер */
 #site-header.header-collapsed {
     padding: var(--header-padding-normal) 0;
 }
@@ -160,7 +158,10 @@ ul { list-style: none; }
 
 /* --- Секция "О нас" (со слоганом) --- */
 .section-about-us {
-    min-height: 80vh; padding-top: 6rem; padding-bottom: 5rem;
+    min-height: 80vh; 
+    /* ИЗМЕНЕНИЕ: Увеличил отступ сверху с 6rem до 9rem */
+    padding-top: 9rem; 
+    padding-bottom: 5rem;
     display: flex;
     flex-direction: column; 
     justify-content: center; 
@@ -259,7 +260,6 @@ main section {
     flex-shrink: 0; 
     width: 110px;
     height: 110px;
-    border: 2px solid var(--color-green-accent);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -287,6 +287,7 @@ main section {
 }
 
 /* --- Секция "Запись на игру" (Карусель) --- */
+
 .booking-carousel-wrapper {
     position: relative;
     padding-bottom: 50px; 
@@ -295,36 +296,34 @@ main section {
     width: 100%;
 }
 .booking-carousel-item { 
-    background-position: center;
-    background-size: cover;
     width: 220px;
     height: 220px;
-    border-radius: 50%;
-    overflow: hidden;
-    transition: transform 0.4s ease, filter 0.4s ease; 
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+.booking-carousel-link {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.swiper-slide-active .booking-carousel-item {
-    transform: scale(1.3);
-    z-index: 10;
-}
-
-.booking-carousel-item .booking-carousel-link {
-    display: block;
     width: 100%;
     height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
     position: relative;
+    color: var(--color-white);
 }
+
 .booking-carousel-art {
     width: 100%;
     height: 100%;
     object-fit: cover; 
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-.booking-carousel-item:hover .booking-carousel-art {
+.swiper-slide-active .booking-carousel-item {
+    transform: scale(1.3);
+    z-index: 10;
+}
+.swiper-slide-active .booking-carousel-link:hover .booking-carousel-art {
     transform: scale(1.1);
 }
 
@@ -332,44 +331,81 @@ main section {
     filter: brightness(0.7);
     cursor: pointer; 
 }
-.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-info {
-    opacity: 0;
-}
-
-.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-link {
-    pointer-events: none;
-}
 
 .booking-carousel-info {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s ease, background 0.4s ease, backdrop-filter 0.4s ease;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    color: var(--color-white);
-    transition: opacity 0.3s ease;
 }
+.swiper-slide-active .booking-carousel-link:hover .booking-carousel-info {
+    background: radial-gradient(circle, rgba(0,0,0,0.75) 15%, rgba(0,0,0,0) 80%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-info {
+    opacity: 0;
+}
+.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-link {
+    pointer-events: none;
+}
+
+.info-content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info-default, .info-hover {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.info-hover {
+    position: absolute;
+    opacity: 0;
+    font-size: 1.1rem;
+    padding: 0 10px;
+}
+.info-hover p {
+    margin: 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
 .booking-carousel-title {
     font-family: var(--font-fortunec);
     font-weight: bold;
     font-size: 1.3125rem;
     line-height: 1.2;
     margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 .booking-carousel-dates {
     font-family: var(--font-fortunec);
     font-size: 1.3125rem;
     margin-top: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Невидимые кнопки навигации */
+/* Логика смены текста */
+.swiper-slide-active .booking-carousel-link:hover .info-default {
+    opacity: 0;
+}
+.swiper-slide-active .booking-carousel-link:hover .info-hover {
+    opacity: 1;
+}
+
+/* Навигация и пагинация */
 .booking-carousel-nav-prev,
 .booking-carousel-nav-next {
     position: absolute;
@@ -379,22 +415,8 @@ main section {
     z-index: 20; 
     cursor: pointer;
 }
-.booking-carousel-nav-prev {
-    left: 0;
-}
-.booking-carousel-nav-next {
-    right: 0;
-}
-
-.booking-carousel-item.is-hovered {
-    transform: scale(0.85); 
-    filter: brightness(1);
-}
-
-.swiper-slide-active.is-dimmed .booking-carousel-item {
-    transform: scale(1); 
-    filter: brightness(0.7);
-}
+.booking-carousel-nav-prev { left: 0; }
+.booking-carousel-nav-next { right: 0; }
 
 .booking-swiper .swiper-pagination {
     bottom: 0px !important; 
@@ -448,7 +470,6 @@ main section {
     flex-shrink: 0;
     width: 100px;
     height: 100px;
-    border: 2px solid var(--color-green-accent);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -527,7 +548,6 @@ main section {
     display: flex; 
     justify-content: center; 
     align-items: center;
-    border: 2px solid var(--color-green-accent);
     margin-bottom: 0;
 }
 
@@ -582,7 +602,6 @@ main section {
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 1.5rem auto;
-    border: 3px solid var(--color-green-accent);
 }
 
 .product-image-wrapper img {
@@ -661,7 +680,6 @@ main section {
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 1.5rem auto;
-    border: 3px solid var(--color-green-accent);
 }
 .gallery-media-wrapper img,
 .gallery-media-wrapper video {
@@ -740,6 +758,10 @@ main section {
         flex-direction: column;
         text-align: center;
         gap: 1.5rem;
+    }
+    .booking-carousel-nav-prev,
+    .booking-carousel-nav-next {
+        display: none;
     }
 }
 

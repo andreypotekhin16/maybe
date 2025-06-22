@@ -5,8 +5,15 @@ from .models import (
     BackgroundSettings, BackgroundObject
 )
 
+# Расширенная настройка для модели Service
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'short_description', 'order', 'vk_link')
+    list_editable = ('order',)
+    # Поля для редактирования, включая новое поле hover_text
+    fields = ('name', 'short_description', 'hover_text', 'detailed_description', 'image', 'vk_link', 'order')
+
 # Базовые регистрации
-admin.site.register(Service)
 admin.site.register(OrbibolInfo)
 admin.site.register(Feature)
 admin.site.register(GameType)
@@ -35,6 +42,7 @@ class BackgroundSettingsAdmin(admin.ModelAdmin):
     inlines = [BackgroundObjectInline]
 
     def has_add_permission(self, request):
+        # Разрешаем создавать только один объект настроек
         if self.model.objects.count() >= 1:
             return False
         return super().has_add_permission(request)
