@@ -53,7 +53,7 @@
                 {% if company_profile.logo_image_light %}
                     <img src="{{ company_profile.logo_image_light.url }}" alt="Логотип Maybe">
                 {% elif company_profile.logo_image %}
-                    <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
+                    <img src="{% static 'main/images/site_assets/logo.svg' %}" alt="Логотип Maybe">
                 {% else %}
                     <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
                 {% endif %}
