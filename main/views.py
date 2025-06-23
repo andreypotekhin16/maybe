@@ -27,24 +27,15 @@ def home_page_view(request):
     }
     return render(request, 'main/home_page.html', context)
 
+# --- ИЗМЕНЕНИЕ: Упрощаем обработчики ошибок, убираем запросы к БД ---
+
 def custom_handler404(request, exception):
-    company_profile = CompanyProfile.objects.first()
-    background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
-    context = {
-        'company_profile': company_profile,
-        'background_settings': background_settings,
-    }
-    response = render(request, '404.html', context)
-    response.status_code = 404
-    return response
+    # Теперь мы не передаем никакой контекст, так как base.html
+    # уже умеет работать с пустыми переменными.
+    # Мы предполагаем, что у вас есть шаблон 404.html.
+    return render(request, "404.html", status=404)
 
 def custom_handler500(request):
-    company_profile = CompanyProfile.objects.first()
-    background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
-    context = {
-        'company_profile': company_profile,
-        'background_settings': background_settings,
-    }
-    response = render(request, '500.html', context)
-    response.status_code = 500
-    return response
+    # То же самое для 500-й ошибки.
+    # Мы предполагаем, что у вас есть шаблон 500.html.
+    return render(request, "500.html", status=500)
