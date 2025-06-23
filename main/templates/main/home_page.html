@@ -358,17 +358,19 @@
                     {% for item in gallery_items %}
                     <div class="gallery-item">
                         <h3>{{ item.title }}</h3>
-                        <div class="gallery-media-wrapper">
-                            {% if item.image %}
-                                <img src="{{ item.image.url }}" alt="{{ item.title }}">
-                            {% elif item.video %}
-                                <video autoplay loop muted playsinline>
-                                    <source src="{{ item.video.url }}" type="video/mp4">
-                                    Ваш браузер не поддерживает видео.
-                                </video>
-                            {% endif %}
-                        </div>
-                        <a href="{{ item.order_link }}" target="_blank" class="gallery-order-link">Заказать</a>
+                        <a href="{{ item.order_link }}" target="_blank" class="gallery-content-link">
+                            <div class="gallery-media-wrapper">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                                {% elif item.video %}
+                                    <video autoplay loop muted playsinline>
+                                        <source src="{{ item.video.url }}" type="video/mp4">
+                                        Ваш браузер не поддерживает видео.
+                                    </video>
+                                {% endif %}
+                            </div>
+                            <span class="gallery-order-link">Заказать</span>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
