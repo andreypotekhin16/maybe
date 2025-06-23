@@ -1,4 +1,5 @@
 # main/views.py
+
 from django.shortcuts import render
 from .models import (
     Service, CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
@@ -27,15 +28,23 @@ def home_page_view(request):
     }
     return render(request, 'main/home_page.html', context)
 
-# --- ИЗМЕНЕНИЕ: Упрощаем обработчики ошибок, убираем запросы к БД ---
+# --- ИЗМЕНЕНИЕ: Упрощаем обработчики ошибок ---
 
 def custom_handler404(request, exception):
-    # Теперь мы не передаем никакой контекст, так как base.html
-    # уже умеет работать с пустыми переменными.
-    # Мы предполагаем, что у вас есть шаблон 404.html.
-    return render(request, "404.html", status=404)
+    # Эта функция не должна делать запросов к базе данных.
+    # Мы предполагаем, что у вас есть шаблон 404.html, который может наследоваться от base.html
+    # А base.html мы уже сделали безопасным.
+    context = {
+        # Передаем пустые переменные, чтобы шаблон точно не упал
+        'company_profile': None,
+        'background_settings': None,
+    }
+    return render(request, "404.html", context, status=404)
 
 def custom_handler500(request):
     # То же самое для 500-й ошибки.
-    # Мы предполагаем, что у вас есть шаблон 500.html.
-    return render(request, "500.html", status=500)
+    context = {
+        'company_profile': None,
+        'background_settings': None,
+    }
+    return render(request, "500.html", context, status=500)
