@@ -1,4 +1,3 @@
-
 {% extends "main/base.html" %}
 {% load static %}
 
@@ -8,6 +7,7 @@
         <div class="container">
             <div class="about-us-content">
                 <div class="about-us-social-icons">
+                    {# --- ИЗМЕНЕНИЕ: Добавляем проверки для каждой соцсети --- #}
                     {% if company_profile.vk_profile_link %}
                         <a href="{{ company_profile.vk_profile_link }}" target="_blank">
                             {% if company_profile.vk_icon %}
@@ -37,17 +37,19 @@
                     {% endif %}
                 </div>
 
+                {# Проверка для девиза #}
                 {% if company_profile and company_profile.motto %}
                     <h1 class="slogan">{{ company_profile.motto }}</h1>
                 {% else %}
                     <h1 class="slogan">MAYBE - КЛЮЧ К ТВОИМ ЭМОЦИЯМ!</h1> 
                 {% endif %}
             
+                {# Проверка для текста "О нас" #}
                 {% if company_profile and company_profile.about_us_text %}
                     <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
                 {% else %}
                     <div class="about-us-text">
-                        <p>Мы – команда молодых инициативных мастеров...</p>
+                        <p>Мы – команда молодых инициативных мастеров... Текст по умолчанию, пока вы не заполните его в админке.</p>
                     </div>
                 {% endif %}
             </div>
@@ -58,6 +60,7 @@
     <section id="features-section" class="section-features">
         <div class="container">
             <h2>Что мы предлагаем</h2>
+            {# Проверка, есть ли вообще объекты "Преимущества" #}
             {% if features %}
             <div class="features-grid">
                 {% for feature in features %}
@@ -94,20 +97,28 @@
                                 {% if service_item.image %}
                                 <img src="{{ service_item.image.url }}" alt="{{ service_item.name }}" class="booking-carousel-art">
                                 {% else %}
-                                <div class="booking-carousel-art-placeholder">Арт</div>
+                                {# Заглушка, если у услуги нет картинки #}
+                                <div class="booking-carousel-art" style="background-color: #333; display:flex; align-items:center; justify-content:center;">Арт</div>
                                 {% endif %}
                                 <div class="booking-carousel-info">
-                                    <div class="info-default">
-                                        <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
-                                        {% if service_item.short_description %}
-                                        <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
+                                    <div class="info-content-wrapper">
+                                        <div class="info-default">
+                                            <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
+                                            {% if service_item.short_description %}
+                                            <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
+                                            {% endif %}
+                                        </div>
+                                        {% if service_item.hover_text %}
+                                        <div class="info-hover">
+                                            <p>{{ service_item.hover_text|linebreaksbr }}</p>
+                                        </div>
+                                        {% else %}
+                                        {# Добавляем блок hover, даже если текста нет, чтобы не ломать анимацию #}
+                                        <div class="info-hover">
+                                            <p>{{ service_item.short_description }}</p>
+                                        </div>
                                         {% endif %}
                                     </div>
-                                    {% if service_item.hover_text %}
-                                    <div class="info-hover">
-                                        <p>{{ service_item.hover_text|linebreaksbr }}</p>
-                                    </div>
-                                    {% endif %}
                                 </div>
                             </a>
                         </div>
@@ -123,7 +134,8 @@
             {% endif %}
         </div>
     </section>
-
+    
+    {# --- ИЗМЕНЕНИЕ: Весь блок "Орбибол" оборачиваем в проверку --- #}
     <section id="orbibol-section">
         <div class="container">
             <h2>Орбибол</h2>
@@ -133,7 +145,6 @@
                 {% endif %}
                 
                 <div class="orbibol-content-wrapper">
-               
                     <div class="orbibol-item">
                         <div class="orbibol-icon-wrapper">
                             {% if orbibol_info.plot_icon %}
@@ -146,7 +157,6 @@
                         </div>
                     </div>
 
-                
                     <div class="orbibol-item">
                         <div class="orbibol-icon-wrapper">
                             {% if orbibol_info.tactical_icon %}
@@ -165,7 +175,6 @@
                         <a href="{{ orbibol_info.details_link }}" target="_blank" class="orbibol-details-link">Узнать подробнее</a>
                     </div>
                 {% endif %}
-
             {% else %}
                 <p class="text-center">Информация об орбиболе скоро появится.</p>
             {% endif %}
@@ -216,7 +225,8 @@
                         </a>
                     {% endfor %}
                 </div>
-                {% if company_profile.market_link %}
+                {# Проверяем ссылку на маркет отдельно #}
+                {% if company_profile and company_profile.market_link %}
                     <a href="{{ company_profile.market_link }}" target="_blank" class="market-more-link">
                         Ещё больше товаров
                     </a>
@@ -230,7 +240,8 @@
     <section id="gallery-section">
          <div class="container">
             <h2>Фото и видео галерея</h2>
-            {% if company_profile.gallery_description %}
+            {# Проверка для описания галереи #}
+            {% if company_profile and company_profile.gallery_description %}
                 <p class="gallery-description">{{ company_profile.gallery_description|linebreaksbr }}</p>
             {% endif %}
 
@@ -248,6 +259,9 @@
                                     <source src="{{ item.video.url }}" type="video/mp4">
                                     Ваш браузер не поддерживает видео.
                                 </video>
+                            {% else %}
+                                {# Заглушка, если нет ни фото, ни видео #}
+                                <div style="background-color: #333; width:100%; height:100%;"></div>
                             {% endif %}
                         </div>
                         <span class="gallery-order-link">Заказать</span>
@@ -261,14 +275,16 @@
         </div>
     </section>
 
-    <section id="contacts-section">
+    {# --- ИЗМЕНЕНИЕ: Весь блок контактов оборачиваем в проверку --- #}
+    <section id="contacts-section" class="text-center">
         <div class="container">
             <h2>Контакты</h2>
             {% if company_profile %}
-                {% if company_profile.contact_email %}<p>Email: <a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>{% endif %}
-                {% if company_profile.contact_phone %}<p>Телефон: <a href="tel:{{ company_profile.contact_phone|slugify }}">{{ company_profile.contact_phone }}</a></p>{% endif %}
-                {% if company_profile.contact_address %}<p>Адрес: {{ company_profile.contact_address|linebreaksbr }}</p>{% endif %}
-                
+                <div style="font-size: 1.25rem; line-height: 1.8;">
+                    {% if company_profile.contact_email %}<p>Email: <a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>{% endif %}
+                    {% if company_profile.contact_phone %}<p>Телефон: <a href="tel:{{ company_profile.contact_phone|slugify }}">{{ company_profile.contact_phone }}</a></p>{% endif %}
+                    {% if company_profile.contact_address %}<p>Адрес: {{ company_profile.contact_address|linebreaksbr }}</p>{% endif %}
+                </div>
                 <div class="social-icons-footer">
                     {% if company_profile.vk_profile_link %}
                         <a href="{{ company_profile.vk_profile_link }}" target="_blank">

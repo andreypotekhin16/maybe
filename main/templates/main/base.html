@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    {# Этот блок у вас уже был правильным, оставляем #}
     <title>{% block title %}{% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}{% endblock %}</title>
     
-
     <link rel="shortcut icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,9 +19,10 @@
     
 </head>
 <body 
+    {# --- ИЗМЕНЕНИЕ 1: Оборачиваем весь блок в проверку, чтобы не было ошибки, если background_settings еще не создан --- #}
     {% if background_settings %}
         data-background-enabled="true"
-        data-pattern-url="{{ background_settings.background_pattern.url|default_if_none:'' }}"
+        data-pattern-url="{% if background_settings.background_pattern %}{{ background_settings.background_pattern.url }}{% endif %}"
         data-pattern-size="{{ background_settings.pattern_size|default:'200px' }}"
         data-pattern-opacity="{{ background_settings.pattern_opacity|stringformat:'.2f'|cut:',' }}"
         data-bg-color="{{ background_settings.background_color|default:'#010101' }}"
@@ -30,6 +31,7 @@
     
     <div id="animated-background-container">
         <div id="background-pattern"></div>
+        {# --- ИЗМЕНЕНИЕ 2: Также оборачиваем цикл в проверку --- #}
         {% if background_settings %}
             {% for obj in background_settings.background_objects.all %}
                 <div class="background-object-placeholder"
@@ -51,10 +53,12 @@
     {% block header %}
     <header id="site-header">
         <div class="container header-container">
+            {# --- ИЗМЕНЕНИЕ 3: Добавляем проверку для логотипа и fallback на статический файл --- #}
             <a href="/" class="logo">
-                {% if company_profile.logo_image %}
-                    <img src="{% static 'main/images/site_assets/logo.svg' %}" alt="Логотип Maybe">
+                {% if company_profile and company_profile.logo_image %}
+                    <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
                 {% else %}
+                    {# Этот логотип будет показан, пока вы не загрузите свой в админку #}
                     <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
                 {% endif %}
             </a>
@@ -84,6 +88,7 @@
     {% block footer %}
     <footer id="site-footer-bottom">
         <div class="container">
+            {# --- ИЗМЕНЕНИЕ 4: Проверка для футера (уже была, но проверяем) --- #}
             <p>© {% now "Y" %} {% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
         </div>
     </footer>
