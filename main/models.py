@@ -6,7 +6,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Service(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название игры/услуги (для Записи на игру)")
     short_description = models.CharField(max_length=255, blank=True, null=True, verbose_name="Краткое описание/даты (для карусели)")
-    # НОВОЕ ПОЛЕ
     hover_text = models.TextField(verbose_name="Текст при наведении (в карусели)", blank=True, null=True, help_text="Этот текст появится при наведении на центральный слайд. Если пусто, останется краткое описание.")
     
     detailed_description = models.TextField(verbose_name="Подробное описание (Когда, Жанры, Цена и т.д.)", default="Подробное описание скоро появится.")
@@ -27,6 +26,13 @@ class Service(models.Model):
 class CompanyProfile(models.Model):
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")
     logo_image = models.FileField(upload_to='site_assets/', verbose_name="Логотип сайта (SVG/PNG)", blank=True, null=True)
+    # НОВОЕ ПОЛЕ ДЛЯ СВЕТЛОГО ЛОГО
+    logo_image_light = models.FileField(
+        upload_to='site_assets/',
+        verbose_name="Логотип (светлый)",
+        blank=True, null=True,
+        help_text="Светлая версия логотипа для темных фонов (SVG/PNG)"
+    )
     motto = models.CharField(max_length=255, blank=True, verbose_name="Девиз компании")
     about_us_text = models.TextField(blank=True, verbose_name="Текст 'О нас'")
     gallery_description = models.TextField(verbose_name='Описание для секции "Фото и видео галерея"', blank=True, null=True)

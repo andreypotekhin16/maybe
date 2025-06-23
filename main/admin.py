@@ -22,7 +22,21 @@ admin.site.register(GalleryItem)
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
-    pass
+    fieldsets = (
+        ('Основные настройки', {
+            'fields': ('site_name', 'logo_image', 'logo_image_light', 'motto', 'about_us_text')
+        }),
+        ('Ссылки на страницы', {
+            'fields': ('market_link', 'gallery_description')
+        }),
+        ('Контакты и Соцсети', {
+            'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link')
+        }),
+        ('Иконки', {
+            'classes': ('collapse',),
+            'fields': ('vk_icon', 'youtube_icon', 'telegram_icon', 'nav_toggle_icon')
+        }),
+    )
 
 # Расширенная настройка для управления фоном
 class BackgroundObjectInline(admin.TabularInline):

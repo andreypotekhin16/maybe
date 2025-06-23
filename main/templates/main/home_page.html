@@ -1,446 +1,307 @@
+
+{% extends "main/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>{% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    
-</head>
-<body 
-    {% if background_settings %}
-        data-background-enabled="true"
-        data-pattern-url="{{ background_settings.background_pattern.url|default_if_none:'' }}"
-        data-pattern-size="{{ background_settings.pattern_size|default:'200px' }}"
-        data-pattern-opacity="{{ background_settings.pattern_opacity|stringformat:'.2f'|cut:',' }}"
-        data-bg-color="{{ background_settings.background_color|default:'#010101' }}"
-    {% endif %}
->
-    
-    <div id="animated-background-container">
-        <!-- Этот div будет для статичного паттерна -->
-        <div id="background-pattern"></div>
-        
-        <!-- Анимированные объекты будут создаваться здесь через JS -->
-        {% if background_settings %}
-            {% for obj in background_settings.background_objects.all %}
-                <div class="background-object-placeholder"
-                    data-image-url="{{ obj.image.url }}"
-                    data-width="{{ obj.width }}"
-                    data-top="{{ obj.initial_top }}"
-                    data-left="{{ obj.initial_left }}"
-                    data-z-index="{{ obj.z_index }}"
-                    data-opacity="{{ obj.opacity|stringformat:'.2f'|cut:',' }}"
-                    data-anim-duration="{{ obj.animation_duration }}"
-                    data-anim-delay="{{ obj.animation_delay }}"
-                    data-parallax-target-id="{{ obj.parallax_target_id|default:'' }}"
-                    data-parallax-speed="{{ obj.parallax_speed|stringformat:'.2f'|cut:',' }}"
-                ></div>
-            {% endfor %}
-        {% endif %}
-    </div>
 
+{% block content %}
 
-    <header id="site-header">
-        <div class="container header-container">
-            <a href="/" class="logo">
-                {% if company_profile.logo_image %}
-                    <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
-                {% else %}
-                    <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
-                {% endif %}
-            </a>
-
-            <div class="header-center-text">May be</div>
-
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#about-us-section">О нас</a></li>
-                    <li><a href="#features-section">Что мы предлагаем</a></li>
-                    <li><a href="#booking-section">Запись на игру</a></li>
-                    <li><a href="#orbibol-section">Орбибол</a></li>
-                    <li><a href="#games-section">Игры</a></li>
-                    <li><a href="#market-section">Маркет</a></li>
-                    <li><a href="#gallery-section">Фото и видео галерея</a></li>
-                    <li><a href="#contacts-section">Контакты</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-
-
-
-
-
-    <main id="main-content">
-
-        <section id="about-us-section" class="section-about-us">
-            <div class="container">
-                <div class="about-us-content">
-                    <div class="about-us-social-icons">
-                        {% if company_profile.vk_profile_link %}
-                            <a href="{{ company_profile.vk_profile_link }}" target="_blank">
-                                {% if company_profile.vk_icon %}
-                                    <img src="{{ company_profile.vk_icon.url }}" alt="VK">
-                                {% else %}
-                                    <img src="{% static 'main/images/icon_vk.svg' %}" alt="VK">
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                        {% if company_profile.youtube_profile_link %}
-                            <a href="{{ company_profile.youtube_profile_link }}" target="_blank">
-                                {% if company_profile.youtube_icon %}
-                                    <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
-                                {% else %}
-                                    <img src="{% static 'main/images/icon_youtube.svg' %}" alt="YouTube">
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                        {% if company_profile.telegram_profile_link %}
-                            <a href="{{ company_profile.telegram_profile_link }}" target="_blank">
-                                {% if company_profile.telegram_icon %}
-                                    <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
-                                {% else %}
-                                    <img src="{% static 'main/images/icon_telegram.svg' %}" alt="Telegram">
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                    </div>
-
-                    {% if company_profile and company_profile.motto %}
-                        <h1 class="slogan">{{ company_profile.motto }}</h1>
-                    {% else %}
-                        <h1 class="slogan">MAYBE - КЛЮЧ К ТВОИМ ЭМОЦИЯМ!</h1> 
-                    {% endif %}
-                
-                    {% if company_profile and company_profile.about_us_text %}
-                        <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
-                    {% else %}
-                        <div class="about-us-text">
-                            <p>Мы – команда молодых инициативных мастеров...</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </section>
-
-
-
-
-        <!-- Секция "Что мы предлагаем" -->
-        <section id="features-section" class="section-features">
-            <div class="container">
-                <h2>Что мы предлагаем</h2>
-                {% if features %}
-                <div class="features-grid">
-                    {% for feature in features %}
-                    <div class="feature-item">
-                        <div class="feature-icon-wrapper">
-                            {% if feature.icon %}
-                                <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
+    <section id="about-us-section" class="section-about-us">
+        <div class="container">
+            <div class="about-us-content">
+                <div class="about-us-social-icons">
+                    {% if company_profile.vk_profile_link %}
+                        <a href="{{ company_profile.vk_profile_link }}" target="_blank">
+                            {% if company_profile.vk_icon %}
+                                <img src="{{ company_profile.vk_icon.url }}" alt="VK">
+                            {% else %}
+                                <img src="{% static 'main/images/icon_vk.svg' %}" alt="VK">
                             {% endif %}
-                        </div>
-                        <div class="feature-text-content">
-                            <h3>{{ feature.title }}</h3>
-                            <p>{{ feature.description|linebreaksbr }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
+                        </a>
+                    {% endif %}
+                    {% if company_profile.youtube_profile_link %}
+                        <a href="{{ company_profile.youtube_profile_link }}" target="_blank">
+                            {% if company_profile.youtube_icon %}
+                                <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                            {% else %}
+                                <img src="{% static 'main/images/icon_youtube.svg' %}" alt="YouTube">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                    {% if company_profile.telegram_profile_link %}
+                        <a href="{{ company_profile.telegram_profile_link }}" target="_blank">
+                            {% if company_profile.telegram_icon %}
+                                <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
+                            {% else %}
+                                <img src="{% static 'main/images/icon_telegram.svg' %}" alt="Telegram">
+                            {% endif %}
+                        </a>
+                    {% endif %}
                 </div>
+
+                {% if company_profile and company_profile.motto %}
+                    <h1 class="slogan">{{ company_profile.motto }}</h1>
                 {% else %}
-                <p class="text-center">Информация о наших предложениях скоро появится.</p>
+                    <h1 class="slogan">MAYBE - КЛЮЧ К ТВОИМ ЭМОЦИЯМ!</h1> 
+                {% endif %}
+            
+                {% if company_profile and company_profile.about_us_text %}
+                    <div class="about-us-text">{{ company_profile.about_us_text|linebreaksbr }}</div>
+                {% else %}
+                    <div class="about-us-text">
+                        <p>Мы – команда молодых инициативных мастеров...</p>
+                    </div>
                 {% endif %}
             </div>
-        </section>
+        </div>
+    </section>
 
 
+    <section id="features-section" class="section-features">
+        <div class="container">
+            <h2>Что мы предлагаем</h2>
+            {% if features %}
+            <div class="features-grid">
+                {% for feature in features %}
+                <div class="feature-item">
+                    <div class="feature-icon-wrapper">
+                        {% if feature.icon %}
+                            <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="feature-text-content">
+                        <h3>{{ feature.title }}</h3>
+                        <p>{{ feature.description|linebreaksbr }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center">Информация о наших предложениях скоро появится.</p>
+            {% endif %}
+        </div>
+    </section>
 
-
-
-
-
-               <!-- Секция "Запись на игру" -->
-        <section id="booking-section" class="section-booking">
-            <div class="container">
-                <h2>Запись на игру</h2>
-                
-                {% if services %}
-                <div class="booking-carousel-wrapper">
-                    <div class="swiper booking-swiper">
-                        <div class="swiper-wrapper">
-                            {% for service_item in services %}
-                            <div class="swiper-slide booking-carousel-item">
-                                <a href="{{ service_item.vk_link|default:'#' }}" target="_blank" class="booking-carousel-link">
-                                    {% if service_item.image %}
-                                    <img src="{{ service_item.image.url }}" alt="{{ service_item.name }}" class="booking-carousel-art">
-                                    {% else %}
-                                    <div class="booking-carousel-art-placeholder">Арт</div>
-                                    {% endif %}
-                                    <div class="booking-carousel-info">
-                                        <!-- Блок с обычным текстом -->
-                                        <div class="info-default">
-                                            <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
-                                            {% if service_item.short_description %}
-                                            <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
-                                            {% endif %}
-                                        </div>
-                                        <!-- Блок с текстом при наведении (если он есть) -->
-                                        {% if service_item.hover_text %}
-                                        <div class="info-hover">
-                                            <p>{{ service_item.hover_text|linebreaksbr }}</p>
-                                        </div>
+    <section id="booking-section" class="section-booking">
+        <div class="container">
+            <h2>Запись на игру</h2>
+            
+            {% if services %}
+            <div class="booking-carousel-wrapper">
+                <div class="swiper booking-swiper">
+                    <div class="swiper-wrapper">
+                        {% for service_item in services %}
+                        <div class="swiper-slide booking-carousel-item">
+                            <a href="{{ service_item.vk_link|default:'#' }}" target="_blank" class="booking-carousel-link">
+                                {% if service_item.image %}
+                                <img src="{{ service_item.image.url }}" alt="{{ service_item.name }}" class="booking-carousel-art">
+                                {% else %}
+                                <div class="booking-carousel-art-placeholder">Арт</div>
+                                {% endif %}
+                                <div class="booking-carousel-info">
+                                    <div class="info-default">
+                                        <h3 class="booking-carousel-title">{{ service_item.name }}</h3>
+                                        {% if service_item.short_description %}
+                                        <p class="booking-carousel-dates">{{ service_item.short_description }}</p>
                                         {% endif %}
                                     </div>
-                                </a>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <div class="swiper-pagination"></div>
-                    </div>
-                    <div class="booking-carousel-nav-prev"></div>
-                    <div class="booking-carousel-nav-next"></div>
-                </div>
-                
-                {% if company_profile and company_profile.vk_profile_link %} 
-                <div class="booking-main-button-wrapper">
-                    {# <a href="..." class="btn">Записаться на игру</a> #}
-                </div>
-                {% endif %}
-
-                {% else %}
-                <p class="text-center">Игр для записи пока нет.</p>
-                {% endif %}
-            </div>
-        </section>
-
-
-
-
-
-        <!-- Раздел Орбибол -->
-        <section id="orbibol-section">
-            <div class="container">
-                <h2>Орбибол</h2>
-                {% if orbibol_info %}
-                    {% if orbibol_info.general_info %}
-                        <p class="orbibol-general-info">{{ orbibol_info.general_info|linebreaksbr }}</p>
-                    {% endif %}
-                    
-                    <div class="orbibol-content-wrapper">
-                        <!-- Сюжетный орбибол -->
-                        <div class="orbibol-item">
-                            <div class="orbibol-icon-wrapper">
-                                {% if orbibol_info.plot_icon %}
-                                    <img src="{{ orbibol_info.plot_icon.url }}" alt="Иконка Сюжетный орбибол">
-                                {% endif %}
-                            </div>
-                            <div class="orbibol-text-content">
-                                {% if orbibol_info.plot_title %}<h3>{{ orbibol_info.plot_title }}</h3>{% endif %}
-                                {% if orbibol_info.plot_description %}<p>{{ orbibol_info.plot_description|linebreaksbr }}</p>{% endif %}
-                            </div>
-                        </div>
-
-                        <!-- Тактический орбибол -->
-                        <div class="orbibol-item">
-                            <div class="orbibol-icon-wrapper">
-                                {% if orbibol_info.tactical_icon %}
-                                     <img src="{{ orbibol_info.tactical_icon.url }}" alt="Иконка Тактический орбибол">
-                                {% endif %}
-                            </div>
-                            <div class="orbibol-text-content">
-                                {% if orbibol_info.tactical_title %}<h3>{{ orbibol_info.tactical_title }}</h3>{% endif %}
-                                {% if orbibol_info.tactical_description %}<p>{{ orbibol_info.tactical_description|linebreaksbr }}</p>{% endif %}
-                            </div>
-                        </div>
-                    </div>
-
-                    {% if orbibol_info.details_link %}
-                        <div class="text-center">
-                            <a href="{{ orbibol_info.details_link }}" target="_blank" class="orbibol-details-link">Узнать подробнее</a>
-                        </div>
-                    {% endif %}
-
-                {% else %}
-                    <p class="text-center">Информация об орбиболе скоро появится.</p>
-                {% endif %}
-            </div>
-        </section>
-
-                       
-
-
-
-       
-        
-                <!-- Секция "Игры" -->
-        <section id="games-section">
-            <div class="container">
-                <h2>Игры</h2>
-                {% if game_types %}
-                <div class="games-grid"> {# Сетка для отображения типов игр #}
-                    {% for game_type in game_types %}
-                    <div class="game-type-item">
-                        <div class="game-type-icon-wrapper">
-                            {% if game_type.icon %}
-                                <img src="{{ game_type.icon.url }}" alt="{{ game_type.name }}">
-                            {% endif %}
-                        </div>
-                        <div class="game-type-text-content">
-                            <h3>{{ game_type.name }}</h3>
-                            <p>{{ game_type.description|linebreaksbr }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p class="text-center">Информация о типах игр скоро появится.</p>
-                {% endif %}
-            </div>
-        </section>
-
-
-
-
-
-
-        <section id="market-section">
-            <div class="container">
-                <h2>Маркет</h2>
-                {% if products %}
-                    <div class="market-grid">
-                        {% for product in products %}
-                            <a href="{{ product.link|default:'#' }}" target="_blank" class="product-card">
-                                <div class="product-image-wrapper">
-                                    {% if product.image %}
-                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% if service_item.hover_text %}
+                                    <div class="info-hover">
+                                        <p>{{ service_item.hover_text|linebreaksbr }}</p>
+                                    </div>
                                     {% endif %}
                                 </div>
-                                <h3 class="product-title">{{ product.name }}</h3>
-                                <div class="product-price">{{ product.price }} ₽</div>
-                                <p class="product-description">{{ product.description }}</p>
                             </a>
+                        </div>
                         {% endfor %}
                     </div>
-                    {% if company_profile.market_link %}
-                        <a href="{{ company_profile.market_link }}" target="_blank" class="market-more-link">
-                            Ещё больше товаров
-                        </a>
-                    {% endif %}
-                {% else %}
-                    <p class="text-center">Наши товары скоро появятся здесь...</p>
-                {% endif %}
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="booking-carousel-nav-prev"></div>
+                <div class="booking-carousel-nav-next"></div>
             </div>
-        </section>
+            {% else %}
+            <p class="text-center">Игр для записи пока нет.</p>
+            {% endif %}
+        </div>
+    </section>
 
+    <section id="orbibol-section">
+        <div class="container">
+            <h2>Орбибол</h2>
+            {% if orbibol_info %}
+                {% if orbibol_info.general_info %}
+                    <p class="orbibol-general-info">{{ orbibol_info.general_info|linebreaksbr }}</p>
+                {% endif %}
+                
+                <div class="orbibol-content-wrapper">
+               
+                    <div class="orbibol-item">
+                        <div class="orbibol-icon-wrapper">
+                            {% if orbibol_info.plot_icon %}
+                                <img src="{{ orbibol_info.plot_icon.url }}" alt="Иконка Сюжетный орбибол">
+                            {% endif %}
+                        </div>
+                        <div class="orbibol-text-content">
+                            {% if orbibol_info.plot_title %}<h3>{{ orbibol_info.plot_title }}</h3>{% endif %}
+                            {% if orbibol_info.plot_description %}<p>{{ orbibol_info.plot_description|linebreaksbr }}</p>{% endif %}
+                        </div>
+                    </div>
 
+                
+                    <div class="orbibol-item">
+                        <div class="orbibol-icon-wrapper">
+                            {% if orbibol_info.tactical_icon %}
+                                 <img src="{{ orbibol_info.tactical_icon.url }}" alt="Иконка Тактический орбибол">
+                            {% endif %}
+                        </div>
+                        <div class="orbibol-text-content">
+                            {% if orbibol_info.tactical_title %}<h3>{{ orbibol_info.tactical_title }}</h3>{% endif %}
+                            {% if orbibol_info.tactical_description %}<p>{{ orbibol_info.tactical_description|linebreaksbr }}</p>{% endif %}
+                        </div>
+                    </div>
+                </div>
 
-
-
-
-        <section id="gallery-section">
-             <div class="container">
-                <h2>Фото и видео галерея</h2>
-                {% if company_profile.gallery_description %}
-                    <p class="gallery-description">{{ company_profile.gallery_description|linebreaksbr }}</p>
+                {% if orbibol_info.details_link %}
+                    <div class="text-center">
+                        <a href="{{ orbibol_info.details_link }}" target="_blank" class="orbibol-details-link">Узнать подробнее</a>
+                    </div>
                 {% endif %}
 
-                {% if gallery_items %}
-                <div class="gallery-grid">
-                    {% for item in gallery_items %}
-                    <div class="gallery-item">
-                        <h3>{{ item.title }}</h3>
-                        <a href="{{ item.order_link }}" target="_blank" class="gallery-content-link">
-                            <div class="gallery-media-wrapper">
-                                {% if item.image %}
-                                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
-                                {% elif item.video %}
-                                    <video autoplay loop muted playsinline>
-                                        <source src="{{ item.video.url }}" type="video/mp4">
-                                        Ваш браузер не поддерживает видео.
-                                    </video>
+            {% else %}
+                <p class="text-center">Информация об орбиболе скоро появится.</p>
+            {% endif %}
+        </div>
+    </section>
+    
+ 
+    <section id="games-section">
+        <div class="container">
+            <h2>Игры</h2>
+            {% if game_types %}
+            <div class="games-grid">
+                {% for game_type in game_types %}
+                <div class="game-type-item">
+                    <div class="game-type-icon-wrapper">
+                        {% if game_type.icon %}
+                            <img src="{{ game_type.icon.url }}" alt="{{ game_type.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="game-type-text-content">
+                        <h3>{{ game_type.name }}</h3>
+                        <p>{{ game_type.description|linebreaksbr }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center">Информация о типах игр скоро появится.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section id="market-section">
+        <div class="container">
+            <h2>Маркет</h2>
+            {% if products %}
+                <div class="market-grid">
+                    {% for product in products %}
+                        <a href="{{ product.link|default:'#' }}" target="_blank" class="product-card">
+                            <div class="product-image-wrapper">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
                                 {% endif %}
                             </div>
-                            <span class="gallery-order-link">Заказать</span>
+                            <h3 class="product-title">{{ product.name }}</h3>
+                            <div class="product-price">{{ product.price }} ₽</div>
+                            <p class="product-description">{{ product.description }}</p>
                         </a>
-                    </div>
                     {% endfor %}
                 </div>
-                {% else %}
-                    <p class="text-center">Материалы для галереи скоро появятся.</p>
+                {% if company_profile.market_link %}
+                    <a href="{{ company_profile.market_link }}" target="_blank" class="market-more-link">
+                        Ещё больше товаров
+                    </a>
                 {% endif %}
-            </div>
-        </section>
-
-
-
-
-
-
-        <section id="contacts-section">
-            <div class="container">
-                <h2>Контакты</h2>
-                {% if company_profile %}
-                    {% if company_profile.contact_email %}<p>Email: <a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>{% endif %}
-                    {% if company_profile.contact_phone %}<p>Телефон: <a href="tel:{{ company_profile.contact_phone|slugify }}">{{ company_profile.contact_phone }}</a></p>{% endif %}
-                    {% if company_profile.contact_address %}<p>Адрес: {{ company_profile.contact_address|linebreaksbr }}</p>{% endif %}
-                    
-                    <div class="social-icons-footer">
-                        {% if company_profile.vk_profile_link %}
-                            <a href="{{ company_profile.vk_profile_link }}" target="_blank">
-                                {% if company_profile.vk_icon %}
-                                    <img src="{{ company_profile.vk_icon.url }}" alt="VK">
-                                {% else %}
-                                    <img src="{% static 'main/images/icon_vk.svg' %}" alt="VK">
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                        {% if company_profile.youtube_profile_link %}
-                            <a href="{{ company_profile.youtube_profile_link }}" target="_blank">
-                                 {% if company_profile.youtube_icon %}
-                                    <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
-                                {% else %}
-                                    <img src="{% static 'main/images/icon_youtube.svg' %}" alt="YouTube">
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                        {% if company_profile.telegram_profile_link %}
-                            <a href="{{ company_profile.telegram_profile_link }}" target="_blank">
-                                {% if company_profile.telegram_icon %}
-                                    <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
-                                {% else %}
-                                    <img src="{% static 'main/images/icon_telegram.svg' %}" alt="Telegram">
-                                {% endif %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <p>Контактная информация скоро появится.</p>
-                {% endif %}
-            </div>
-        </section>
-    </main>
-
-
-
-
-
-
-    <footer id="site-footer-bottom"> {# Изменил id чтобы не конфликтовал с шапкой, если у нее тот же id #}
-        <div class="container">
-            <p>© {% now "Y" %} {% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
+            {% else %}
+                <p class="text-center">Наши товары скоро появятся здесь...</p>
+            {% endif %}
         </div>
-    </footer>
+    </section>
 
-     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> <!-- Сначала Swiper -->
-    <script src="{% static 'main/js/main.js' %}"></script> <!-- Потом твой main.js -->
-</body>
-</html>
+    <section id="gallery-section">
+         <div class="container">
+            <h2>Фото и видео галерея</h2>
+            {% if company_profile.gallery_description %}
+                <p class="gallery-description">{{ company_profile.gallery_description|linebreaksbr }}</p>
+            {% endif %}
+
+            {% if gallery_items %}
+            <div class="gallery-grid">
+                {% for item in gallery_items %}
+                <div class="gallery-item">
+                    <h3>{{ item.title }}</h3>
+                    <a href="{{ item.order_link }}" target="_blank" class="gallery-content-link">
+                        <div class="gallery-media-wrapper">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                            {% elif item.video %}
+                                <video autoplay loop muted playsinline>
+                                    <source src="{{ item.video.url }}" type="video/mp4">
+                                    Ваш браузер не поддерживает видео.
+                                </video>
+                            {% endif %}
+                        </div>
+                        <span class="gallery-order-link">Заказать</span>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <p class="text-center">Материалы для галереи скоро появятся.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section id="contacts-section">
+        <div class="container">
+            <h2>Контакты</h2>
+            {% if company_profile %}
+                {% if company_profile.contact_email %}<p>Email: <a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>{% endif %}
+                {% if company_profile.contact_phone %}<p>Телефон: <a href="tel:{{ company_profile.contact_phone|slugify }}">{{ company_profile.contact_phone }}</a></p>{% endif %}
+                {% if company_profile.contact_address %}<p>Адрес: {{ company_profile.contact_address|linebreaksbr }}</p>{% endif %}
+                
+                <div class="social-icons-footer">
+                    {% if company_profile.vk_profile_link %}
+                        <a href="{{ company_profile.vk_profile_link }}" target="_blank">
+                            {% if company_profile.vk_icon %}
+                                <img src="{{ company_profile.vk_icon.url }}" alt="VK">
+                            {% else %}
+                                <img src="{% static 'main/images/icon_vk.svg' %}" alt="VK">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                    {% if company_profile.youtube_profile_link %}
+                        <a href="{{ company_profile.youtube_profile_link }}" target="_blank">
+                             {% if company_profile.youtube_icon %}
+                                <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                            {% else %}
+                                <img src="{% static 'main/images/icon_youtube.svg' %}" alt="YouTube">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                    {% if company_profile.telegram_profile_link %}
+                        <a href="{{ company_profile.telegram_profile_link }}" target="_blank">
+                            {% if company_profile.telegram_icon %}
+                                <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
+                            {% else %}
+                                <img src="{% static 'main/images/icon_telegram.svg' %}" alt="Telegram">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>Контактная информация скоро появится.</p>
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Ошибка сервера (500) - {{ block.super }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<section class="section-error">
+    <div class="container">
+        <div class="error-code">500</div>
+        <h1 class="error-title">Внутренняя ошибка сервера</h1>
+        <p class="error-description">
+            Что-то пошло не так на нашей стороне. Мы уже работаем над устранением проблемы. Пожалуйста, попробуйте зайти чуть позже.
+        </p>
+        <a href="{% url 'main:home_page' %}" class="btn">Вернуться на главную</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}{% endblock %}

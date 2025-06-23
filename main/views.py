@@ -13,7 +13,6 @@ def home_page_view(request):
     game_types = GameType.objects.all()
     products = Product.objects.all()
     gallery_items = GalleryItem.objects.all()
-    # ИЗМЕНЕНИЕ: используем новый related_name 'background_objects' для prefetch
     background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
                                                     
     context = {
@@ -27,3 +26,25 @@ def home_page_view(request):
         'background_settings': background_settings,
     }
     return render(request, 'main/home_page.html', context)
+
+def custom_handler404(request, exception):
+    company_profile = CompanyProfile.objects.first()
+    background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
+    context = {
+        'company_profile': company_profile,
+        'background_settings': background_settings,
+    }
+    response = render(request, '404.html', context)
+    response.status_code = 404
+    return response
+
+def custom_handler500(request):
+    company_profile = CompanyProfile.objects.first()
+    background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
+    context = {
+        'company_profile': company_profile,
+        'background_settings': background_settings,
+    }
+    response = render(request, '500.html', context)
+    response.status_code = 500
+    return response
