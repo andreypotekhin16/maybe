@@ -1,4 +1,5 @@
-
+# START OF FILE: myproject/settings.py
+# myproject/settings.py
 
 import os
 from pathlib import Path
@@ -11,11 +12,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Загружаем переменные окружения из файла .env
 load_dotenv(BASE_DIR / '.env')
 
-# <<< ВОТ ЭТУ СТРОКУ НУЖНО ДОБАВИТЬ >>>
-# Она читает секретный ключ из переменных окружения на Render
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
@@ -30,9 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
-    'cloudinary_storage', # <--- ДОБАВЛЕНО
+    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',         # <--- ДОБАВЛЕНО
+    'cloudinary',
     'main',
 ]
 
@@ -106,21 +104,20 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# <-- ВОТ ЭТУ СТРОКУ НУЖНО ДОБАВИТЬ
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = '/media/' # Эта строка остается, но теперь она управляется Cloudinary
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-STATICFILES_DIRS = [
-    # Если у вас есть общая папка static в корне проекта, её можно добавить сюда.
-    # Например: BASE_DIR / "static"
-]
+STATICFILES_DIRS = []
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# --- НОВЫЕ НАСТРОЙКИ ДЛЯ CLOUDINARY ---
+# --- НАСТРОЙКИ ДЛЯ CLOUDINARY ---
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
@@ -135,7 +132,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-# --- КОНЕЦ НАСТРОЕК ДЛЯ CLOUDINARY ---
+# --- КОНЕЦ НАСТРОЕК ---
 
 
 # LOGGING CONFIGURATION
@@ -188,3 +185,5 @@ LOGGING = {
         }
     },
 }
+
+# END OF FILE: myproject/settings.py
