@@ -103,8 +103,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# <-- ВОТ ЭТУ СТРОКУ НУЖНО ДОБАВИТЬ
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
@@ -122,6 +120,7 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'HACK_STATICFILES': True, # <--- ВОТ ЭТА СТРОКА ВСЕ РЕШИТ
 }
 
 STORAGES = {
