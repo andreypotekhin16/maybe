@@ -1,3 +1,4 @@
+
 """
 WSGI config for myproject project.
 
@@ -17,5 +18,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 
 application = get_wsgi_application()
 
+# WhiteNoise теперь обслуживает ТОЛЬКО статику
 application = WhiteNoise(application, root=settings.STATIC_ROOT)
-application.add_files(settings.MEDIA_ROOT, prefix=settings.MEDIA_URL)
+# Строка application.add_files(...) была удалена

@@ -1,4 +1,4 @@
-# myproject/settings.py
+
 
 import os
 from pathlib import Path
@@ -30,9 +30,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
+    'cloudinary_storage', # <--- ДОБАВЛЕНО
     'django.contrib.staticfiles',
+    'cloudinary',         # <--- ДОБАВЛЕНО
     'main',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -102,10 +105,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/media/' # Эта строка остается, но теперь она управляется Cloudinary
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
@@ -116,6 +118,24 @@ STATICFILES_DIRS = [
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# --- НОВЫЕ НАСТРОЙКИ ДЛЯ CLOUDINARY ---
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+# --- КОНЕЦ НАСТРОЕК ДЛЯ CLOUDINARY ---
 
 
 # LOGGING CONFIGURATION
