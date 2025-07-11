@@ -108,8 +108,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
 STATICFILES_DIRS = [
-    MEDIA_ROOT,
+    # Если у вас есть общая папка static в корне проекта, её можно добавить сюда.
+    # Например: BASE_DIR / "static"
 ]
 
 # Default primary key field type
