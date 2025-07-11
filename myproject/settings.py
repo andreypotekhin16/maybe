@@ -78,48 +78,32 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# ==============================================================================
-#           НАСТРОЙКИ СТАТИКИ И МЕДИАФАЙЛОВ (САМОЕ ВАЖНОЕ ЗДЕСЬ)
-# ==============================================================================
-
-# 1. Базовые пути для статики и медиа
+# --- НАСТРОЙКИ СТАТИКИ И МЕДИАФАЙЛОВ ---
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = []
 
-# 2. Настройки хранилищ (STORAGES)
 STORAGES = {
-    # Хранилище для медиафайлов (картинки, которые вы загружаете в админке)
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-    # Хранилище для статических файлов (CSS, JS)
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-# 3. Настройки для подключения к Cloudinary
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-    # Этот хак нужен для исправления ошибки при collectstatic
-    'HACK_STATICFILES': True,
 }
 
-# 4. Эта переменная нужна для обратной совместимости, чтобы старые библиотеки
-#    не ругались. Она дублирует настройку из STORAGES.
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# ==============================================================================
-#                       КОНЕЦ ВАЖНЫХ НАСТРОЕК
-# ==============================================================================
-
-
 # --- ЛОГИРОВАНИЕ ---
+# ... (остальная часть файла без изменений)
 LOG_DIR = BASE_DIR / 'logs'
 LOG_DIR.mkdir(exist_ok=True)
 LOGGING = {
@@ -143,5 +127,4 @@ LOGGING = {
         'main': {'handlers': ['console', 'file'], 'level': 'INFO', 'propagate': True,}
     },
 }
-
 # END OF FILE: myproject/settings.py
