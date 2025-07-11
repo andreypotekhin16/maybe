@@ -6,21 +6,14 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# --- БАЗОВЫЕ НАСТРОЙКИ ---
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Загружаем переменные окружения из файла .env
 load_dotenv(BASE_DIR / '.env')
-
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
-
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-
-# Application definition
-
+# --- ПРИЛОЖЕНИЯ ---
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,7 +27,7 @@ INSTALLED_APPS = [
     'main',
 ]
 
-
+# --- MIDDLEWARE, URLS, TEMPLATES, WSGI ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -45,9 +38,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'myproject.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -63,125 +54,93 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
+# --- БАЗА ДАННЫХ ---
+DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}}
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     DATABASES['default'] = dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        conn_health_checks=True,
+        default=DATABASE_URL, conn_max_age=600, conn_health_checks=True
     )
 
-
-# Password validation
+# --- ВАЛИДАЦИЯ ПАРОЛЕЙ И ИНТЕРНАЦИОНАЛИЗАЦИЯ ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-
-
-# Internationalization
 LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
-STATICFILES_DIRS = []
-
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# --- НАСТРОЙКИ ДЛЯ CLOUDINARY ---
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-    'HACK_STATICFILES': True, # <--- ВОТ ЭТА СТРОКА ВСЕ РЕШИТ
-}
+# ==============================================================================
+#           НАСТРОЙКИ СТАТИКИ И МЕДИАФАЙЛОВ (САМОЕ ВАЖНОЕ ЗДЕСЬ)
+# ==============================================================================
 
+# 1. Базовые пути для статики и медиа
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+STATICFILES_DIRS = []
+
+# 2. Настройки хранилищ (STORAGES)
 STORAGES = {
+    # Хранилище для медиафайлов (картинки, которые вы загружаете в админке)
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
+    # Хранилище для статических файлов (CSS, JS)
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-# --- КОНЕЦ НАСТРОЕК ---
+
+# 3. Настройки для подключения к Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    # Этот хак нужен для исправления ошибки при collectstatic
+    'HACK_STATICFILES': True,
+}
+
+# 4. Эта переменная нужна для обратной совместимости, чтобы старые библиотеки
+#    не ругались. Она дублирует настройку из STORAGES.
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# ==============================================================================
+#                       КОНЕЦ ВАЖНЫХ НАСТРОЕК
+# ==============================================================================
 
 
-# LOGGING CONFIGURATION
+# --- ЛОГИРОВАНИЕ ---
 LOG_DIR = BASE_DIR / 'logs'
 LOG_DIR.mkdir(exist_ok=True)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
+        'verbose': {'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}', 'style': '{',},
+        'simple': {'format': '{levelname} {message}', 'style': '{',},
     },
     'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
+        'console': {'level': 'INFO', 'class': 'logging.StreamHandler', 'formatter': 'simple',},
         'file': {
-            'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': LOG_DIR / 'django_errors.log',
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 5,
-            'formatter': 'verbose',
+            'level': 'ERROR', 'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOG_DIR / 'django_errors.log', 'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 5, 'formatter': 'verbose',
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'main': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-            'propagate': True,
-        }
+        'django': {'handlers': ['console', 'file'], 'level': 'INFO', 'propagate': True,},
+        'django.request': {'handlers': ['file'], 'level': 'ERROR', 'propagate': False,},
+        'main': {'handlers': ['console', 'file'], 'level': 'INFO', 'propagate': True,}
     },
 }
 
