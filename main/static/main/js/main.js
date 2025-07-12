@@ -99,11 +99,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
-                slidesPerView: 'auto',
+                // ИЗМЕНЕНИЕ: 'auto' позволяет CSS контролировать размер слайда
+                slidesPerView: 'auto', 
                 loop: true,
                 slideToClickedSlide: true,
                 coverflowEffect: {
                     rotate: 0,
+                    // ИЗМЕНЕНИЕ: Положительное значение создает правильное расстояние
                     stretch: 100, 
                     depth: 150, 
                     modifier: 1,
@@ -118,6 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     nextEl: '.booking-carousel-nav-next',
                     prevEl: '.booking-carousel-nav-prev',
                 },
+                // Брейкпоинты можно оставить, они не помешают, 
+                // но основные изменения выше исправят десктопную версию.
                 breakpoints: {
                     320: {
                         slidesPerView: 1,
@@ -126,9 +130,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                     },
                     768: {
-                        slidesPerView: 'auto',
+                        slidesPerView: 'auto', // Убедимся, что здесь тоже auto
                          coverflowEffect: {
-                            stretch: 100, 
+                            stretch: 100, // И здесь тоже
                         },
                     }
                 }

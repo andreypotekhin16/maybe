@@ -315,15 +315,23 @@ main section {
     width: 100%;
 }
 
+/* ИЗМЕНЕНИЕ: Устанавливаем базовый размер слайда */
 .booking-swiper .swiper-slide {
-    width: 220px;
+    width: 440px; 
+    /* Добавляем высоту для консистентности, если она нужна */
+    height: 440px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* ИЗМЕНЕНИЕ: Устанавливаем размер для нашего элемента внутри слайда */
 .booking-carousel-item { 
-    width: 220px;
-    height: 220px;
+    width: 440px;
+    height: 440px;
     transition: transform 0.4s ease, filter 0.4s ease;
 }
+
 .booking-carousel-link {
     display: flex;
     justify-content: center;
@@ -334,6 +342,7 @@ main section {
     overflow: hidden;
     position: relative;
     color: var(--color-white);
+    background: #333; /* Фон на случай если картинка не загрузится */
 }
 
 .booking-carousel-art {
@@ -343,8 +352,9 @@ main section {
     transition: transform 0.4s ease, filter 0.4s ease;
 }
 
+/* ИЗМЕНЕНИЕ: Корректируем масштаб для нового размера */
 .swiper-slide-active .booking-carousel-item {
-    transform: scale(1.6);
+    transform: scale(1.2); /* Было 1.6, для большого размера 1.2 лучше */
     z-index: 10;
 }
 .swiper-slide-active .booking-carousel-link:hover .booking-carousel-art {
@@ -457,7 +467,6 @@ main section {
 .swiper-no-transition .swiper-wrapper {
     transition-duration: 0s !important;
 }
-
 
 
 #orbibol-section .container {
