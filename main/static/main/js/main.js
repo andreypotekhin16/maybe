@@ -105,16 +105,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 loopAdditionalSlides: slides.length,
                 spaceBetween: 0,
                 
-                pagination: false, // Выключаем стандартную пагинацию
+                // Стандартную пагинацию ВЫКЛЮЧАЕМ
+                pagination: false,
 
                 navigation: {
                   nextEl: '.swiper-button-next',
                   prevEl: '.swiper-button-prev',
                 },
 
+                // Добавляем обработчик событий
                 on: {
                     slideChange: function () {
+                        // `this.realIndex` показывает реальный номер слайда (от 0 до n-1)
                         let currentIndex = this.realIndex;
+
                         customPaginationBullets.forEach((bullet, index) => {
                             if (index === currentIndex) {
                                 bullet.classList.add('custom-pagination-bullet-active');
@@ -126,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
             });
 
+            // Устанавливаем активную точку при первой загрузке
             if (customPaginationBullets.length > 0) {
                  customPaginationBullets[mySwiper.realIndex].classList.add('custom-pagination-bullet-active');
             }

@@ -650,7 +650,7 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ КАРУСЕЛИ (ТУПОЙ И ПРОСТОЙ ВАРИАНТ) === */
+/* === СТИЛИ ДЛЯ КАРУСЕЛИ (С ИСПРАВЛЕНИЯМИ) === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
@@ -749,7 +749,7 @@ main section {
 
 .custom-pagination {
     text-align: center;
-    margin-top: -30px;
+    margin-top: -20px;
     position: relative;
     z-index: 10;
 }
@@ -760,9 +760,8 @@ main section {
     height: 12px;
     border-radius: 50%;
     background: #fff;
-    opacity: 0.5;
-    margin: 0 5px;
-    cursor: pointer;
+    opacity: 0.4;
+    margin: 0 6px;
     transition: opacity 0.3s, background-color 0.3s;
 }
 
