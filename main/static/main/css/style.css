@@ -650,21 +650,17 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ НОВОЙ, ПРОСТОЙ КАРУСЕЛИ (С ИСПРАВЛЕНИЯМИ) === */
+/* === СТИЛИ ДЛЯ КАРУСЕЛИ (ТУПОЙ И ПРОСТОЙ ВАРИАНТ) === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
     overflow: hidden;
 }
 
-.swiper-container-wrapper {
-    position: relative;
-}
-
 .booking-swiper {
     width: 100%;
     height: 550px; 
-    overflow: visible; 
+    overflow: visible;
 }
 
 .booking-swiper .swiper-wrapper {
@@ -751,16 +747,11 @@ main section {
     font-size: 1.1rem;
 }
 
-.custom-pagination-wrapper {
-    text-align: center;
-    position: relative;
-    bottom: -10px; /* Сдвигаем ниже контейнера свайпера */
-    z-index: 10;
-}
-
 .custom-pagination {
-    display: inline-block;
-    padding: 5px;
+    text-align: center;
+    margin-top: -30px;
+    position: relative;
+    z-index: 10;
 }
 
 .custom-pagination-bullet {
