@@ -1,8 +1,9 @@
-
 {% extends "main/base.html" %}
 {% load static %}
 
 {% block content %}
+    
+    <!-- 1. СЕКЦИЯ "О НАС" -->
     <section id="about-us-section" class="section-about-us">
         <div class="container">
             <div class="about-us-content">
@@ -26,10 +27,15 @@
                     </div>
                     <h1 class="slogan">{{ company_profile.motto|safe }}</h1>
                     <div class="about-us-text">{{ company_profile.about_us_text|safe|linebreaks }}</div>
+                {% else %}
+                    <h1 class="slogan">Девиз не задан</h1>
+                    <p class="about-us-text">Текст 'О нас' не заполнен в админ-панели.</p>
                 {% endif %}
             </div>
         </div>
     </section>
+
+    <!-- 2. СЕКЦИЯ "ЧТО МЫ ПРЕДЛАГАЕМ" -->
     <section id="features-section" class="section-features">
         <div class="container">
             <h2>Что мы предлагаем</h2>
@@ -37,17 +43,23 @@
                 {% for feature in features %}
                     <div class="feature-item">
                         <div class="feature-icon-wrapper">
-                            {% if feature.icon %}<img src="{{ feature.icon.url }}" alt="{{ feature.title }}">{% endif %}
+                            {% if feature.icon %}
+                                <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
+                            {% endif %}
                         </div>
                         <div class="feature-text-content">
                             <h3>{{ feature.title }}</h3>
                             <p>{{ feature.description }}</p>
                         </div>
                     </div>
+                {% empty %}
+                    <p>Преимущества не добавлены в админ-панели.</p>
                 {% endfor %}
             </div>
         </div>
     </section>
+
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (КАРУСЕЛЬ) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
@@ -58,14 +70,22 @@
                             <div class="swiper-slide">
                                 <div class="booking-carousel-item">
                                     <a href="{{ service.vk_link|default:'#' }}" target="_blank" rel="noopener noreferrer" class="booking-carousel-link">
-                                        {% if service.image %}<img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-carousel-art">{% endif %}
+                                        {% if service.image %}
+                                            <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-carousel-art">
+                                        {% else %}
+                                            <div style="width:100%; height:100%; background: #333; display:flex; align-items:center; justify-content:center;">Арт</div>
+                                        {% endif %}
                                         <div class="booking-carousel-info">
                                             <div class="info-content-wrapper">
                                                 <div class="info-default">
                                                     <h3 class="booking-carousel-title">{{ service.name }}</h3>
-                                                    {% if service.short_description %}<p class="booking-carousel-dates">{{ service.short_description }}</p>{% endif %}
+                                                    {% if service.short_description %}
+                                                        <p class="booking-carousel-dates">{{ service.short_description }}</p>
+                                                    {% endif %}
                                                 </div>
-                                                <div class="info-hover"><p>{{ service.hover_text|default:service.detailed_description|linebreaksbr }}</p></div>
+                                                <div class="info-hover">
+                                                    <p>{{ service.hover_text|default:service.detailed_description|linebreaksbr }}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </a>
@@ -80,6 +100,8 @@
             </div>
         </div>
     </section>
+
+    <!-- 4. СЕКЦИЯ "ОРБИБОЛ" -->
     <section id="orbibol-section">
         <div class="container">
             <h2>Орбибол</h2>
@@ -105,10 +127,16 @@
                         </div>
                     </div>
                 </div>
-                {% if orbibol_info.details_link %}<div class="text-center"><a href="{{ orbibol_info.details_link }}" target="_blank" rel="noopener noreferrer" class="orbibol-details-link">Узнать подробнее</a></div>{% endif %}
+                {% if orbibol_info.details_link %}
+                    <div class="text-center">
+                        <a href="{{ orbibol_info.details_link }}" target="_blank" rel="noopener noreferrer" class="orbibol-details-link">Узнать подробнее</a>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </section>
+
+    <!-- 5. СЕКЦИЯ "ИГРЫ" -->
     <section id="games-section" class="section-games">
         <div class="container">
             <h2>Игры</h2>
@@ -123,10 +151,14 @@
                             <p>{{ type.description }}</p>
                         </div>
                     </div>
+                {% empty %}
+                    <p>Типы игр не добавлены.</p>
                 {% endfor %}
             </div>
         </div>
     </section>
+
+    <!-- 6. СЕКЦИЯ "МАРКЕТ" -->
     <section id="market-section">
         <div class="container">
             <h2>Маркет</h2>
@@ -140,30 +172,46 @@
                         <div class="product-price">{{ product.price }} ₽</div>
                         <p class="product-description">{{ product.description }}</p>
                     </a>
+                {% empty %}
+                     <p>Товары не добавлены.</p>
                 {% endfor %}
             </div>
-            {% if company_profile.market_link %}<a href="{{ company_profile.market_link }}" class="market-more-link" target="_blank" rel="noopener noreferrer">Еще больше товаров в нашем маркете</a>{% endif %}
+            {% if company_profile.market_link %}
+                <a href="{{ company_profile.market_link }}" class="market-more-link" target="_blank" rel="noopener noreferrer">Еще больше товаров в нашем маркете</a>
+            {% endif %}
         </div>
     </section>
+
+    <!-- 7. СЕКЦИЯ "ГАЛЕРЕЯ" -->
     <section id="gallery-section">
         <div class="container">
             <h2>Фото и видео галерея</h2>
-            {% if company_profile.gallery_description %}<p class="gallery-description">{{ company_profile.gallery_description }}</p>{% endif %}
+            {% if company_profile.gallery_description %}
+                <p class="gallery-description">{{ company_profile.gallery_description }}</p>
+            {% endif %}
             <div class="gallery-grid">
                 {% for item in gallery_items %}
                     <div class="gallery-item">
                         <h3>{{ item.title }}</h3>
                         <a href="{{ item.order_link }}" target="_blank" rel="noopener noreferrer" class="gallery-content-link">
                             <div class="gallery-media-wrapper">
-                                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}">{% elif item.video %}<video src="{{ item.video.url }}" autoplay muted loop playsinline></video>{% endif %}
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                                {% elif item.video %}
+                                    <video src="{{ item.video.url }}" autoplay muted loop playsinline></video>
+                                {% endif %}
                             </div>
                         </a>
                         <a href="{{ item.order_link }}" target="_blank" rel="noopener noreferrer" class="gallery-order-link">Заказать</a>
                     </div>
+                {% empty %}
+                    <p>Элементы галереи не добавлены.</p>
                 {% endfor %}
             </div>
         </div>
     </section>
+    
+    <!-- 8. СЕКЦИЯ "КОНТАКТЫ" -->
     <section id="contacts-section" class="section-contacts text-center">
         <div class="container">
             <h2>Контакты</h2>
@@ -171,13 +219,26 @@
                 <p><strong>Адрес:</strong><br>{{ company_profile.contact_address|linebreaksbr }}</p>
                 <p><strong>Телефон:</strong><br><a href="tel:{{ company_profile.contact_phone }}">{{ company_profile.contact_phone }}</a></p>
                 <p><strong>Email:</strong><br><a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>
+                
                 <div class="social-icons-footer">
-                     {% if company_profile.vk_profile_link and company_profile.vk_icon %}<a href="{{ company_profile.vk_profile_link }}" target="_blank" rel="noopener noreferrer"><img src="{{ company_profile.vk_icon.url }}" alt="VK"></a>{% endif %}
-                    {% if company_profile.youtube_profile_link and company_profile.youtube_icon %}<a href="{{ company_profile.youtube_profile_link }}" target="_blank" rel="noopener noreferrer"><img src="{{ company_profile.youtube_icon.url }}" alt="YouTube"></a>{% endif %}
-                    {% if company_profile.telegram_profile_link and company_profile.telegram_icon %}<a href="{{ company_profile.telegram_profile_link }}" target="_blank" rel="noopener noreferrer"><img src="{{ company_profile.telegram_icon.url }}" alt="Telegram"></a>{% endif %}
+                     {% if company_profile.vk_profile_link and company_profile.vk_icon %}
+                        <a href="{{ company_profile.vk_profile_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ company_profile.vk_icon.url }}" alt="VK">
+                        </a>
+                    {% endif %}
+                    {% if company_profile.youtube_profile_link and company_profile.youtube_icon %}
+                        <a href="{{ company_profile.youtube_profile_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                        </a>
+                    {% endif %}
+                    {% if company_profile.telegram_profile_link and company_profile.telegram_icon %}
+                        <a href="{{ company_profile.telegram_profile_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
+                        </a>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
     </section>
+
 {% endblock %}
-# END OF FILE: templates/main/home_page.html
