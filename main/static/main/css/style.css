@@ -650,10 +650,10 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ НОВОЙ, ПРОСТОЙ КАРУСЕЛИ === */
+/* === СТИЛИ ДЛЯ НОВОЙ, ПРОСТОЙ КАРУСЕЛИ (С ИСПРАВЛЕНИЯМИ) === */
 #booking-section {
-    position: relative;
     padding: 4rem 0;
+    position: relative;
 }
 
 .booking-swiper {
@@ -661,20 +661,20 @@ main section {
     height: 500px;
     padding: 2rem 0;
     /* ИСПРАВЛЕНИЕ 1: Разрешаем контенту выходить за пределы */
-    overflow: visible; 
+    overflow: visible;
 }
 
 .booking-swiper .swiper-slide {
     width: 320px;
     height: 400px;
-    opacity: 0.4; /* Неактивные слайды более тусклые */
-    transform: scale(0.85); /* Неактивные слайды чуть меньше */
+    opacity: 0.5;
+    transform: scale(0.85);
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .booking-swiper .swiper-slide-active {
     opacity: 1;
-    transform: scale(1); /* Активный слайд нормального размера */
+    transform: scale(1);
 }
 
 .booking-card {
@@ -703,12 +703,11 @@ main section {
     color: #fff;
     /* ИСПРАВЛЕНИЕ 3: Полностью скрываем оверлей */
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(100%);
     transition: all 0.4s ease;
 }
 
 .booking-card:hover .booking-card-overlay {
-    /* Показываем при наведении */
     opacity: 1;
     transform: translateY(0);
 }
@@ -725,8 +724,7 @@ main section {
 
 .booking-card-desc {
     font-size: 1rem;
-    margin-bottom: 1.5rem; /* Больше места для кнопки */
-    opacity: 0.9;
+    margin-bottom: 1.5rem;
 }
 
 .booking-card-button {
@@ -748,28 +746,26 @@ main section {
 /* ИСПРАВЛЕНИЕ 2: Явное позиционирование и стилизация стрелок */
 .booking-swiper .swiper-button-prev,
 .booking-swiper .swiper-button-next {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.1);
+    width: 44px;
+    height: 44px;
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
-    color: var(--color-pink-accent);
+    color: var(--color-white);
     transition: background-color 0.3s ease;
-    z-index: 10; /* Поверх всего */
+    z-index: 20;
 }
 
 .booking-swiper .swiper-button-prev:hover,
 .booking-swiper .swiper-button-next:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
-.booking-swiper .swiper-button-prev {
-    left: -25px; /* Выносим за пределы контейнера */
-}
-
-.booking-swiper .swiper-button-next {
-    right: -25px; /* Выносим за пределы контейнера */
+.booking-swiper .swiper-button-prev::after,
+.booking-swiper .swiper-button-next::after {
+    font-size: 1.5rem; /* Размер иконки-стрелки */
 }
 
 .booking-swiper .swiper-pagination-bullet-active {
@@ -811,7 +807,7 @@ main section {
     /* Адаптивность для стрелок */
     .booking-swiper .swiper-button-prev,
     .booking-swiper .swiper-button-next {
-        display: none; /* Проще всего скрыть на мобилках */
+        display: none;
     }
 }
 
