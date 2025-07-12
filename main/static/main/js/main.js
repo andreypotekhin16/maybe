@@ -96,22 +96,41 @@ document.addEventListener('DOMContentLoaded', function() {
         const swiperContainer = document.querySelector('.booking-swiper');
         if (swiperContainer) {
             const slides = swiperContainer.querySelectorAll('.swiper-slide');
+            const customPaginationBullets = document.querySelectorAll('.custom-pagination-bullet');
             
-            new Swiper(swiperContainer, {
+            const mySwiper = new Swiper(swiperContainer, {
                 loop: true,
                 centeredSlides: true,
                 slidesPerView: 'auto',
                 loopAdditionalSlides: slides.length,
-                spaceBetween: 0,
                 
-                // ПАГИНАЦИЯ ВЫКЛЮЧЕНА
-                pagination: false,
+                // ИЗМЕНЕНИЕ: Устанавливаем нужное расстояние
+                spaceBetween: 15,
+                
+                pagination: false, 
 
                 navigation: {
                   nextEl: '.swiper-button-next',
                   prevEl: '.swiper-button-prev',
                 },
+
+                on: {
+                    slideChange: function () {
+                        let currentIndex = this.realIndex;
+                        customPaginationBullets.forEach((bullet, index) => {
+                            if (index === currentIndex) {
+                                bullet.classList.add('custom-pagination-bullet-active');
+                            } else {
+                                bullet.classList.remove('custom-pagination-bullet-active');
+                            }
+                        });
+                    },
+                },
             });
+
+            if (customPaginationBullets.length > 0) {
+                 customPaginationBullets[mySwiper.realIndex].classList.add('custom-pagination-bullet-active');
+            }
         }
     }
 
