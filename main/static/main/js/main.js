@@ -99,13 +99,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
-                slidesPerView: 3, 
+                slidesPerView: 'auto', // ИЗМЕНЕНО: Заставляем брать размер из CSS
                 loop: true,
                 slideToClickedSlide: true,
                 coverflowEffect: {
                     rotate: 0,
-                    stretch: -150, 
-                    depth: 100, 
+                    stretch: 100,      // ИЗМЕНЕНО: Устанавливаем небольшое расстояние между слайдами
+                    depth: 150, 
                     modifier: 1,
                     scale: 0.7, 
                     slideShadows: false, 
@@ -118,24 +118,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     nextEl: '.booking-carousel-nav-next',
                     prevEl: '.booking-carousel-nav-prev',
                 },
+                // Адаптивные настройки больше не нужны в таком виде,
+                // так как 'auto' и CSS справятся лучше.
+                // Оставляем их на случай, если понадобятся для мобильных.
                 breakpoints: {
                     320: {
                         slidesPerView: 1,
                         coverflowEffect: {
                             stretch: 0,
-                            depth: 200,
-                            modifier: 1,
-                            scale: 0.85,
                         },
                     },
                     768: {
-                        slidesPerView: 3,
+                        slidesPerView: 'auto',
                          coverflowEffect: {
-                            rotate: 0,
-                            stretch: -150, 
-                            depth: 100, 
-                            modifier: 1,
-                            scale: 0.7, 
+                            stretch: 100, 
                         },
                     }
                 }

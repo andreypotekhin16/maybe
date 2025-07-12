@@ -302,6 +302,10 @@ main section {
 }
 
 
+#booking-section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+}
 
 .booking-carousel-wrapper {
     position: relative;
@@ -309,6 +313,10 @@ main section {
 }
 .booking-swiper {
     width: 100%;
+}
+
+.booking-swiper .swiper-slide {
+    width: auto;
 }
 
 .booking-carousel-item { 
