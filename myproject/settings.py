@@ -1,6 +1,3 @@
-# START OF FILE: myproject/settings.py
-# myproject/settings.py
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -80,21 +77,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --- НАСТРОЙКИ СТАТИКИ И МЕДИАФАЙЛОВ ---
 STATIC_URL = 'static/'
-# STATIC_ROOT больше не нужен, когда collectstatic отключен
-# STATIC_ROOT = BASE_DIR / 'staticfiles' 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [] # В продакшене эта папка должна быть пустой
 
-# Указываем Django, где искать статику напрямую
-STATICFILES_DIRS = [
-    BASE_DIR / "main/static",
-]
-
-# Используем самые простые хранилища, чтобы избежать конфликтов
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
@@ -104,9 +95,8 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# STATICFILES_STORAGE больше не нужен при использовании словаря STORAGES
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+# Дублируем для обратной совместимости
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # --- ЛОГИРОВАНИЕ ---
 LOG_DIR = BASE_DIR / 'logs'
@@ -132,4 +122,3 @@ LOGGING = {
         'main': {'handlers': ['console', 'file'], 'level': 'INFO', 'propagate': True,}
     },
 }
-# END OF FILE: myproject/settings.py
