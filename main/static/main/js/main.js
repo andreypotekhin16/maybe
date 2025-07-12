@@ -99,17 +99,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
-                // ИЗМЕНЕНИЕ: 'auto' позволяет CSS контролировать размер слайда
-                slidesPerView: 'auto', 
+                // ИЗМЕНЕНИЕ 1: 'auto' позволяет CSS задавать размер слайда.
+                slidesPerView: 'auto',
                 loop: true,
                 slideToClickedSlide: true,
                 coverflowEffect: {
                     rotate: 0,
-                    // ИЗМЕНЕНИЕ: Положительное значение создает правильное расстояние
-                    stretch: 100, 
+                    // ИЗМЕНЕНИЕ 2: Положительное значение 'stretch' правильно сближает слайды.
+                    stretch: 100,
                     depth: 150, 
                     modifier: 1,
-                    scale: 0.7, 
+                    // ИЗМЕНЕНИЕ 3: Scale теперь будет управляться через CSS для большей точности.
+                    scale: 1, 
                     slideShadows: false, 
                 },
                 pagination: {
@@ -120,19 +121,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     nextEl: '.booking-carousel-nav-next',
                     prevEl: '.booking-carousel-nav-prev',
                 },
-                // Брейкпоинты можно оставить, они не помешают, 
-                // но основные изменения выше исправят десктопную версию.
+                 // В мобильной версии сохраняем адаптивность
                 breakpoints: {
                     320: {
                         slidesPerView: 1,
                         coverflowEffect: {
-                            stretch: 0,
+                            stretch: 0
                         },
                     },
                     768: {
-                        slidesPerView: 'auto', // Убедимся, что здесь тоже auto
+                        slidesPerView: 'auto',
                          coverflowEffect: {
-                            stretch: 100, // И здесь тоже
+                            stretch: 100
                         },
                     }
                 }

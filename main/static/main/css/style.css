@@ -301,10 +301,12 @@ main section {
     line-height: 1.6;
 }
 
+/* ========== НАЧАЛО ИЗМЕНЕНИЙ ДЛЯ КАРУСЕЛИ ========== */
 
 #booking-section {
     padding-top: 8rem;
     padding-bottom: 8rem;
+    overflow: hidden; /* Предотвращаем горизонтальный скролл */
 }
 
 .booking-carousel-wrapper {
@@ -313,22 +315,25 @@ main section {
 }
 .booking-swiper {
     width: 100%;
+    /* Добавляем отступы, чтобы активный слайд не обрезался */
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
 }
 
-/* ИЗМЕНЕНИЕ: Устанавливаем базовый размер слайда */
+/* ЗАДАЕМ РАЗМЕР СЛАЙДА */
 .booking-swiper .swiper-slide {
-    width: 440px; 
-    /* Добавляем высоту для консистентности, если она нужна */
-    height: 440px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ИЗМЕНЕНИЕ: Устанавливаем размер для нашего элемента внутри слайда */
-.booking-carousel-item { 
     width: 440px;
     height: 440px;
+    display: flex; /* Важно для coverflow */
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease;
+}
+
+/* СТИЛИЗУЕМ СОДЕРЖИМОЕ СЛАЙДА (НАШ КРУГ) */
+.booking-carousel-item { 
+    width: 100%;
+    height: 100%;
     transition: transform 0.4s ease, filter 0.4s ease;
 }
 
@@ -342,7 +347,7 @@ main section {
     overflow: hidden;
     position: relative;
     color: var(--color-white);
-    background: #333; /* Фон на случай если картинка не загрузится */
+    background-color: #333; /* Фон, если картинка не загрузится */
 }
 
 .booking-carousel-art {
@@ -352,20 +357,24 @@ main section {
     transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-/* ИЗМЕНЕНИЕ: Корректируем масштаб для нового размера */
+/* СТИЛИ АКТИВНОГО И НЕАКТИВНЫХ СЛАЙДОВ */
 .swiper-slide-active .booking-carousel-item {
-    transform: scale(1.2); /* Было 1.6, для большого размера 1.2 лучше */
+    /* Активный слайд не меняем, он и так 100% размера */
+    transform: scale(1);
     z-index: 10;
 }
-.swiper-slide-active .booking-carousel-link:hover .booking-carousel-art {
-    transform: scale(1.1);
+
+.swiper-slide:not(.swiper-slide-active) {
+    /* Неактивные слайды уменьшаем */
+    transform: scale(0.7);
 }
 
-.booking-carousel-item:not(.swiper-slide-active) {
-    filter: brightness(0.7);
+.swiper-slide:not(.swiper-slide-active) .booking-carousel-item {
+    filter: brightness(0.6);
     cursor: pointer; 
 }
 
+/* ЛОГИКА ОВЕРЛЕЯ И ТЕКСТА */
 .booking-carousel-info {
     position: absolute;
     top: 0; left: 0;
@@ -377,18 +386,6 @@ main section {
     align-items: center;
     text-align: center;
     padding: 20px;
-}
-.swiper-slide-active .booking-carousel-link:hover .booking-carousel-info {
-    background: radial-gradient(circle, rgba(0,0,0,0.75) 15%, rgba(0,0,0,0) 80%);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
-
-.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-info {
-    opacity: 0;
-}
-.booking-carousel-item:not(.swiper-slide-active) .booking-carousel-link {
-    pointer-events: none;
 }
 
 .info-content-wrapper {
@@ -431,6 +428,17 @@ main section {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
+/* ЛОГИКА ХОВЕР-ЭФФЕКТА (ТЕПЕРЬ РАБОТАЕТ) */
+/* Эффект применяется только к центральному (активному) слайду */
+.swiper-slide-active .booking-carousel-link:hover .booking-carousel-art {
+    transform: scale(1.1);
+}
+
+.swiper-slide-active .booking-carousel-link:hover .booking-carousel-info {
+    background: radial-gradient(circle, rgba(0,0,0,0.75) 15%, rgba(0,0,0,0) 80%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
 
 .swiper-slide-active .booking-carousel-link:hover .info-default {
     opacity: 0;
@@ -439,12 +447,13 @@ main section {
     opacity: 1;
 }
 
-
+/* НАВИГАЦИЯ И ПАГИНАЦИЯ */
 .booking-carousel-nav-prev,
 .booking-carousel-nav-next {
     position: absolute;
-    top: 0;
-    width: 35%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15%; /* Уменьшил ширину, чтобы не перекрывать слайды */
     height: 100%;
     z-index: 20; 
     cursor: pointer;
@@ -467,6 +476,8 @@ main section {
 .swiper-no-transition .swiper-wrapper {
     transition-duration: 0s !important;
 }
+
+/* ========== КОНЕЦ ИЗМЕНЕНИЙ ДЛЯ КАРУСЕЛИ ========== */
 
 
 #orbibol-section .container {
