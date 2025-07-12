@@ -93,25 +93,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setupSwiper() {
-        new Swiper('.booking-swiper', {
-            // Параметры
-            slidesPerView: 'auto',
-            spaceBetween: 15,
-            centeredSlides: true,
-            loop: true,
+        const swiperContainer = document.querySelector('.booking-swiper');
+        if (swiperContainer) {
+            const slides = swiperContainer.querySelectorAll('.swiper-slide');
+            
+            new Swiper(swiperContainer, {
+                effect: 'slide',
+                loop: true,
+                centeredSlides: true,
+                slidesPerView: 'auto',
+                
+                // Принудительно создаем больше клонов для зацикливания
+                loopAdditionalSlides: slides.length,
 
-            // Пагинация
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-
-            // Навигация
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
+                // Уменьшаем расстояние между слайдами
+                spaceBetween: 0,
+                
+                pagination: {
+                  el: ".swiper-pagination",
+                  clickable: true,
+                },
+                navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+                },
+            });
+        }
     }
 
     setupHeader();

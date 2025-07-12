@@ -59,30 +59,34 @@
         </div>
     </section>
 
-    <!-- НОВАЯ СЕКЦИЯ ДЛЯ КАРУСЕЛИ -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
+            
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     {% for service in services %}
                     <div class="swiper-slide">
-                        <div class="booking-card">
-                            <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-card-img">
-                            <div class="booking-card-overlay">
-                                <h3 class="booking-card-title">{{ service.name }}</h3>
-                                <p class="booking-card-desc">{{ service.short_description }}</p>
-                                {% if service.vk_link %}
-                                <a href="{{ service.vk_link }}" class="booking-card-button" target="_blank" rel="noopener noreferrer">Записаться</a>
+                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                             {% if service.image %}
+                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
+                            {% else %}
+                                <div class="booking-slide-placeholder">Арт</div>
+                            {% endif %}
+                           
+                            <div class="booking-slide-info">
+                                <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                {% if service.short_description %}
+                                <p class="booking-slide-description">{{ service.short_description }}</p>
                                 {% endif %}
                             </div>
-                        </div>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
-                <!-- Пагинация -->
+                <!-- Элементы навигации должны быть ВНУТРИ .booking-swiper -->
                 <div class="swiper-pagination"></div>
-                <!-- Стрелки -->
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-button-next"></div>
             </div>

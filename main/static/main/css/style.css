@@ -660,16 +660,17 @@ main section {
     width: 100%;
     height: 500px;
     padding: 2rem 0;
-    /* ИСПРАВЛЕНИЕ 1: Разрешаем контенту выходить за пределы */
-    overflow: visible;
+    overflow: visible; 
 }
 
 .booking-swiper .swiper-slide {
     width: 320px;
     height: 400px;
-    opacity: 0.5;
+    opacity: 0.4;
     transform: scale(0.85);
     transition: opacity 0.4s ease, transform 0.4s ease;
+    border-radius: 50%; /* Возвращаем круглую форму */
+    overflow: hidden;   /* Обрезаем контент по кругу */
 }
 
 .booking-swiper .swiper-slide-active {
@@ -681,9 +682,7 @@ main section {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .booking-card-img {
@@ -701,9 +700,8 @@ main section {
     padding: 2rem 1.5rem;
     background: linear-gradient(to top, rgba(0,0,0,1) 10%, transparent);
     color: #fff;
-    /* ИСПРАВЛЕНИЕ 3: Полностью скрываем оверлей */
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(20px);
     transition: all 0.4s ease;
 }
 
@@ -743,7 +741,6 @@ main section {
     color: var(--color-pink-accent);
 }
 
-/* ИСПРАВЛЕНИЕ 2: Явное позиционирование и стилизация стрелок */
 .booking-swiper .swiper-button-prev,
 .booking-swiper .swiper-button-next {
     position: absolute;
@@ -765,7 +762,7 @@ main section {
 
 .booking-swiper .swiper-button-prev::after,
 .booking-swiper .swiper-button-next::after {
-    font-size: 1.5rem; /* Размер иконки-стрелки */
+    font-size: 1.5rem;
 }
 
 .booking-swiper .swiper-pagination-bullet-active {
@@ -804,7 +801,6 @@ main section {
         font-size: 2.2rem;
     }
 
-    /* Адаптивность для стрелок */
     .booking-swiper .swiper-button-prev,
     .booking-swiper .swiper-button-next {
         display: none;
