@@ -4,8 +4,7 @@ set -o errexit
 
 pip install -r requirements.txt
 
-# Собираем статику, ИГНОРИРУЯ проблемную папку 'cloudinary'
-python manage.py collectstatic --no-input --ignore cloudinary
+python manage.py collectstatic --no-input
 
 python manage.py migrate
 python manage.py createsuper

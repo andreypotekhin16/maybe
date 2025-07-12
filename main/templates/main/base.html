@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>{% block title %}{% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}{% endblock %}</title>
+    <title>{% block title %}{% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}{% endblock %}</title>
     
     <link rel="shortcut icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
 
@@ -15,7 +15,6 @@
     
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    
 </head>
 <body 
     {% if background_settings %}
@@ -51,42 +50,43 @@
     <header id="site-header">
         <div class="container header-container">
             <a href="/" class="logo">
-                {% if company_profile and company_profile.logo_image %}
+                {# ИСПРАВЛЕНО: Используем .url для логотипа #}
+                {% if company_profile.logo_image %}
                     <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
                 {% else %}
-                    <img src="{% static 'main/images/logo.png' %}" alt="Логотип Maybe">
+                    {# Запасной вариант, если логотип не загружен #}
+                    <img src="{% static 'main/images/logo_placeholder.png' %}" alt="Логотип Maybe">
                 {% endif %}
             </a>
             <div class="header-center-text">May be</div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="{% url 'main:home_page' %}#about-us-section">О нас</a></li>
-                    <li><a href="{% url 'main:home_page' %}#features-section">Что мы предлагаем</a></li>
-                    <li><a href="{% url 'main:home_page' %}#booking-section">Запись на игру</a></li>
-                    <li><a href="{% url 'main:home_page' %}#orbibol-section">Орбибол</a></li>
-                    <li><a href="{% url 'main:home_page' %}#games-section">Игры</a></li>
-                    <li><a href="{% url 'main:home_page' %}#market-section">Маркет</a></li>
-                    <li><a href="{% url 'main:home_page' %}#gallery-section">Фото и видео галерея</a></li>
-                    <li><a href="{% url 'main:home_page' %}#contacts-section">Контакты</a></li>
+                    <li><a href="#about-us-section">О нас</a></li>
+                    <li><a href="#features-section">Что мы предлагаем</a></li>
+                    <li><a href="#booking-section">Запись на игру</a></li>
+                    <li><a href="#orbibol-section">Орбибол</a></li>
+                    <li><a href="#games-section">Игры</a></li>
+                    <li><a href="#market-section">Маркет</a></li>
+                    <li><a href="#gallery-section">Фото и видео галерея</a></li>
+                    <li><a href="#contacts-section">Контакты</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-    {% endblock %}
+    {% endblock header %}
 
     <main id="main-content">
         {% block content %}
-        
         {% endblock %}
     </main>
     
     {% block footer %}
     <footer id="site-footer-bottom">
         <div class="container">
-            <p>© {% now "Y" %} {% if company_profile and company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
+            <p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
         </div>
     </footer>
-    {% endblock %}
+    {% endblock footer %}
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="{% static 'main/js/main.js' %}"></script>
