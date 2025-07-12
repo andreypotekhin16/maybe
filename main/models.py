@@ -1,20 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-class Service(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Название игры/услуги (для Записи на игру)")
-    short_description = models.CharField(max_length=255, blank=True, null=True, verbose_name="Краткое описание/даты (для карусели)")
-    hover_text = models.TextField(verbose_name="Текст при наведении (в карусели)", blank=True, null=True, help_text="Этот текст появится при наведении на центральный слайд. Если пусто, останется краткое описание.")
-    detailed_description = models.TextField(verbose_name="Подробное описание (Когда, Жанры, Цена и т.д.)", default="Подробное описание скоро появится.")
-    image = models.FileField(upload_to='service_arts/', verbose_name="Арт для игры (для карусели, SVG/PNG)", blank=True, null=True) 
-    vk_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на VK для записи")
-    order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок сортировки")
-    class Meta:
-        verbose_name = "Игра/Услуга (для Записи на игру)"
-        verbose_name_plural = "Игры/Услуги (для Записи на игру)"
-        ordering = ['order', 'name'] 
-    def __str__(self):
-        return self.name
+# МОДЕЛЬ Service ПОЛНОСТЬЮ УДАЛЕНА
 
 class CompanyProfile(models.Model):
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")

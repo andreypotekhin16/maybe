@@ -1,9 +1,9 @@
 # START OF FILE: main/admin.py
-# main/admin.py
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
-    Service, CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
+    # Service удалена из импорта
+    CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
     BackgroundSettings, BackgroundObject
 )
 
@@ -23,17 +23,7 @@ class ImagePreviewAdminMixin:
 
 # --- Регистрация моделей ---
 
-@admin.register(Service)
-class ServiceAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    list_display = ('name', 'short_description', 'order', 'image_preview')
-    list_editable = ('order',)
-    readonly_fields = ('image_preview',)
-    fields = ('name', 'short_description', 'hover_text', 'detailed_description', 'image', 'image_preview', 'vk_link', 'order')
-
-    def image_preview(self, obj):
-        return self.get_preview(obj, 'image', max_height=150)
-    image_preview.short_description = 'Предпросмотр'
-
+# КЛАСС И РЕГИСТРАЦИЯ МОДЕЛИ Service ПОЛНОСТЬЮ УДАЛЕНЫ
 
 @admin.register(Feature)
 class FeatureAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
