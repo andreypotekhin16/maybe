@@ -301,112 +301,6 @@ main section {
     line-height: 1.6;
 }
 
-/* === НОВЫЕ СТИЛИ ДЛЯ 'УКРАДЕННОЙ' КАРУСЕЛИ === */
-/* Удаляем старые стили и заменяем их этим блоком */
-
-#booking-section {
-    position: relative;
-    background: #000;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-}
-
-.booking-swiper {
-    width: 100%;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-.booking-swiper .swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: 380px;
-    height: 380px;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-    background-color: #222; /* Цвет фона для плейсхолдера */
-}
-
-.booking-slide-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-}
-
-.booking-slide-art {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.booking-slide-info {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.booking-swiper .swiper-slide:hover .booking-slide-info {
-    opacity: 1;
-}
-
-.booking-swiper .swiper-slide:hover .booking-slide-art {
-    transform: scale(1.1);
-}
-
-.booking-slide-title {
-    font-family: var(--font-sunday);
-    font-size: 2.5rem;
-    margin: 0 0 10px 0;
-    color: #fff;
-}
-
-.booking-slide-description {
-    font-family: var(--font-fortunec);
-    font-size: 1.2rem;
-    line-height: 1.4;
-    color: #ddd;
-}
-
-.booking-swiper .swiper-pagination-bullet {
-    background: #fff;
-    opacity: 0.5;
-}
-
-.booking-swiper .swiper-pagination-bullet-active {
-    background-color: var(--color-pink-accent);
-    opacity: 1;
-}
-
-.booking-swiper .swiper-button-prev,
-.booking-swiper .swiper-button-next {
-    color: var(--color-pink-accent);
-    transform: translateY(-50%);
-}
-
-/* === КОНЕЦ НОВЫХ СТИЛЕЙ === */
-
-
 #orbibol-section .container {
     max-width: 800px;
 }
@@ -484,8 +378,6 @@ main section {
 .text-center { 
     text-align: center;
 }
-
-
 
 .section-games {} 
 
@@ -757,6 +649,131 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
+
+/* === ПРОСТЫЕ И НАДЕЖНЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
+#booking-section {
+    position: relative;
+    padding: 4rem 0;
+    overflow: hidden; /* Важно, чтобы слайды не вылезали за пределы секции */
+}
+
+.booking-swiper {
+    width: 100%;
+    /* Высота контейнера важна для вертикального выравнивания */
+    height: 550px; 
+}
+
+.booking-swiper .swiper-wrapper {
+    /* Это нужно, чтобы слайды выравнивались по центру контейнера */
+    display: flex;
+    align-items: center;
+}
+
+.booking-swiper .swiper-slide {
+    /* Базовый размер слайда */
+    width: 440px;
+    height: 440px;
+    
+    /* Стили по умолчанию (маленький слайд) */
+    transform: scale(0.65);
+    opacity: 0.6;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    
+    /* Круглая форма и обрезка */
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background-color: #222; /* Фон для плейсхолдера */
+}
+
+.booking-swiper .swiper-slide-active {
+    /* Стили для активного (центрального) слайда */
+    transform: scale(1.2);
+    opacity: 1;
+    z-index: 1;
+}
+
+.booking-slide-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.booking-slide-art, .booking-slide-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.booking-slide-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #888;
+}
+
+.booking-slide-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none; /* Чтобы не мешать клику по ссылке */
+}
+
+/* Эффекты при наведении ТОЛЬКО на активный слайд */
+.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
+    opacity: 1;
+}
+
+.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
+    transform: scale(1.1);
+}
+
+.booking-slide-title {
+    font-family: var(--font-sunday);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.booking-slide-description {
+    font-family: var(--font-fortunec);
+    font-size: 1.1rem;
+}
+
+.booking-swiper .swiper-pagination {
+    position: absolute;
+    bottom: 0px !important;
+}
+
+.booking-swiper .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    opacity: 0.5;
+}
+
+.booking-swiper .swiper-pagination-bullet-active {
+    background: var(--color-pink-accent);
+    opacity: 1;
+}
+
+/* === КОНЕЦ СТИЛЕЙ КАРУСЕЛИ === */
+
+
 @media (max-width: 1100px) {
     .features-grid,
     .games-grid {
@@ -792,8 +809,15 @@ main section {
     }
     /* Адаптивность для новой карусели */
     .booking-swiper .swiper-slide {
-        width: 280px;
-        height: 280px;
+        width: 320px;
+        height: 320px;
+        transform: scale(0.7);
+    }
+    .booking-swiper .swiper-slide-active {
+        transform: scale(1);
+    }
+    .booking-swiper {
+        height: 400px;
     }
 }
 
