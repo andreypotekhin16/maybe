@@ -316,7 +316,7 @@ main section {
 }
 
 .booking-swiper .swiper-slide {
-    width: 440px; /* ИЗМЕНЕНО */
+    width: 440px; 
 }
 
 .booking-carousel-item { 
