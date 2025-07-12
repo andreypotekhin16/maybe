@@ -83,15 +83,19 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-STATICFILES_DIRS = []
 
-# Возвращаем правильное, рабочее хранилище
+# Указываем Django, где искать статику напрямую
+STATICFILES_DIRS = [
+    BASE_DIR / "main/static",
+]
+
+# Используем более простое хранилище, чтобы обойти ошибку сборки
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.WhiteNoiseStorage",
     },
 }
 
@@ -101,8 +105,8 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Дублируем правильное хранилище для обратной совместимости
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Дублируем для обратной совместимости
+STATICFILES_STORAGE = "whitenoise.storage.WhiteNoiseStorage"
 
 # --- ЛОГИРОВАНИЕ ---
 LOG_DIR = BASE_DIR / 'logs'
