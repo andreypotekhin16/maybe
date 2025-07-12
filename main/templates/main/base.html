@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
@@ -50,12 +51,9 @@
     <header id="site-header">
         <div class="container header-container">
             <a href="/" class="logo">
-                {# ИСПРАВЛЕНО: Используем .url для логотипа #}
-                {% if company_profile.logo_image %}
+                {# ИСПРАВЛЕНО: Ссылка на логотип берется из .url #}
+                {% if company_profile and company_profile.logo_image %}
                     <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
-                {% else %}
-                    {# Запасной вариант, если логотип не загружен #}
-                    <img src="{% static 'main/images/logo_placeholder.png' %}" alt="Логотип Maybe">
                 {% endif %}
             </a>
             <div class="header-center-text">May be</div>
