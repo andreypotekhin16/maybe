@@ -301,6 +301,7 @@ main section {
     line-height: 1.6;
 }
 
+
 #orbibol-section .container {
     max-width: 800px;
 }
@@ -649,7 +650,8 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === ПРИМИТИВНЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
+
+/* === САМЫЕ ПРОСТЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
@@ -672,13 +674,12 @@ main section {
     
     transform: scale(0.65);
     opacity: 0.6;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 .booking-swiper .swiper-slide-active {
     transform: scale(1.1);
     opacity: 1;
-    z-index: 1;
 }
 
 .booking-slide-link {
@@ -695,14 +696,13 @@ main section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
 }
 
 .booking-slide-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
     color: #888;
 }
 
@@ -721,7 +721,7 @@ main section {
     text-align: center;
     padding: 20px;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.3s ease;
     pointer-events: none;
 }
 
@@ -762,8 +762,6 @@ main section {
     opacity: 1;
 }
 
-/* === КОНЕЦ СТИЛЕЙ КАРУСЕЛИ === */
-
 
 @media (max-width: 1100px) {
     .features-grid,
@@ -797,15 +795,15 @@ main section {
     }
 
     .booking-swiper .swiper-slide {
-        width: 320px;
-        height: 320px;
+        width: 300px;
+        height: 300px;
         transform: scale(0.7);
     }
     .booking-swiper .swiper-slide-active {
         transform: scale(1);
     }
     .booking-swiper {
-        height: 400px;
+        height: 350px;
     }
 }
 
