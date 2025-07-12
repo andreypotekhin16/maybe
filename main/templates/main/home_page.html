@@ -67,36 +67,45 @@
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Функция для рендеринга одного слайда, чтобы не дублировать код #}
-                    {% macro render_slide(service) %}
+                    {# Основной цикл #}
+                    {% for service in services %}
                     <div class="swiper-slide">
-                        <!-- Картинка-круг -->
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
                              {% if service.image %}
                                 <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
+                           
+                            <div class="booking-slide-info">
+                                <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                {% if service.short_description %}
+                                <p class="booking-slide-description">{{ service.short_description }}</p>
+                                {% endif %}
+                            </div>
                         </a>
-                        <!-- Текстовый блок ПОД картинкой -->
-                        <div class="slide-text-content">
-                            <h3>{{ service.name }}</h3>
-                            {% if service.short_description %}
-                            <p>{{ service.short_description }}</p>
-                            {% endif %}
-                        </div>
                     </div>
-                    {% endmacro %}
-
-                    {# Основной цикл #}
-                    {% for service in services %}
-                        {{ render_slide(service) }}
                     {% endfor %}
 
-                    {# Хак для зацикливания #}
+                    {# Хак для зацикливания (простое дублирование кода) #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
-                            {{ render_slide(service) }}
+                        <div class="swiper-slide">
+                            <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                                 {% if service.image %}
+                                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
+                                {% else %}
+                                    <div class="booking-slide-placeholder">Арт</div>
+                                {% endif %}
+                               
+                                <div class="booking-slide-info">
+                                    <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                    {% if service.short_description %}
+                                    <p class="booking-slide-description">{{ service.short_description }}</p>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
                         {% endfor %}
                     {% endif %}
 
