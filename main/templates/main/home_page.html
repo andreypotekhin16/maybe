@@ -59,45 +59,45 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (КАРУСЕЛЬ) -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (НОВАЯ, "УКРАДЕННАЯ" СТРУКТУРА) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
-            <div class="booking-carousel-wrapper">
-                <div class="swiper booking-swiper">
-                    <div class="swiper-wrapper">
-                        {% for service in services %}
-                            <div class="swiper-slide">
-                                <div class="booking-carousel-item">
-                                    <a href="{{ service.vk_link|default:'#' }}" target="_blank" rel="noopener noreferrer" class="booking-carousel-link">
-                                        {% if service.image %}
-                                            <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-carousel-art">
-                                        {% else %}
-                                            <div style="width:100%; height:100%; background: #333; display:flex; align-items:center; justify-content:center;">Арт</div>
-                                        {% endif %}
-                                        <div class="booking-carousel-info">
-                                            <div class="info-content-wrapper">
-                                                <div class="info-default">
-                                                    <h3 class="booking-carousel-title">{{ service.name }}</h3>
-                                                    {% if service.short_description %}
-                                                        <p class="booking-carousel-dates">{{ service.short_description }}</p>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="info-hover">
-                                                    <p>{{ service.hover_text|default:service.detailed_description|linebreaksbr }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
+            
+            <!-- ГЛАВНЫЙ КОНТЕЙНЕР SWIPER -->
+            <div class="swiper booking-swiper">
+                <!-- ОБЕРТКА ДЛЯ СЛАЙДОВ -->
+                <div class="swiper-wrapper">
+                    
+                    <!-- Здесь начинается цикл Django -->
+                    {% for service in services %}
+                    <div class="swiper-slide">
+                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                            {% if service.image %}
+                            <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
+                            {% else %}
+                            <!-- Плейсхолдер, если нет картинки -->
+                            <div style="width:100%; height:100%; background: #333; display:flex; align-items:center; justify-content:center;">Арт</div>
+                            {% endif %}
+                            <!-- Оверлей с информацией, который появится при наведении -->
+                            <div class="booking-slide-info">
+                                <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                {% if service.short_description %}
+                                <p class="booking-slide-description">{{ service.short_description }}</p>
+                                {% endif %}
                             </div>
-                        {% endfor %}
+                        </a>
                     </div>
-                    <div class="swiper-pagination"></div>
+                    {% endfor %}
+                    <!-- Конец цикла -->
+
                 </div>
-                <div class="booking-carousel-nav-prev"></div>
-                <div class="booking-carousel-nav-next"></div>
+                <!-- Добавляем стандартные элементы управления Swiper -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
+
         </div>
     </section>
 

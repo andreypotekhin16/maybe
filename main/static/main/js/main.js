@@ -95,29 +95,28 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupSwiper() {
         const swiperContainer = document.querySelector('.booking-swiper');
         if (swiperContainer) {
+            // Классическая, надежная конфигурация для Coverflow
             new Swiper(swiperContainer, {
-                effect: 'coverflow',
+                effect: "coverflow",
                 grabCursor: true,
                 centeredSlides: true,
-                slidesPerView: 'auto', // CSS управляет размером
+                slidesPerView: "auto", // Позволяет CSS определять размер
                 loop: true,
-                slideToClickedSlide: true,
                 coverflowEffect: {
-                    rotate: 0,
-                    stretch: 50,      // Адекватное расстояние между слайдами
-                    depth: 200,       // Глубина перспективы
-                    modifier: 1,
-                    scale: 1,         // ВАЖНО: Нейтрализуем масштабирование от JS
-                    slideShadows: false, 
+                  rotate: 45,      // Угол наклона боковых слайдов
+                  stretch: 0,      // Расстояние между слайдами (0 - оптимально)
+                  depth: 150,      // Глубина 3D-эффекта
+                  modifier: 1,     // Множитель эффекта
+                  slideShadows: true, // Добавляет тени для объема
                 },
                 pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
+                  el: ".swiper-pagination",
+                  clickable: true,
                 },
                 navigation: {
-                    nextEl: '.booking-carousel-nav-next',
-                    prevEl: '.booking-carousel-nav-prev',
-                }
+                  nextEl: ".swiper-button-next",
+                  prevEl: ".swiper-button-prev",
+                },
             });
         }
     }
