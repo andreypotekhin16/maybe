@@ -66,6 +66,8 @@
             
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
+                    
+                    {# Обычный цикл для всех слайдов #}
                     {% for service in services %}
                     <div class="swiper-slide">
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
@@ -84,8 +86,31 @@
                         </a>
                     </div>
                     {% endfor %}
+
+                    {# ХАК: Если слайдов мало (меньше 4), дублируем их, чтобы Swiper не глючил #}
+                    {% if services|length > 0 and services|length < 4 %}
+                        {% for service in services %}
+                        <div class="swiper-slide">
+                            <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                                 {% if service.image %}
+                                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
+                                {% else %}
+                                    <div class="booking-slide-placeholder">Арт</div>
+                                {% endif %}
+                               
+                                <div class="booking-slide-info">
+                                    <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                    {% if service.short_description %}
+                                    <p class="booking-slide-description">{{ service.short_description }}</p>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
                 </div>
-                <!-- Элементы навигации должны быть ВНУТРИ .booking-swiper -->
+                <!-- Элементы навигации -->
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-button-next"></div>
