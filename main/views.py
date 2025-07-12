@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from .models import (
-    # Service УДАЛЕНА ИЗ ИМПОРТА
+    Service,
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
     BackgroundSettings
 )
 
 def home_page_view(request):
-    # ЗАПРОС services = Service.objects.all() УДАЛЕН
+    services = Service.objects.all()
     company_profile = CompanyProfile.objects.first() 
     orbibol_info = OrbibolInfo.objects.first()
     features = Feature.objects.all() 
@@ -16,7 +16,7 @@ def home_page_view(request):
     background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
                                                     
     context = {
-        # 'services': services, УДАЛЕНО ИЗ КОНТЕКСТА
+        'services': services,
         'company_profile': company_profile,
         'orbibol_info': orbibol_info,
         'features': features,

@@ -92,8 +92,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ВСЯ ЛОГИКА SWIPER УДАЛЕНА
+    function setupSwiper() {
+        new Swiper('.booking-swiper', {
+            // Параметры
+            slidesPerView: 'auto',
+            spaceBetween: 15,
+            centeredSlides: true,
+            loop: true,
+
+            // Пагинация
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+
+            // Навигация
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
 
     setupHeader();
     setupDynamicBackground();
+    setupSwiper();
 });

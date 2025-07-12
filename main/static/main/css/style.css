@@ -301,6 +301,7 @@ main section {
     line-height: 1.6;
 }
 
+
 #orbibol-section .container {
     max-width: 800px;
 }
@@ -647,6 +648,104 @@ main section {
     line-height: 1.7;
     max-width: 60ch;
     margin: 0 auto 3rem auto;
+}
+
+/* === СТИЛИ ДЛЯ НОВОЙ, ПРОСТОЙ КАРУСЕЛИ === */
+#booking-section {
+    padding: 4rem 0;
+}
+
+.booking-swiper {
+    width: 100%;
+    height: 500px;
+    padding: 2rem 0;
+}
+
+.booking-swiper .swiper-slide {
+    width: 320px;
+    height: 400px;
+    /* Добавляем прозрачность для неактивных слайдов */
+    opacity: 0.5;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.booking-swiper .swiper-slide-active {
+    opacity: 1;
+    transform: scale(1.1); /* Делаем активный слайд чуть больше */
+}
+
+.booking-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.booking-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.booking-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent);
+    color: #fff;
+    transform: translateY(40%); /* Изначально оверлей частично скрыт */
+    transition: transform 0.4s ease;
+}
+
+.booking-card:hover .booking-card-overlay {
+    transform: translateY(0);
+}
+
+.booking-card:hover .booking-card-img {
+    transform: scale(1.1);
+}
+
+.booking-card-title {
+    font-family: var(--font-sunday);
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.booking-card-desc {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.booking-card-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-pink-accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.booking-card-button:hover {
+    background-color: #fff;
+    color: var(--color-pink-accent);
+}
+
+/* Стили для навигации */
+.booking-swiper .swiper-button-next,
+.booking-swiper .swiper-button-prev {
+    color: var(--color-pink-accent);
+}
+
+.booking-swiper .swiper-pagination-bullet-active {
+    background: var(--color-pink-accent);
 }
 
 

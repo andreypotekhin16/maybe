@@ -59,7 +59,35 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ #booking-section УДАЛЕНА -->
+    <!-- НОВАЯ СЕКЦИЯ ДЛЯ КАРУСЕЛИ -->
+    <section id="booking-section">
+        <div class="container">
+            <h2>Запись на игру</h2>
+            <div class="swiper booking-swiper">
+                <div class="swiper-wrapper">
+                    {% for service in services %}
+                    <div class="swiper-slide">
+                        <div class="booking-card">
+                            <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-card-img">
+                            <div class="booking-card-overlay">
+                                <h3 class="booking-card-title">{{ service.name }}</h3>
+                                <p class="booking-card-desc">{{ service.short_description }}</p>
+                                {% if service.vk_link %}
+                                <a href="{{ service.vk_link }}" class="booking-card-button" target="_blank" rel="noopener noreferrer">Записаться</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Пагинация -->
+                <div class="swiper-pagination"></div>
+                <!-- Стрелки -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- 4. СЕКЦИЯ "ОРБИБОЛ" -->
     <section id="orbibol-section">
@@ -106,7 +134,7 @@
                         <div class="game-type-icon-wrapper">
                             {% if type.icon %}<img src="{{ type.icon.url }}" alt="{{ type.name }}">{% endif %}
                         </div>
-                        <div class="feature-text-content">
+                        <div class="game-type-text-content">
                             <h3>{{ type.name }}</h3>
                             <p>{{ type.description }}</p>
                         </div>
