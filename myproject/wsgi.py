@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import os
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
+from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 
 application = get_wsgi_application()
-# Инициализируем WhiteNoise без указания root, чтобы он искал файлы в STATICFILES_DIRS
+# Инициализируем WhiteNoise и добавляем папки из STATICFILES_DIRS
 application = WhiteNoise(application)
+for d in settings.STATICFILES_DIRS:
+    application.add_files(d, prefix=settings.STATIC_URL)
+
 # END OF FILE: myproject/wsgi.py

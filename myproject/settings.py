@@ -1,3 +1,25 @@
+# START OF FILE: build.sh
+#!/usr/bin/env bash
+# exit on error
+set -o errexit
+
+pip install -r requirements.txt
+
+# ВРЕМЕННО ОТКЛЮЧАЕМ COLLECTSTATIC, ЧТОБЫ ГАРАНТИРОВАННО ЗАПУСТИТЬ СЕРВЕР
+# python manage.py collectstatic --no-input
+
+python manage.py migrate
+python manage.py createsuper
+
+# END OF FILE: build.sh```
+
+---
+
+### Шаг 2: Замените `myproject/settings.py`
+
+Мы полностью меняем подход к статике: убираем `STATIC_ROOT` и указываем `STATICFILES_DIRS`. Это заставит `whitenoise` искать файлы CSS и JS напрямую в вашем коде, а не в отдельной папке, которую создавал `collectstatic`.
+
+```python
 # START OF FILE: myproject/settings.py
 # myproject/settings.py
 
@@ -80,18 +102,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --- НАСТРОЙКИ СТАТИКИ И МЕДИАФАЙЛОВ ---
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-STATICFILES_DIRS = []
+# STATIC_ROOT больше не нужен, когда collectstatic отключен
+# STATIC_ROOT = BASE_DIR / 'staticfiles' 
 
-# ИСПОЛЬЗУЕМ ПРАВИЛЬНОЕ ХРАНИЛИЩЕ
+# Указываем Django, где искать статику напрямую
+STATICFILES_DIRS = [
+    BASE_DIR / "main/static",
+]
+
+# Используем самые простые хранилища, чтобы избежать конфликтов
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
@@ -101,8 +126,9 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Дублируем ПРАВИЛЬНОЕ хранилище для обратной совместимости
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE больше не нужен при использовании словаря STORAGES
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 # --- ЛОГИРОВАНИЕ ---
 LOG_DIR = BASE_DIR / 'logs'
