@@ -649,46 +649,34 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-
-/* === ПРОСТЫЕ И НАДЕЖНЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
+/* === ПРИМИТИВНЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
-    overflow: hidden; /* Важно, чтобы слайды не вылезали за пределы секции */
+    overflow: hidden;
 }
 
 .booking-swiper {
     width: 100%;
-    /* Высота контейнера важна для вертикального выравнивания */
     height: 550px; 
 }
 
 .booking-swiper .swiper-wrapper {
-    /* Это нужно, чтобы слайды выравнивались по центру контейнера */
     display: flex;
     align-items: center;
 }
 
 .booking-swiper .swiper-slide {
-    /* Базовый размер слайда */
     width: 440px;
     height: 440px;
     
-    /* Стили по умолчанию (маленький слайд) */
     transform: scale(0.65);
     opacity: 0.6;
     transition: transform 0.5s ease, opacity 0.5s ease;
-    
-    /* Круглая форма и обрезка */
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    background-color: #222; /* Фон для плейсхолдера */
 }
 
 .booking-swiper .swiper-slide-active {
-    /* Стили для активного (центрального) слайда */
-    transform: scale(1.2);
+    transform: scale(1.1);
     opacity: 1;
     z-index: 1;
 }
@@ -698,6 +686,9 @@ main section {
     width: 100%;
     height: 100%;
     position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #222;
 }
 
 .booking-slide-art, .booking-slide-placeholder {
@@ -731,12 +722,12 @@ main section {
     padding: 20px;
     opacity: 0;
     transition: opacity 0.4s ease;
-    pointer-events: none; /* Чтобы не мешать клику по ссылке */
+    pointer-events: none;
 }
 
-/* Эффекты при наведении ТОЛЬКО на активный слайд */
 .swiper-slide-active .booking-slide-link:hover .booking-slide-info {
     opacity: 1;
+    pointer-events: all;
 }
 
 .swiper-slide-active .booking-slide-link:hover .booking-slide-art {
@@ -797,17 +788,14 @@ main section {
         text-align: center;
         gap: 1.5rem;
     }
-    .booking-carousel-nav-prev,
-    .booking-carousel-nav-next {
-        display: none;
-    }
+
     .error-code {
         font-size: 8rem;
     }
     .error-title {
         font-size: 2.2rem;
     }
-    /* Адаптивность для новой карусели */
+
     .booking-swiper .swiper-slide {
         width: 320px;
         height: 320px;

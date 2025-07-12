@@ -96,11 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const swiperContainer = document.querySelector('.booking-swiper');
         if (swiperContainer) {
             new Swiper(swiperContainer, {
-                // УБИРАЕМ ВСЕ СЛОЖНЫЕ ЭФФЕКТЫ
+                // САМАЯ ПРОСТАЯ КОНФИГУРАЦИЯ
+                effect: 'slide',       // Обычное перелистывание
                 loop: true,
                 centeredSlides: true,
-                slidesPerView: 'auto', // CSS решает, сколько слайдов видно
-                spaceBetween: 20,      // Простое расстояние между слайдами
+                slidesPerView: 'auto', // CSS решает ширину
+                spaceBetween: 30,      // Расстояние между слайдами в пикселях
                 
                 pagination: {
                   el: ".swiper-pagination",
