@@ -92,9 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ФУНКЦИЯ ИНИЦИАЛИЗАЦИИ SWIPER УДАЛЕНА
+    // ВСЯ ЛОГИКА SWIPER УДАЛЕНА
 
     setupHeader();
     setupDynamicBackground();
-    // ВЫЗОВ ФУНКЦИИ SWIPER УДАЛЕН
 });

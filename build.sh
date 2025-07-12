@@ -3,8 +3,8 @@ set -o errexit
 
 pip install -r requirements.txt
 
-# УБРАЛИ --ignore main, ЧТОБЫ ФАЙЛЫ СТАТИКИ СОБИРАЛИСЬ
-python manage.py collectstatic --no-input --ignore cloudinary
+# ВОЗВРАЩАЕМ КАК БЫЛО, ЧТОБЫ СБОРКА НЕ ПАДАЛА
+python manage.py collectstatic --no-input --ignore cloudinary --ignore main
 
 python manage.py migrate
 python manage.py createsuper
