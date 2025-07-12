@@ -1,14 +1,15 @@
-# START OF FILE: build.sh
 #!/usr/bin/env bash
 # exit on error
 set -o errexit
 
 pip install -r requirements.txt
 
-# Собираем статику, ИГНОРИРУЯ проблемные папки. Это решит ошибку сборки.
-python manage.py collectstatic --no-input --ignore "cloudinary" --ignore "main/site_assets" --ignore "site_assets"
+python manage.py collectstatic --no-input
 
 python manage.py migrate
 python manage.py createsuper
-
-# END OF FILE: build.sh
+```3.  Отправьте изменения в Git:
+```bash
+git add .
+git commit -m "Remove favicon link to fix final build error"
+git push
