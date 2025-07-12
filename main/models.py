@@ -1,3 +1,4 @@
+# START OF FILE: main/models.py
 # myproject/main/models.py
 
 from django.db import models
@@ -26,12 +27,18 @@ class Service(models.Model):
 class CompanyProfile(models.Model):
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")
     logo_image = models.FileField(upload_to='site_assets/', verbose_name="Логотип сайта (SVG/PNG)", blank=True, null=True)
-    # НОВОЕ ПОЛЕ ДЛЯ СВЕТЛОГО ЛОГО
     logo_image_light = models.FileField(
         upload_to='site_assets/',
         verbose_name="Логотип (светлый)",
         blank=True, null=True,
         help_text="Светлая версия логотипа для темных фонов (SVG/PNG)"
+    )
+    # НОВОЕ ПОЛЕ ДЛЯ ИКОНКИ
+    favicon = models.FileField(
+        upload_to='site_assets/',
+        verbose_name="Фавикон",
+        blank=True, null=True,
+        help_text="Иконка для вкладки браузера (файл .ico, .png или .svg)"
     )
     motto = models.CharField(max_length=255, blank=True, verbose_name="Девиз компании")
     about_us_text = models.TextField(blank=True, verbose_name="Текст 'О нас'")
@@ -64,6 +71,7 @@ class CompanyProfile(models.Model):
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
 
+# ... (остальные модели без изменений)
 class OrbibolInfo(models.Model):
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     
@@ -171,7 +179,6 @@ class BackgroundObject(models.Model):
     z_index = models.IntegerField(default=-9, verbose_name="Слой (z-index)", help_text="Чем меньше, тем 'ниже' объект. Паттерн фона на слое -10.")
     order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок")
     
-    # НОВЫЕ ПОЛЯ ДЛЯ ПАРАЛЛАКСА
     parallax_target_id = models.CharField(max_length=100, blank=True, null=True, verbose_name="ID секции для параллакс-эффекта", help_text="Например: 'about-us-section'. Оставьте пустым, чтобы отключить параллакс.")
     parallax_speed = models.FloatField(default=0.3, verbose_name="Скорость параллакса", help_text="Например: 0.2 (медленнее скролла), 1 (вместе со скроллом), -0.5 (в обратную сторону)")
 
@@ -182,3 +189,4 @@ class BackgroundObject(models.Model):
 
     def __str__(self):
         return self.name
+# END OF FILE: main/models.py

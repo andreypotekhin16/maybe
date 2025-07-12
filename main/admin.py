@@ -1,3 +1,4 @@
+# START OF FILE: main/admin.py
 # main/admin.py
 from django.contrib import admin
 from django.utils.html import mark_safe
@@ -107,7 +108,7 @@ class OrbibolInfoAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     readonly_fields = (
-        'logo_image_preview', 'logo_image_light_preview', 'vk_icon_preview',
+        'logo_image_preview', 'logo_image_light_preview', 'favicon_preview', 'vk_icon_preview',
         'youtube_icon_preview', 'telegram_icon_preview', 'nav_toggle_icon_preview'
     )
     fieldsets = (
@@ -116,6 +117,7 @@ class CompanyProfileAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
                 'site_name',
                 ('logo_image', 'logo_image_preview'),
                 ('logo_image_light', 'logo_image_light_preview'),
+                ('favicon', 'favicon_preview'),
                 'motto', 'about_us_text'
             )
         }),
@@ -145,6 +147,9 @@ class CompanyProfileAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     def logo_image_light_preview(self, obj):
         return self._icon_preview(obj, 'logo_image_light', "max-height: 100px; max-width: 100px; background: #333; padding: 5px;")
     logo_image_light_preview.short_description = 'Предпросмотр (светлый)'
+    
+    def favicon_preview(self, obj): return self._icon_preview(obj, 'favicon')
+    favicon_preview.short_description = 'Предпросмотр Фавикона'
 
     def vk_icon_preview(self, obj): return self._icon_preview(obj, 'vk_icon')
     vk_icon_preview.short_description = 'Предпросмотр VK'
@@ -189,3 +194,4 @@ class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+# END OF FILE: main/admin.py
