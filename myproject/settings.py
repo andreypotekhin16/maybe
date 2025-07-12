@@ -85,12 +85,13 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = []
 
+# ИЗМЕНЕНО: Используем более простое хранилище, чтобы обойти ошибку сборки
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.WhiteNoiseStorage",
     },
 }
 
@@ -100,10 +101,10 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# ИЗМЕНЕНО: Дублируем простое хранилище для обратной совместимости
+STATICFILES_STORAGE = "whitenoise.storage.WhiteNoiseStorage"
 
 # --- ЛОГИРОВАНИЕ ---
-# ... (остальная часть файла без изменений)
 LOG_DIR = BASE_DIR / 'logs'
 LOG_DIR.mkdir(exist_ok=True)
 LOGGING = {
