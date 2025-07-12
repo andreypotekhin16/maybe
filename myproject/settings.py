@@ -1,25 +1,3 @@
-# START OF FILE: build.sh
-#!/usr/bin/env bash
-# exit on error
-set -o errexit
-
-pip install -r requirements.txt
-
-# ВРЕМЕННО ОТКЛЮЧАЕМ COLLECTSTATIC, ЧТОБЫ ГАРАНТИРОВАННО ЗАПУСТИТЬ СЕРВЕР
-# python manage.py collectstatic --no-input
-
-python manage.py migrate
-python manage.py createsuper
-
-# END OF FILE: build.sh```
-
----
-
-### Шаг 2: Замените `myproject/settings.py`
-
-Мы полностью меняем подход к статике: убираем `STATIC_ROOT` и указываем `STATICFILES_DIRS`. Это заставит `whitenoise` искать файлы CSS и JS напрямую в вашем коде, а не в отдельной папке, которую создавал `collectstatic`.
-
-```python
 # START OF FILE: myproject/settings.py
 # myproject/settings.py
 
