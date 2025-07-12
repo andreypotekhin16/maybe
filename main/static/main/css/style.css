@@ -310,9 +310,10 @@ main section {
 .booking-swiper {
     width: 100%;
 }
+
 .booking-carousel-item { 
-    width: 220px;
-    height: 220px;
+    width: 440px;
+    height: 440px;
     transition: transform 0.4s ease, filter 0.4s ease;
 }
 .booking-carousel-link {
