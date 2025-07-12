@@ -96,28 +96,44 @@ document.addEventListener('DOMContentLoaded', function() {
         const swiperContainer = document.querySelector('.booking-swiper');
         if (swiperContainer) {
             const slides = swiperContainer.querySelectorAll('.swiper-slide');
+            const customPaginationBullets = document.querySelectorAll('.custom-pagination-bullet');
             
-            new Swiper(swiperContainer, {
-                effect: 'slide',
+            const mySwiper = new Swiper(swiperContainer, {
                 loop: true,
                 centeredSlides: true,
                 slidesPerView: 'auto',
-                
-                // Принудительно создаем больше клонов для зацикливания
                 loopAdditionalSlides: slides.length,
-
-                // Уменьшаем расстояние между слайдами
                 spaceBetween: 0,
                 
-                pagination: {
-                  el: ".swiper-pagination",
-                  clickable: true,
-                },
+                // Стандартную пагинацию ВЫКЛЮЧАЕМ
+                pagination: false,
+
                 navigation: {
                   nextEl: '.swiper-button-next',
                   prevEl: '.swiper-button-prev',
                 },
+
+                // Добавляем обработчик событий
+                on: {
+                    slideChange: function () {
+                        // `this.realIndex` показывает реальный номер слайда (от 0 до n-1)
+                        let currentIndex = this.realIndex;
+
+                        customPaginationBullets.forEach((bullet, index) => {
+                            if (index === currentIndex) {
+                                bullet.classList.add('custom-pagination-bullet-active');
+                            } else {
+                                bullet.classList.remove('custom-pagination-bullet-active');
+                            }
+                        });
+                    },
+                },
             });
+
+            // Устанавливаем активную точку при первой загрузке
+            if (customPaginationBullets.length > 0) {
+                 customPaginationBullets[mySwiper.realIndex].classList.add('custom-pagination-bullet-active');
+            }
         }
     }
 

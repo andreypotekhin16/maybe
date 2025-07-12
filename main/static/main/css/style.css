@@ -652,93 +652,132 @@ main section {
 
 /* === СТИЛИ ДЛЯ НОВОЙ, ПРОСТОЙ КАРУСЕЛИ (С ИСПРАВЛЕНИЯМИ) === */
 #booking-section {
+    position: relative;
     padding: 4rem 0;
+    overflow: hidden;
+}
+
+.swiper-container-wrapper {
     position: relative;
 }
 
 .booking-swiper {
     width: 100%;
-    height: 500px;
-    padding: 2rem 0;
+    height: 550px; 
     overflow: visible; 
 }
 
+.booking-swiper .swiper-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 .booking-swiper .swiper-slide {
-    width: 320px;
-    height: 400px;
-    opacity: 0.4;
-    transform: scale(0.85);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    border-radius: 50%; /* Возвращаем круглую форму */
-    overflow: hidden;   /* Обрезаем контент по кругу */
+    width: 440px;
+    height: 440px;
+    transform: scale(0.65);
+    opacity: 0.6;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    margin: 0 -40px;
 }
 
 .booking-swiper .swiper-slide-active {
+    transform: scale(1.1);
     opacity: 1;
-    transform: scale(1);
+    z-index: 1;
 }
 
-.booking-card {
-    position: relative;
+.booking-slide-link {
+    display: block;
     width: 100%;
     height: 100%;
+    position: relative;
+    border-radius: 50%;
     overflow: hidden;
+    background-color: #222;
 }
 
-.booking-card-img {
+.booking-slide-art, .booking-slide-placeholder {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
 }
 
-.booking-card-overlay {
+.booking-slide-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #888;
+}
+
+.booking-slide-info {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
-    padding: 2rem 1.5rem;
-    background: linear-gradient(to top, rgba(0,0,0,1) 10%, transparent);
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
     color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s ease;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
-.booking-card:hover .booking-card-overlay {
+.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
     opacity: 1;
-    transform: translateY(0);
+    pointer-events: all;
 }
 
-.booking-card:hover .booking-card-img {
+.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
     transform: scale(1.1);
 }
 
-.booking-card-title {
+.booking-slide-title {
     font-family: var(--font-sunday);
-    font-size: 2rem;
-    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
 }
 
-.booking-card-desc {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
+.booking-slide-description {
+    font-family: var(--font-fortunec);
+    font-size: 1.1rem;
 }
 
-.booking-card-button {
+.custom-pagination-wrapper {
+    text-align: center;
+    position: relative;
+    bottom: -10px; /* Сдвигаем ниже контейнера свайпера */
+    z-index: 10;
+}
+
+.custom-pagination {
     display: inline-block;
-    padding: 0.6rem 1.2rem;
-    background-color: var(--color-pink-accent);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    padding: 5px;
 }
 
-.booking-card-button:hover {
-    background-color: #fff;
-    color: var(--color-pink-accent);
+.custom-pagination-bullet {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0.5;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: opacity 0.3s, background-color 0.3s;
+}
+
+.custom-pagination-bullet-active {
+    background: var(--color-pink-accent);
+    opacity: 1;
 }
 
 .booking-swiper .swiper-button-prev,
@@ -748,25 +787,12 @@ main section {
     transform: translateY(-50%);
     width: 44px;
     height: 44px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
     color: var(--color-white);
-    transition: background-color 0.3s ease;
     z-index: 20;
 }
-
-.booking-swiper .swiper-button-prev:hover,
-.booking-swiper .swiper-button-next:hover {
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
 .booking-swiper .swiper-button-prev::after,
 .booking-swiper .swiper-button-next::after {
-    font-size: 1.5rem;
-}
-
-.booking-swiper .swiper-pagination-bullet-active {
-    background: var(--color-pink-accent);
+    font-size: 2rem;
 }
 
 
@@ -801,9 +827,17 @@ main section {
         font-size: 2.2rem;
     }
 
-    .booking-swiper .swiper-button-prev,
-    .booking-swiper .swiper-button-next {
-        display: none;
+    .booking-swiper .swiper-slide {
+        width: 300px;
+        height: 300px;
+        transform: scale(0.7);
+        margin: 0 -20px;
+    }
+    .booking-swiper .swiper-slide-active {
+        transform: scale(1);
+    }
+    .booking-swiper {
+        height: 350px;
     }
 }
 

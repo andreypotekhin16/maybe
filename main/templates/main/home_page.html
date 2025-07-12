@@ -64,31 +64,11 @@
         <div class="container">
             <h2>Запись на игру</h2>
             
-            <div class="swiper booking-swiper">
-                <div class="swiper-wrapper">
-                    
-                    {# Обычный цикл для всех слайдов #}
-                    {% for service in services %}
-                    <div class="swiper-slide">
-                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                             {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
-                            {% else %}
-                                <div class="booking-slide-placeholder">Арт</div>
-                            {% endif %}
-                           
-                            <div class="booking-slide-info">
-                                <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                {% if service.short_description %}
-                                <p class="booking-slide-description">{{ service.short_description }}</p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    </div>
-                    {% endfor %}
-
-                    {# ХАК: Если слайдов мало (меньше 4), дублируем их, чтобы Swiper не глючил #}
-                    {% if services|length > 0 and services|length < 4 %}
+            <div class="swiper-container-wrapper"> <!-- Добавили обертку для позиционирования пагинации -->
+                <div class="swiper booking-swiper">
+                    <div class="swiper-wrapper">
+                        
+                        {# Основной цикл #}
                         {% for service in services %}
                         <div class="swiper-slide">
                             <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
@@ -107,14 +87,45 @@
                             </a>
                         </div>
                         {% endfor %}
-                    {% endif %}
 
+                        {# Хак для зацикливания #}
+                        {% if services|length > 0 and services|length < 4 %}
+                            {% for service in services %}
+                            <div class="swiper-slide">
+                                <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                                     {% if service.image %}
+                                        <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
+                                    {% else %}
+                                        <div class="booking-slide-placeholder">Арт</div>
+                                    {% endif %}
+                                   
+                                    <div class="booking-slide-info">
+                                        <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                        {% if service.short_description %}
+                                        <p class="booking-slide-description">{{ service.short_description }}</p>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                    <!-- Элементы навигации Swiper -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                 </div>
-                <!-- Элементы навигации -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+
+                <!-- НАША КАСТОМНАЯ ПАГИНАЦИЯ -->
+                <div class="custom-pagination-wrapper">
+                    <div class="custom-pagination">
+                        {% for service in services %}
+                            <span class="custom-pagination-bullet"></span>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+
         </div>
     </section>
 
