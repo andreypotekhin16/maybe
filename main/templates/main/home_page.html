@@ -59,38 +59,7 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (ПРИМИТИВНАЯ ВЕРСИЯ) -->
-    <section id="booking-section">
-        <div class="container">
-            <h2>Запись на игру</h2>
-            
-            <div class="swiper booking-swiper">
-                <div class="swiper-wrapper">
-                    
-                    {% for service in services %}
-                    <div class="swiper-slide">
-                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                             {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
-                            {% else %}
-                                <div class="booking-slide-placeholder">Арт</div>
-                            {% endif %}
-                           
-                            <div class="booking-slide-info">
-                                <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                {% if service.short_description %}
-                                <p class="booking-slide-description">{{ service.short_description }}</p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    </div>
-                    {% endfor %}
-
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
-    </section>
+    <!-- СЕКЦИЯ КАРУСЕЛИ ПОЛНОСТЬЮ УДАЛЕНА -->
 
     <!-- 4. СЕКЦИЯ "ОРБИБОЛ" -->
     <section id="orbibol-section">

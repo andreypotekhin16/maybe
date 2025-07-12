@@ -92,26 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function setupSwiper() {
-        const swiperContainer = document.querySelector('.booking-swiper');
-        if (swiperContainer) {
-            new Swiper(swiperContainer, {
-                // САМАЯ ПРОСТАЯ КОНФИГУРАЦИЯ
-                effect: 'slide',       // Обычное перелистывание
-                loop: true,
-                centeredSlides: true,
-                slidesPerView: 'auto', // CSS решает ширину
-                spaceBetween: 30,      // Расстояние между слайдами в пикселях
-                
-                pagination: {
-                  el: ".swiper-pagination",
-                  clickable: true,
-                },
-            });
-        }
-    }
+    // ФУНКЦИЯ ИНИЦИАЛИЗАЦИИ SWIPER УДАЛЕНА
 
     setupHeader();
     setupDynamicBackground();
-    setupSwiper();
+    // ВЫЗОВ ФУНКЦИИ SWIPER УДАЛЕН
 });
