@@ -650,7 +650,7 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ КАРУСЕЛИ (С ИСПРАВЛЕНИЯМИ) === */
+/* === СТИЛИ ДЛЯ КАРУСЕЛИ === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
@@ -747,10 +747,11 @@ main section {
     font-size: 1.1rem;
 }
 
+/* СТИЛИ ДЛЯ ПАГИНАЦИИ, КОТОРАЯ ТЕПЕРЬ ВИДНА */
 .custom-pagination {
     text-align: center;
-    margin-top: -20px;
-    position: relative;
+    margin-top: -20px; /* Немного приподнимаем под карусель */
+    position: relative; /* Чтобы z-index сработал */
     z-index: 10;
 }
 
@@ -762,6 +763,7 @@ main section {
     background: #fff;
     opacity: 0.4;
     margin: 0 6px;
+    cursor: pointer;
     transition: opacity 0.3s, background-color 0.3s;
 }
 
@@ -769,6 +771,7 @@ main section {
     background: var(--color-pink-accent);
     opacity: 1;
 }
+
 
 .booking-swiper .swiper-button-prev,
 .booking-swiper .swiper-button-next {
