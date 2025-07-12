@@ -708,34 +708,31 @@ main section {
     color: #888;
 }
 
-/* Блок с текстом теперь оверлей */
+/* ИЗМЕНЕНИЕ: ТЕКСТ КАК ОВЕРЛЕЙ */
 .booking-slide-info {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6); /* Слегка затемняем для читаемости */
     color: #fff;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-    /* По умолчанию невидим */
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    
+    opacity: 0; /* По умолчанию невидим */
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
 /* Показываем текст ТОЛЬКО на активном слайде */
 .swiper-slide-active .booking-slide-info {
     opacity: 1;
-}
-
-/* А ховер теперь не нужен для показа, он может делать что-то другое */
-.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
-    transform: scale(1.1);
 }
 
 .booking-slide-title {
