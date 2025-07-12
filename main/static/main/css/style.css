@@ -315,6 +315,10 @@ main section {
     width: 100%;
 }
 
+.booking-swiper .swiper-slide {
+    width: 220px;
+}
+
 .booking-carousel-item { 
     width: 220px;
     height: 220px;
