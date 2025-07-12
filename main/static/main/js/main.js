@@ -99,13 +99,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
-                slidesPerView: 'auto',
+                slidesPerView: 3, 
                 loop: true,
                 slideToClickedSlide: true,
                 coverflowEffect: {
                     rotate: 0,
-                    stretch: 100, 
-                    depth: 150, 
+                    stretch: 10, 
+                    depth: 100, 
                     modifier: 1,
                     scale: 0.7, 
                     slideShadows: false, 
@@ -126,9 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                     },
                     768: {
-                        slidesPerView: 'auto',
+                        slidesPerView: 3,
                          coverflowEffect: {
-                            stretch: 100, 
+                            stretch: 10,
                         },
                     }
                 }
