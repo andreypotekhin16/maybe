@@ -301,86 +301,73 @@ main section {
     line-height: 1.6;
 }
 
-/* ========== НАЧАЛО ИЗМЕНЕНИЙ ДЛЯ КАРУСЕЛИ ========== */
+/* ========== НОВЫЕ, ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ ========== */
 
 #booking-section {
     padding-top: 8rem;
     padding-bottom: 8rem;
-    overflow: hidden; /* Предотвращаем горизонтальный скролл */
+    overflow: hidden; 
 }
 
 .booking-carousel-wrapper {
     position: relative;
-    padding-bottom: 50px; 
-}
-.booking-swiper {
-    width: 100%;
-    /* Добавляем отступы, чтобы активный слайд не обрезался */
-    padding-top: 50px !important;
-    padding-bottom: 50px !important;
+    height: 600px; /* Задаем высоту, чтобы вместить увеличенный слайд */
+    display: flex;
+    align-items: center;
 }
 
-/* ЗАДАЕМ РАЗМЕР СЛАЙДА */
+.booking-swiper {
+    width: 100%;
+    height: 100%;
+}
+
 .booking-swiper .swiper-slide {
     width: 440px;
     height: 440px;
-    display: flex; /* Важно для coverflow */
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.5s ease;
-}
-
-/* СТИЛИЗУЕМ СОДЕРЖИМОЕ СЛАЙДА (НАШ КРУГ) */
-.booking-carousel-item { 
-    width: 100%;
-    height: 100%;
-    transition: transform 0.4s ease, filter 0.4s ease;
-}
-
-.booking-carousel-link {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* ВАЖНО: плавный переход для масштаба */
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    /* Базовый масштаб для неактивных слайдов */
+    transform: scale(0.65);
+    opacity: 0.7;
+}
+
+.booking-swiper .swiper-slide-active {
+    /* Увеличенный масштаб для активного слайда */
+    transform: scale(1.2);
+    opacity: 1;
+    z-index: 10;
+}
+
+.booking-carousel-item { 
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    background-color: #333; /* Фон на случай если картинка не загрузится */
     overflow: hidden;
     position: relative;
     color: var(--color-white);
-    background-color: #333; /* Фон, если картинка не загрузится */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .booking-carousel-art {
     width: 100%;
     height: 100%;
     object-fit: cover; 
-    transition: transform 0.4s ease, filter 0.4s ease;
+    transition: transform 0.4s ease;
 }
 
-/* СТИЛИ АКТИВНОГО И НЕАКТИВНЫХ СЛАЙДОВ */
-.swiper-slide-active .booking-carousel-item {
-    /* Активный слайд не меняем, он и так 100% размера */
-    transform: scale(1);
-    z-index: 10;
-}
-
-.swiper-slide:not(.swiper-slide-active) {
-    /* Неактивные слайды уменьшаем */
-    transform: scale(0.7);
-}
-
-.swiper-slide:not(.swiper-slide-active) .booking-carousel-item {
-    filter: brightness(0.6);
-    cursor: pointer; 
-}
-
-/* ЛОГИКА ОВЕРЛЕЯ И ТЕКСТА */
 .booking-carousel-info {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.4);
-    transition: opacity 0.3s ease, background 0.4s ease, backdrop-filter 0.4s ease;
+    transition: all 0.4s ease;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -389,7 +376,6 @@ main section {
 }
 
 .info-content-wrapper {
-    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
@@ -405,80 +391,69 @@ main section {
 .info-hover {
     position: absolute;
     opacity: 0;
-    font-size: 1.1rem;
-    padding: 0 10px;
-}
-.info-hover p {
-    margin: 0;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    padding: 0 20px;
 }
 
 .booking-carousel-title {
     font-family: var(--font-fortunec);
     font-weight: bold;
-    font-size: 1.3125rem;
+    font-size: 1.5rem;
     line-height: 1.2;
     margin: 0;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-.booking-carousel-dates {
-    font-family: var(--font-fortunec);
-    font-size: 1.3125rem;
-    margin-top: 0.5rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
 
-/* ЛОГИКА ХОВЕР-ЭФФЕКТА (ТЕПЕРЬ РАБОТАЕТ) */
-/* Эффект применяется только к центральному (активному) слайду */
-.swiper-slide-active .booking-carousel-link:hover .booking-carousel-art {
+.booking-carousel-dates {
+    font-family: var(--font-fortunec);
+    font-size: 1.3rem;
+    margin-top: 0.75rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+/* Ховер-эффекты применяются ТОЛЬКО к активному слайду */
+.swiper-slide-active .booking-carousel-item:hover .booking-carousel-art {
     transform: scale(1.1);
 }
 
-.swiper-slide-active .booking-carousel-link:hover .booking-carousel-info {
-    background: radial-gradient(circle, rgba(0,0,0,0.75) 15%, rgba(0,0,0,0) 80%);
+.swiper-slide-active .booking-carousel-item:hover .booking-carousel-info {
+    background: radial-gradient(circle, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0.1) 80%);
     backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
 }
 
-.swiper-slide-active .booking-carousel-link:hover .info-default {
+.swiper-slide-active .booking-carousel-item:hover .info-default {
     opacity: 0;
 }
-.swiper-slide-active .booking-carousel-link:hover .info-hover {
+
+.swiper-slide-active .booking-carousel-item:hover .info-hover {
     opacity: 1;
 }
 
-/* НАВИГАЦИЯ И ПАГИНАЦИЯ */
 .booking-carousel-nav-prev,
 .booking-carousel-nav-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 15%; /* Уменьшил ширину, чтобы не перекрывать слайды */
-    height: 100%;
+    width: 10%;
+    height: 100px;
     z-index: 20; 
     cursor: pointer;
 }
-.booking-carousel-nav-prev { left: 0; }
-.booking-carousel-nav-next { right: 0; }
+.booking-carousel-nav-prev { left: 5%; }
+.booking-carousel-nav-next { right: 5%; }
 
 .booking-swiper .swiper-pagination {
-    bottom: 0px !important; 
+    bottom: 20px !important; 
 }
 .booking-swiper .swiper-pagination-bullet {
     background: rgba(255, 255, 255, 0.5);
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
 }
 .booking-swiper .swiper-pagination-bullet-active {
     background: var(--color-pink-accent);
 }
 
-.swiper-no-transition .swiper-wrapper {
-    transition-duration: 0s !important;
-}
-
-/* ========== КОНЕЦ ИЗМЕНЕНИЙ ДЛЯ КАРУСЕЛИ ========== */
-
+/* ========== КОНЕЦ ИЗМЕНЕНИЙ ========== */
 
 #orbibol-section .container {
     max-width: 800px;

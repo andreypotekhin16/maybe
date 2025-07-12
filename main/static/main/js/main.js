@@ -99,18 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
-                // ИЗМЕНЕНИЕ 1: 'auto' позволяет CSS задавать размер слайда.
-                slidesPerView: 'auto',
+                slidesPerView: 'auto', // CSS управляет размером
                 loop: true,
                 slideToClickedSlide: true,
                 coverflowEffect: {
                     rotate: 0,
-                    // ИЗМЕНЕНИЕ 2: Положительное значение 'stretch' правильно сближает слайды.
-                    stretch: 100,
-                    depth: 150, 
+                    stretch: 50,      // Адекватное расстояние между слайдами
+                    depth: 200,       // Глубина перспективы
                     modifier: 1,
-                    // ИЗМЕНЕНИЕ 3: Scale теперь будет управляться через CSS для большей точности.
-                    scale: 1, 
+                    scale: 1,         // ВАЖНО: Нейтрализуем масштабирование от JS
                     slideShadows: false, 
                 },
                 pagination: {
@@ -120,21 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 navigation: {
                     nextEl: '.booking-carousel-nav-next',
                     prevEl: '.booking-carousel-nav-prev',
-                },
-                 // В мобильной версии сохраняем адаптивность
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        coverflowEffect: {
-                            stretch: 0
-                        },
-                    },
-                    768: {
-                        slidesPerView: 'auto',
-                         coverflowEffect: {
-                            stretch: 100
-                        },
-                    }
                 }
             });
         }
