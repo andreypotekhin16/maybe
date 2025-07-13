@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (ИСПРАВЛЕНО) -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (ФИНАЛЬНАЯ ВЕРСИЯ) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
@@ -69,6 +69,7 @@
                     
                     {% for service in services %}
                     <div class="swiper-slide">
+                        <!-- ВАЖНО: Весь контент (картинка и текст) находится ВНУТРИ тега <a> -->
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
                             <!-- Слой с картинкой -->
                             {% if service.image %}
@@ -77,7 +78,7 @@
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
                            
-                            <!-- Слой-оверлей с текстом. Он гарантированно будет внутри ссылки -->
+                            <!-- Слой-оверлей с текстом -->
                             <div class="booking-slide-info">
                                 <div class="info-content-wrapper">
                                     <div class="info-default">
@@ -126,7 +127,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- 4. СЕКЦИЯ "ОРБИБОЛ" -->
     <section id="orbibol-section">
         <div class="container">
