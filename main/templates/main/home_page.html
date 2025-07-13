@@ -16,7 +16,7 @@
                         {% endif %}
                         {% if company_profile.youtube_profile_link and company_profile.youtube_icon %}
                             <a href="{{ company_profile.youtube_profile_link }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                                <img src="{{ company.youtube_icon.url }}" alt="YouTube">
                             </a>
                         {% endif %}
                         {% if company_profile.telegram_profile_link and company_profile.telegram_icon %}
@@ -67,7 +67,7 @@
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Теперь один цикл, без макроса, с одной структурой внутри #}
+                    {# Основной цикл #}
                     {% for service in services %}
                     <div class="swiper-slide">
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
@@ -77,7 +77,6 @@
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
                            
-                            <!-- Оверлей с текстом: теперь это ЕДИНСТВЕННЫЙ текстовый блок -->
                             <div class="booking-slide-info">
                                 <h3 class="booking-slide-title">{{ service.name }}</h3>
                                 {% if service.short_description %}
@@ -88,7 +87,7 @@
                     </div>
                     {% endfor %}
 
-                    {# Хак для зацикливания: просто дублируем основной цикл еще раз #}
+                    {# Хак для зацикливания #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
                         <div class="swiper-slide">
@@ -111,9 +110,9 @@
                     {% endif %}
 
                 </div>
-                <!-- Стрелки -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+                <!-- Стрелки УДАЛЕНЫ -->
+                <!-- <div class="swiper-button-prev"></div> -->
+                <!-- <div class="swiper-button-next"></div> -->
             </div>
 
             <!-- Кастомная пагинация -->

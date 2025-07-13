@@ -663,11 +663,11 @@ main section {
 }
 
 .booking-swiper .swiper-wrapper {
-    display: flex !important; /* Гарантируем flex-контейнер */
-    flex-direction: row !important; /* Гарантируем в один ряд */
-    flex-wrap: nowrap !important; /* Запрещаем перенос */
-    align-items: center !important; /* Выравнивание по центру */
-    height: 100% !important; /* Гарантируем высоту */
+    display: flex !important; 
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    height: 100% !important;
 }
 
 .booking-swiper .swiper-slide {
