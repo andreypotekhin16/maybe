@@ -301,7 +301,7 @@ main section {
     line-height: 1.6;
 }
 
-/* === ФИНАЛЬНЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
+/* === УПРОЩЕННЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ (БЕЗ ТЕКСТА) === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
@@ -319,18 +319,18 @@ main section {
     align-items: center; 
 }
 
-/* --- Состояние 1: Боковой слайд (базовый стиль) --- */
+/* Состояние 1: Боковой слайд (базовый стиль) */
 .booking-swiper .swiper-slide {
     width: 440px;
     height: 440px;
-    flex-shrink: 0; /* Предотвращает сжатие слайдов */
+    flex-shrink: 0;
     transform: scale(0.65);
     opacity: 0.5;
     filter: brightness(0.7);
     transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
 }
 
-/* --- Состояние 2: Центральный слайд --- */
+/* Состояние 2: Центральный слайд */
 .booking-swiper .swiper-slide-active {
     transform: scale(1.1);
     opacity: 1;
@@ -338,21 +338,19 @@ main section {
     z-index: 10;
 }
 
-/* --- Состояние 3: Наведение на центральный слайд --- */
+/* Состояние 3: Наведение на центральный слайд */
 .booking-swiper .swiper-slide-active:hover {
     transform: scale(1.15);
 }
-
-/* -- Элементы слайда -- */
 
 /* Ссылка-обертка, она же круглая маска */
 .booking-slide-link {
     display: block; 
     width: 100%;
     height: 100%;
-    position: relative; /* Ключевое свойство для позиционирования оверлея */
+    position: relative;
     border-radius: 50%;
-    overflow: hidden; /* Обрезает все, что выходит за круг */
+    overflow: hidden;
     background-color: #222;
     cursor: grab;
     
@@ -376,69 +374,6 @@ main section {
     justify-content: center;
     font-size: 2rem;
     color: #888;
-}
-
-/* Оверлей с текстом (лежит поверх картинки, внутри ссылки) */
-.booking-slide-info {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    color: #fff;
-    padding: 20px;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    background: rgba(0, 0, 0, 0.7);
-    transition: opacity 0.3s ease, background-color 0.3s ease;
-    
-    opacity: 0;
-}
-.swiper-slide-active .booking-slide-info {
-    opacity: 1;
-}
-
-/* Контейнер для смены текста */
-.info-content-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    text-align: center;
-}
-
-.info-default, .info-hover {
-    transition: opacity 0.3s ease-in-out;
-}
-
-.info-hover {
-    position: absolute;
-    opacity: 0;
-    font-size: 1.2rem;
-    line-height: 1.4;
-    padding: 0 15px;
-}
-.info-hover p {
-    margin: 0;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
-}
-
-.booking-slide-title {
-    font-family: var(--font-sunday);
-    font-size: 2.8rem;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    line-height: 1.1;
-    margin: 0;
-}
-
-.swiper-slide-active .booking-slide-link:hover .info-default {
-    opacity: 0;
-}
-.swiper-slide-active .booking-slide-link:hover .info-hover {
-    opacity: 1;
 }
 
 #orbibol-section .container {
@@ -834,12 +769,6 @@ main section {
     }
     .booking-swiper {
         height: 350px;
-    }
-    .booking-slide-title {
-        font-size: 2.2rem;
-    }
-    .info-hover {
-        font-size: 1rem;
     }
 }
 

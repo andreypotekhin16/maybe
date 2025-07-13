@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (ФИНАЛЬНАЯ ВЕРСИЯ) -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (БЕЗ ТЕКСТА) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
@@ -69,28 +69,13 @@
                     
                     {% for service in services %}
                     <div class="swiper-slide">
-                        <!-- ВАЖНО: Весь контент (картинка и текст) находится ВНУТРИ тега <a> -->
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                            <!-- Слой с картинкой -->
                             {% if service.image %}
                                 <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
-                           
-                            <!-- Слой-оверлей с текстом -->
-                            <div class="booking-slide-info">
-                                <div class="info-content-wrapper">
-                                    <div class="info-default">
-                                        <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                    </div>
-                                    <div class="info-hover">
-                                        {% if service.short_description %}
-                                            <p>{{ service.short_description }}</p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Блок с текстом полностью удален -->
                         </a>
                     </div>
                     {% endfor %}
@@ -105,19 +90,6 @@
                                 {% else %}
                                     <div class="booking-slide-placeholder">Арт</div>
                                 {% endif %}
-                               
-                               <div class="booking-slide-info">
-                                   <div class="info-content-wrapper">
-                                       <div class="info-default">
-                                           <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                       </div>
-                                       <div class="info-hover">
-                                           {% if service.short_description %}
-                                               <p>{{ service.short_description }}</p>
-                                           {% endif %}
-                                       </div>
-                                   </div>
-                               </div>
                             </a>
                         </div>
                         {% endfor %}
