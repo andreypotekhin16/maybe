@@ -92,45 +92,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Обновленная функция для карусели
     function setupSwiper() {
         const swiperContainer = document.querySelector('.booking-swiper');
         if (swiperContainer) {
             const slides = swiperContainer.querySelectorAll('.swiper-slide');
-            const customPaginationBullets = document.querySelectorAll('.custom-pagination-bullet');
             
-            const mySwiper = new Swiper(swiperContainer, {
+            new Swiper(swiperContainer, {
                 loop: true,
                 centeredSlides: true,
                 slidesPerView: 'auto',
+                // Эта опция помогает Swiper корректно создавать дубликаты
+                // для зацикливания, когда реальных слайдов мало.
                 loopAdditionalSlides: slides.length,
                 
-                // ИЗМЕНЕНИЕ: Устанавливаем нужное расстояние
-                spaceBetween: 15,
+                // Расстояние между слайдами, но основной эффект сжатия достигается
+                // отрицательными отступами в CSS.
+                spaceBetween: 0,
                 
+                // Пагинация и навигация полностью отключены
                 pagination: false, 
-
-                navigation: {
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev',
-                },
-
-                on: {
-                    slideChange: function () {
-                        let currentIndex = this.realIndex;
-                        customPaginationBullets.forEach((bullet, index) => {
-                            if (index === currentIndex) {
-                                bullet.classList.add('custom-pagination-bullet-active');
-                            } else {
-                                bullet.classList.remove('custom-pagination-bullet-active');
-                            }
-                        });
-                    },
-                },
+                navigation: false,
             });
-
-            if (customPaginationBullets.length > 0) {
-                 customPaginationBullets[mySwiper.realIndex].classList.add('custom-pagination-bullet-active');
-            }
         }
     }
 

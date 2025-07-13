@@ -301,6 +301,147 @@ main section {
     line-height: 1.6;
 }
 
+/* === НОВЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ === */
+#booking-section {
+    position: relative;
+    padding: 4rem 0;
+    overflow: hidden; /* Предотвращает выход увеличенных слайдов за пределы */
+}
+
+.booking-swiper {
+    width: 100%;
+    height: 550px; 
+    overflow: visible; /* Важно, чтобы видеть соседние слайды */
+}
+
+.booking-swiper .swiper-wrapper {
+    display: flex;
+    align-items: center; 
+}
+
+/* СОСТОЯНИЕ 1: Боковой слайд (стиль по умолчанию) */
+.booking-swiper .swiper-slide {
+    width: 440px; /* Ширина слайда */
+    height: 440px; /* Высота слайда */
+    
+    /* Начальные трансформации для боковых слайдов */
+    transform: scale(0.65);
+    opacity: 0.5;
+    filter: brightness(0.7);
+    
+    transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
+    
+    position: relative; 
+}
+
+/* СОСТОЯНИЕ 2: Центральный слайд */
+.booking-swiper .swiper-slide-active {
+    transform: scale(1.1); /* Увеличиваем центральный слайд */
+    opacity: 1;
+    filter: brightness(1);
+    z-index: 10; /* Центральный слайд всегда сверху */
+}
+
+/* СОСТОЯНИЕ 3: Наведение на центральный слайд */
+.booking-swiper .swiper-slide-active:hover {
+    transform: scale(1.15); /* Дополнительное увеличение при наведении */
+}
+
+/* Ссылка-обертка внутри слайда */
+.booking-slide-link {
+    display: block; 
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%; /* Делаем слайд круглым */
+    overflow: hidden;
+    background-color: #222; /* Фон на случай, если картинка не загрузится */
+    
+    /* По умолчанию все слайды некликабельны */
+    pointer-events: none; 
+}
+
+/* Делаем кликабельной только ссылку на АКТИВНОМ слайде */
+.swiper-slide-active .booking-slide-link {
+    pointer-events: auto;
+}
+
+/* Картинка внутри слайда */
+.booking-slide-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Оверлей с текстом */
+.booking-slide-info {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    
+    /* Текст по умолчанию скрыт на всех слайдах */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Показываем текст ТОЛЬКО на центральном (активном) слайде */
+.swiper-slide-active .booking-slide-info {
+    opacity: 1;
+}
+
+/* Обертка для двух видов текста */
+.info-content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info-default, .info-hover {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Текст при наведении невидим по умолчанию */
+.info-hover {
+    position: absolute;
+    opacity: 0;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    padding: 0 15px;
+}
+.info-hover p {
+    margin: 0;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Стили для заголовка */
+.booking-slide-title {
+    font-family: var(--font-sunday);
+    font-size: 2.8rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    line-height: 1.1;
+    margin: 0;
+}
+
+/* Логика смены текста при наведении на центральный слайд */
+.swiper-slide-active .booking-slide-link:hover .info-default {
+    opacity: 0; /* Скрываем основной текст */
+}
+.swiper-slide-active .booking-slide-link:hover .info-hover {
+    opacity: 1; /* Показываем текст для наведения */
+}
 
 #orbibol-section .container {
     max-width: 800px;
@@ -649,179 +790,6 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ КАРУСЕЛИ === */
-#booking-section {
-    position: relative;
-    padding: 4rem 0;
-    overflow: hidden;
-}
-
-.booking-swiper {
-    width: 100%;
-    height: 550px; 
-    overflow: visible;
-}
-
-.booking-swiper .swiper-wrapper {
-    display: flex !important; /* Гарантируем flex-контейнер */
-    flex-direction: row !important; /* Гарантируем в один ряд */
-    flex-wrap: nowrap !important; /* Запрещаем перенос */
-    align-items: center !important; /* Выравнивание по центру */
-    height: 100% !important; /* Гарантируем высоту */
-}
-
-.booking-swiper .swiper-slide {
-    width: 440px;
-    height: 440px;
-    transform: scale(0.65);
-    opacity: 0.6;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    margin: 0 -40px;
-    
-    position: relative; 
-}
-
-.booking-swiper .swiper-slide-active {
-    transform: scale(1.1);
-    opacity: 1;
-    z-index: 1;
-}
-
-.booking-slide-link {
-    display: block; 
-    width: 100%;
-    height: 100%;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #222;
-    /* ИЗМЕНЕНИЕ: По умолчанию некликабелен */
-    pointer-events: none !important; 
-}
-
-/* ИЗМЕНЕНИЕ: Активный слайд - кликабелен */
-.swiper-slide-active .booking-slide-link {
-    pointer-events: auto !important; 
-}
-
-.booking-slide-art, .booking-slide-placeholder {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.booking-slide-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: #888;
-}
-
-/* Оверлей с текстом */
-.booking-slide-info {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75); 
-    color: #fff;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    
-    /* ИЗМЕНЕНИЕ: По умолчанию невидим и некликабелен */
-    opacity: 0 !important; 
-    pointer-events: none !important; 
-    transition: opacity 0.3s ease;
-}
-
-/* ИЗМЕНЕНИЕ: Показываем текст ТОЛЬКО на активном слайде */
-.swiper-slide-active .booking-slide-info {
-    opacity: 1 !important;
-    pointer-events: auto !important; 
-}
-
-/* Ховер-эффект на активном слайде */
-.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
-    transform: scale(1.1); 
-}
-.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
-    background: rgba(0, 0, 0, 0.9);
-}
-
-/* Текстовые стили */
-.booking-slide-title {
-    font-family: var(--font-sunday);
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-.booking-slide-description {
-    font-family: var(--font-fortunec);
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-
-/* АГРЕССИВНО СКРЫВАЕМ СТАНДАРТНУЮ ПАГИНАЦИЮ SWIPER */
-.swiper-pagination,
-.swiper-pagination-fraction,
-.swiper-pagination-bullets,
-.swiper-pagination-progressbar {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
-}
-
-/* СТИЛИ ДЛЯ НАШЕЙ КАСТОМНОЙ ПАГИНАЦИИ */
-.custom-pagination {
-    text-align: center;
-    margin-top: 1rem; 
-    position: relative;
-    z-index: 10;
-}
-
-.custom-pagination-bullet {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #fff;
-    opacity: 0.4;
-    margin: 0 6px;
-    cursor: pointer;
-    transition: opacity 0.3s, background-color 0.3s;
-}
-
-.custom-pagination-bullet-active {
-    background: var(--color-pink-accent);
-    opacity: 1;
-}
-
-/* Стрелки */
-.booking-swiper .swiper-button-prev,
-.booking-swiper .swiper-button-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    color: var(--color-white);
-    z-index: 20;
-}
-.booking-swiper .swiper-button-prev::after,
-.booking-swiper .swiper-button-next::after {
-    font-size: 2rem;
-}
-
-
 /* Медиа-запросы */
 @media (max-width: 1100px) {
     .features-grid,
@@ -856,15 +824,23 @@ main section {
 
     .booking-swiper .swiper-slide {
         width: 300px;
-        height: 300px; /* Фиксируем высоту круга */
+        height: 300px;
         transform: scale(0.7);
-        margin: 0 -20px;
     }
     .booking-swiper .swiper-slide-active {
         transform: scale(1);
     }
+    .booking-swiper .swiper-slide-active:hover {
+        transform: scale(1.05);
+    }
     .booking-swiper {
-        height: 350px; /* Подстраиваем высоту контейнера под мобильный размер */
+        height: 350px;
+    }
+    .booking-slide-title {
+        font-size: 2.2rem;
+    }
+    .info-hover {
+        font-size: 1rem;
     }
 }
 

@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (Обновлено) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
@@ -67,61 +67,65 @@
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Основной цикл #}
                     {% for service in services %}
                     <div class="swiper-slide">
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                             {% if service.image %}
+                            {% if service.image %}
                                 <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
                            
                             <div class="booking-slide-info">
-                                <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                {% if service.short_description %}
-                                <p class="booking-slide-description">{{ service.short_description }}</p>
-                                {% endif %}
+                                <!-- Обертка для двух состояний текста -->
+                                <div class="info-content-wrapper">
+                                    <!-- Текст по умолчанию (виден на центральном слайде) -->
+                                    <div class="info-default">
+                                        <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                    </div>
+                                    <!-- Текст при наведении (появляется только при наведении на центральный слайд) -->
+                                    <div class="info-hover">
+                                        {% if service.short_description %}
+                                            <p>{{ service.short_description }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
                         </a>
                     </div>
                     {% endfor %}
 
-                    {# Хак для зацикливания #}
+                    {# Хак для зацикливания, если слайдов мало #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
                         <div class="swiper-slide">
-                            <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                                 {% if service.image %}
+                           <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                                {% if service.image %}
                                     <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                                 {% else %}
                                     <div class="booking-slide-placeholder">Арт</div>
                                 {% endif %}
                                
-                                <div class="booking-slide-info">
-                                    <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                    {% if service.short_description %}
-                                    <p class="booking-slide-description">{{ service.short_description }}</p>
-                                    {% endif %}
-                                </div>
+                               <div class="booking-slide-info">
+                                   <div class="info-content-wrapper">
+                                       <div class="info-default">
+                                           <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                       </div>
+                                       <div class="info-hover">
+                                           {% if service.short_description %}
+                                               <p>{{ service.short_description }}</p>
+                                           {% endif %}
+                                       </div>
+                                   </div>
+                               </div>
                             </a>
                         </div>
                         {% endfor %}
                     {% endif %}
 
                 </div>
-                <!-- Стрелки удалены из HTML -->
-                <!-- <div class="swiper-button-prev"></div> -->
-                <!-- <div class="swiper-button-next"></div> -->
+                <!-- Стрелки навигации и пагинация полностью удалены -->
             </div>
-
-            <!-- Кастомная пагинация удалена из HTML -->
-            <!-- <div class="custom-pagination"> -->
-            <!--     {% for service in services %} -->
-            <!--         <span class="custom-pagination-bullet"></span> -->
-            <!--     {% endfor %} -->
-            <!-- </div> -->
-
         </div>
     </section>
 

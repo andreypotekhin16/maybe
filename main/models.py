@@ -1,10 +1,10 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# ВОЗВРАЩАЕМ МОДЕЛЬ ДЛЯ КАРУСЕЛИ
+# Модель для карусели
 class Service(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название игры/услуги")
-    short_description = models.CharField(max_length=255, verbose_name="Краткое описание (под названием)", blank=True)
+    short_description = models.CharField(max_length=255, verbose_name="Краткое описание (под названием)", blank=True, help_text="Этот текст появится при наведении на слайд в карусели.")
     image = models.FileField(upload_to='service_images/', verbose_name="Изображение (для карточки в карусели)")
     vk_link = models.URLField(verbose_name="Ссылка на VK для записи", blank=True, null=True)
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
@@ -53,22 +53,22 @@ class OrbibolInfo(models.Model):
     details_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка 'Узнать подробнее'")
     class Meta:
         verbose_name = "Информация об Орбиболе"
-        verbose_name_plural = "Информация об Орбиболе" 
+        verbose_name_plural = "Информация об Орбиболе"
     def __str__(self):
         return "Информация для секции Орбибол"
-    
+
 class Feature(models.Model):
     title = models.CharField(max_length=100, verbose_name="Заголовок преимущества")
     description = models.TextField(verbose_name="Описание преимущества")
-    icon = models.FileField(upload_to='feature_icons/', verbose_name="Иконка (SVG или PNG)") 
+    icon = models.FileField(upload_to='feature_icons/', verbose_name="Иконка (SVG или PNG)")
     order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок отображения")
     class Meta:
         verbose_name = "Преимущество (Что мы предлагаем)"
         verbose_name_plural = "Преимущества (Что мы предлагаем)"
         ordering = ['order']
     def __str__(self):
-        return self.title    
-    
+        return self.title
+
 class GameType(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название типа игры")
     description = models.TextField(verbose_name="Краткое описание типа игры")
