@@ -687,7 +687,6 @@ main section {
     z-index: 1;
 }
 
-/* Структура слайда - одна ссылка */
 .booking-slide-link {
     display: block; 
     width: 100%;
@@ -696,15 +695,14 @@ main section {
     border-radius: 50%;
     overflow: hidden;
     background-color: #222;
-    /* ИЗМЕНЕНИЕ: Управление кликабельностью для боковых слайдов */
-    pointer-events: auto; /* По умолчанию кликабелен */
+    /* ИЗМЕНЕНИЕ: По умолчанию некликабелен */
+    pointer-events: none !important; 
 }
 
-/* Боковые слайды - НЕКЛИКАБЕЛЬНЫ */
-.booking-swiper .swiper-slide:not(.swiper-slide-active) .booking-slide-link {
-    pointer-events: none !important; /* Делаем некликабельным */
+/* ИЗМЕНЕНИЕ: Активный слайд - кликабелен */
+.swiper-slide-active .booking-slide-link {
+    pointer-events: auto !important; 
 }
-
 
 .booking-slide-art, .booking-slide-placeholder {
     width: 100%;
@@ -739,22 +737,22 @@ main section {
     padding: 20px;
     
     /* ИЗМЕНЕНИЕ: По умолчанию невидим и некликабелен */
-    opacity: 0; 
-    pointer-events: none; 
+    opacity: 0 !important; 
+    pointer-events: none !important; 
     transition: opacity 0.3s ease;
 }
 
 /* ИЗМЕНЕНИЕ: Показываем текст ТОЛЬКО на активном слайде */
 .swiper-slide-active .booking-slide-info {
-    opacity: 1;
-    pointer-events: auto; /* Делаем кликабельным ТОЛЬКО активный слайд */
+    opacity: 1 !important;
+    pointer-events: auto !important; 
 }
 
 /* Ховер-эффект на активном слайде */
-.booking-swiper .swiper-slide-active .booking-slide-link:hover .booking-slide-art {
+.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
     transform: scale(1.1); 
 }
-.booking-swiper .swiper-slide-active .booking-slide-link:hover .booking-slide-info {
+.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
     background: rgba(0, 0, 0, 0.9);
 }
 
@@ -776,7 +774,10 @@ main section {
 .swiper-pagination-bullets,
 .swiper-pagination-progressbar {
     display: none !important;
-    visibility: hidden !important; /* Дополнительная гарантия */
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
 }
 
 /* СТИЛИ ДЛЯ НАШЕЙ КАСТОМНОЙ ПАГИНАЦИИ */
