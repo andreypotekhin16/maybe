@@ -650,7 +650,7 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ КАРУСЕЛИ (КОСТЫЛЬНЫЙ ВАРИАНТ С СОСТОЯНИЯМИ) === */
+/* === СТИЛИ ДЛЯ КАРУСЕЛИ === */
 #booking-section {
     position: relative;
     padding: 4rem 0;
@@ -659,24 +659,26 @@ main section {
 
 .booking-swiper {
     width: 100%;
-    height: 600px; /* Увеличил высоту, чтобы поместился текст под кругом */
+    height: 550px; 
     overflow: visible;
 }
 
 .booking-swiper .swiper-wrapper {
     display: flex;
-    align-items: flex-start; /* Выравнивание по верху, чтобы текст не убегал */
+    align-items: center;
 }
 
 .booking-swiper .swiper-slide {
     width: 440px;
-    height: auto; /* Высота подстраивается под контент */
+    height: 440px;
+    
     transform: scale(0.65);
     opacity: 0.6;
     transition: transform 0.4s ease, opacity 0.4s ease;
     margin: 0 -40px;
     
-    position: relative; /* Важно для внутренних состояний */
+    /* Состояния слайда */
+    position: relative; 
 }
 
 .booking-swiper .swiper-slide-active {
@@ -689,13 +691,13 @@ main section {
 .booking-swiper .swiper-slide .slide-state-inactive-visual,
 .booking-swiper .swiper-slide .slide-state-active-interactive,
 .booking-swiper .swiper-slide .slide-state-future-placeholder {
-    display: none; /* Все скрыты по умолчанию */
-    position: absolute; /* Позиционируем их друг над другом */
+    display: none; 
+    position: absolute; 
     top: 0; left: 0;
     width: 100%; height: 100%;
-    border-radius: 50%; /* Круглая форма для всех состояний */
+    border-radius: 50%;
     overflow: hidden;
-    background-color: #222; /* Фон для плейсхолдера */
+    background-color: #222;
 }
 
 /* Стиль для изображений/плейсхолдеров внутри состояний */
@@ -717,16 +719,16 @@ main section {
 
 /* СОСТОЯНИЕ 1: Видно, когда слайд НЕ активен */
 .booking-swiper .swiper-slide:not(.swiper-slide-active) .slide-state-inactive-visual {
-    display: block; /* Показываем визуальное состояние */
+    display: block; 
     pointer-events: none; /* Некликабельный */
 }
 
 /* СОСТОЯНИЕ 2: Видно, когда слайд АКТИВЕН */
 .booking-swiper .swiper-slide-active .slide-state-active-interactive {
-    display: block; /* Показываем интерактивное состояние */
-    position: relative; /* Для наложения текста */
-    height: 440px; /* Фиксируем высоту круга */
-    width: 440px; /* Фиксируем ширину круга */
+    display: block; 
+    position: relative;
+    height: 100%; /* Занимает всю высоту */
+    width: 100%; /* Занимает всю ширину */
 }
 
 /* Стилизация оверлея с текстом для АКТИВНОГО состояния */
@@ -736,25 +738,27 @@ main section {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75); /* Затемнение поверх картинки */
+    background: rgba(0, 0, 0, 0.75); 
     color: #fff;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-    opacity: 1; /* Всегда видим на активном слайде */
+    
+    opacity: 1; /* Текст всегда виден на активном слайде */
     pointer-events: auto; /* Позволяем кликать по ссылке */
-    transition: background 0.3s ease; /* Для эффекта наведения */
+    transition: background 0.3s ease;
 }
 
 /* Ховер-эффект на активном слайде */
 .booking-swiper .swiper-slide-active .slide-state-active-interactive:hover .slide-image {
-    transform: scale(1.1); /* Увеличение картинки при наведении */
+    transform: scale(1.1); 
 }
 .booking-swiper .swiper-slide-active .slide-state-active-interactive:hover .slide-text-overlay {
-    background: rgba(0, 0, 0, 0.9); /* Затемнение оверлея при наведении */
+    background: rgba(0, 0, 0, 0.9);
 }
 
 /* Текстовые стили */
@@ -769,11 +773,10 @@ main section {
     opacity: 0.9;
 }
 
-
-/* Пагинация (точки) */
+/* Пагинация */
 .custom-pagination {
     text-align: center;
-    margin-top: 1rem; /* Отступ от карусели */
+    margin-top: 1rem; 
     position: relative;
     z-index: 10;
 }
