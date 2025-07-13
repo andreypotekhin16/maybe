@@ -676,7 +676,6 @@ main section {
     transition: transform 0.4s ease, opacity 0.4s ease;
     margin: 0 -40px;
     
-    /* Состояния слайда */
     position: relative; 
 }
 
@@ -686,17 +685,17 @@ main section {
     z-index: 1;
 }
 
-/* Скрываем все состояния по умолчанию */
+/* СКРЫВАЕМ ВСЕ СОСТОЯНИЯ ПО УМОЛЧАНИЮ */
 .booking-swiper .swiper-slide .slide-state-inactive-visual,
 .booking-swiper .swiper-slide .slide-state-active-interactive,
 .booking-swiper .swiper-slide .slide-state-future-placeholder {
-    display: none; 
-    position: absolute; 
+    display: none; /* Все скрыты по умолчанию */
+    position: absolute; /* Позиционируем их друг над другом */
     top: 0; left: 0;
     width: 100%; height: 100%;
-    border-radius: 50%;
+    border-radius: 50%; /* Круглая форма для всех состояний */
     overflow: hidden;
-    background-color: #222;
+    background-color: #222; /* Фон для плейсхолдера */
 }
 
 /* Стиль для изображений/плейсхолдеров внутри состояний */
@@ -737,7 +736,7 @@ main section {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75); 
+    background: rgba(0, 0, 0, 0.75); /* Затемнение поверх картинки */
     color: #fff;
     
     display: flex;
