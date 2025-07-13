@@ -16,7 +16,7 @@
                         {% endif %}
                         {% if company_profile.youtube_profile_link and company_profile.youtube_icon %}
                             <a href="{{ company_profile.youtube_profile_link }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ company.youtube_icon.url }}" alt="YouTube">
+                                <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
                             </a>
                         {% endif %}
                         {% if company_profile.telegram_profile_link and company_profile.telegram_icon %}
@@ -110,17 +110,17 @@
                     {% endif %}
 
                 </div>
-                <!-- Стрелки УДАЛЕНЫ -->
+                <!-- Стрелки удалены из HTML -->
                 <!-- <div class="swiper-button-prev"></div> -->
                 <!-- <div class="swiper-button-next"></div> -->
             </div>
 
-            <!-- Кастомная пагинация -->
-            <div class="custom-pagination">
-                {% for service in services %}
-                    <span class="custom-pagination-bullet"></span>
-                {% endfor %}
-            </div>
+            <!-- Кастомная пагинация удалена из HTML -->
+            <!-- <div class="custom-pagination"> -->
+            <!--     {% for service in services %} -->
+            <!--         <span class="custom-pagination-bullet"></span> -->
+            <!--     {% endfor %} -->
+            <!-- </div> -->
 
         </div>
     </section>
