@@ -381,7 +381,6 @@ main section {
 }
 
 .section-games {} 
-
 .section-games h2 {
     color: var(--color-white); 
 }
@@ -685,29 +684,25 @@ main section {
     z-index: 1;
 }
 
-/* СКРЫВАЕМ ВСЕ СОСТОЯНИЯ ПО УМОЛЧАНИЮ */
-.booking-swiper .swiper-slide .slide-state-inactive-visual,
-.booking-swiper .swiper-slide .slide-state-active-interactive,
-.booking-swiper .swiper-slide .slide-state-future-placeholder {
-    display: none; /* Все скрыты по умолчанию */
-    position: absolute; /* Позиционируем их друг над другом */
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    border-radius: 50%; /* Круглая форма для всех состояний */
+/* ОБРАТНО УПРОЩЕННАЯ СТРУКТУРА СЛАЙДА */
+.booking-slide-link {
+    display: block; /* Важно, чтобы ссылка занимала все пространство */
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
     overflow: hidden;
-    background-color: #222; /* Фон для плейсхолдера */
+    background-color: #222;
 }
 
-/* Стиль для изображений/плейсхолдеров внутри состояний */
-.booking-swiper .swiper-slide .slide-image,
-.booking-swiper .swiper-slide .slide-placeholder {
+.booking-slide-art, .booking-slide-placeholder {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
 
-.booking-swiper .swiper-slide .slide-placeholder {
+.booking-slide-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -715,28 +710,14 @@ main section {
     color: #888;
 }
 
-/* СОСТОЯНИЕ 1: Видно, когда слайд НЕ активен */
-.booking-swiper .swiper-slide:not(.swiper-slide-active) .slide-state-inactive-visual {
-    display: block; 
-    pointer-events: none; /* Некликабельный */
-}
-
-/* СОСТОЯНИЕ 2: Видно, когда слайд АКТИВЕН */
-.booking-swiper .swiper-slide-active .slide-state-active-interactive {
-    display: block; 
-    position: relative;
-    height: 100%; /* Занимает всю высоту */
-    width: 100%; /* Занимает всю ширину */
-}
-
-/* Стилизация оверлея с текстом для АКТИВНОГО состояния */
-.slide-text-overlay {
+/* Оверлей с текстом */
+.booking-slide-info {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75); /* Затемнение поверх картинки */
+    background: rgba(0, 0, 0, 0.75); 
     color: #fff;
     
     display: flex;
@@ -746,26 +727,32 @@ main section {
     text-align: center;
     padding: 20px;
     
-    opacity: 1; /* Текст всегда виден на активном слайде */
-    pointer-events: auto; /* Позволяем кликать по ссылке */
-    transition: background 0.3s ease;
+    opacity: 0; /* Изначально текст невидим */
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Некликабельный */
+}
+
+/* Показываем текст ТОЛЬКО на активном слайде */
+.swiper-slide-active .booking-slide-info {
+    opacity: 1;
+    pointer-events: auto; /* Делаем активный слайд кликабельным */
 }
 
 /* Ховер-эффект на активном слайде */
-.booking-swiper .swiper-slide-active .slide-state-active-interactive:hover .slide-image {
+.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
     transform: scale(1.1); 
 }
-.booking-swiper .swiper-slide-active .slide-state-active-interactive:hover .slide-text-overlay {
-    background: rgba(0, 0, 0, 0.9);
+.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
+    background: rgba(0, 0, 0, 0.9); /* Увеличиваем затемнение при наведении */
 }
 
 /* Текстовые стили */
-.slide-text-overlay h3 {
+.booking-slide-title {
     font-family: var(--font-sunday);
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
-.slide-text-overlay p {
+.booking-slide-description {
     font-family: var(--font-fortunec);
     font-size: 1.1rem;
     opacity: 0.9;
@@ -855,13 +842,7 @@ main section {
         transform: scale(1);
     }
     .booking-swiper {
-        height: 450px; /* Подстраиваем высоту контейнера под мобильный размер */
-    }
-
-    /* Медиа-запросы для состояний */
-    .booking-swiper .swiper-slide .slide-state-active-interactive {
-        width: 300px;
-        height: 300px;
+        height: 350px; /* Подстраиваем высоту контейнера под мобильный размер */
     }
 }
 
