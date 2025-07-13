@@ -662,9 +662,13 @@ main section {
     overflow: visible;
 }
 
+/* ИЗМЕНЕНИЕ: Жестко фиксируем flexbox для обертки слайдов */
 .booking-swiper .swiper-wrapper {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Убираем перенос на новую строку */
+    align-items: center !important;
+    height: 100% !important; /* Гарантируем, что обертка займет всю высоту */
 }
 
 .booking-swiper .swiper-slide {
@@ -684,7 +688,7 @@ main section {
     z-index: 1;
 }
 
-/* ОБРАТНО УПРОЩЕННАЯ СТРУКТУРА СЛАЙДА */
+/* Структура слайда - один элемент */
 .booking-slide-link {
     display: block; /* Важно, чтобы ссылка занимала все пространство */
     width: 100%;
@@ -727,15 +731,16 @@ main section {
     text-align: center;
     padding: 20px;
     
-    opacity: 0; /* Изначально текст невидим */
+    /* ИЗМЕНЕНИЕ: opacity и pointer-events управляются классом .swiper-slide-active */
+    opacity: 0; /* Невидимый по умолчанию */
+    pointer-events: none; /* Некликабельный по умолчанию */
     transition: opacity 0.3s ease;
-    pointer-events: none; /* Некликабельный */
 }
 
-/* Показываем текст ТОЛЬКО на активном слайде */
+/* ИЗМЕНЕНИЕ: Показываем текст ТОЛЬКО на активном слайде */
 .swiper-slide-active .booking-slide-info {
     opacity: 1;
-    pointer-events: auto; /* Делаем активный слайд кликабельным */
+    pointer-events: auto; /* Делаем кликабельным ТОЛЬКО активный слайд */
 }
 
 /* Ховер-эффект на активном слайде */
@@ -758,7 +763,15 @@ main section {
     opacity: 0.9;
 }
 
-/* Пагинация */
+/* ИЗМЕНЕНИЕ: АГРЕССИВНО СКРЫВАЕМ СТАНДАРТНУЮ ПАГИНАЦИЮ SWIPER */
+.swiper-pagination,
+.swiper-pagination-fraction,
+.swiper-pagination-bullets,
+.swiper-pagination-progressbar {
+    display: none !important;
+}
+
+/* СТИЛИ ДЛЯ НАШЕЙ КАСТОМНОЙ ПАГИНАЦИИ */
 .custom-pagination {
     text-align: center;
     margin-top: 1rem; 
