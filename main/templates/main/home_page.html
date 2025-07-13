@@ -67,75 +67,36 @@
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Основной цикл #}
-                    {% for service in services %}
+                    {# Функция для рендеринга одного слайда, теперь с единой структурой #}
+                    {% macro render_slide_content(service) %}
                     <div class="swiper-slide">
-                        <!-- СОСТОЯНИЕ 1: Для боковых (неактивных) слайдов. Чисто картинка, некликабельная -->
-                        <div class="slide-state state-inactive-visual">
+                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
                             {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="slide-image">
+                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
-                                <div class="slide-placeholder"></div>
+                                <div class="booking-slide-placeholder"></div>
                             {% endif %}
-                        </div>
-
-                        <!-- СОСТОЯНИЕ 2: Для центрального (активного) слайда. Кликабельная ссылка с текстом-оверлеем -->
-                        <a href="{{ service.vk_link|default:'#' }}" class="slide-state state-active-interactive" target="_blank" rel="noopener noreferrer">
-                            {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="slide-image">
-                            {% else %}
-                                <div class="slide-placeholder"></div>
-                            {% endif %}
-                            <div class="slide-text-overlay">
-                                <h3>{{ service.name }}</h3>
+                           
+                            <!-- Оверлей с текстом (теперь один для всех) -->
+                            <div class="booking-slide-info">
+                                <h3 class="booking-slide-title">{{ service.name }}</h3>
                                 {% if service.short_description %}
-                                    <p>{{ service.short_description }}</p>
+                                <p class="booking-slide-description">{{ service.short_description }}</p>
                                 {% endif %}
                             </div>
                         </a>
-
-                        <!-- СОСТОЯНИЕ 3: Плейсхолдер для будущих состояний -->
-                        <div class="slide-state state-future-placeholder">
-                            <!-- Тут может быть что-то еще, если понадобится 3е состояние -->
-                        </div>
-
                     </div>
+                    {% endmacro %}
+
+                    {# Основной цикл #}
+                    {% for service in services %}
+                        {{ render_slide_content(service) }}
                     {% endfor %}
 
-                    {# Хак для зацикливания на малом количестве слайдов #}
+                    {# Хак для зацикливания #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
-                        <div class="swiper-slide">
-                            <!-- СОСТОЯНИЕ 1: Для боковых (неактивных) слайдов. Чисто картинка, некликабельная -->
-                            <div class="slide-state state-inactive-visual">
-                                {% if service.image %}
-                                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="slide-image">
-                                {% else %}
-                                    <div class="slide-placeholder"></div>
-                                {% endif %}
-                            </div>
-
-                            <!-- СОСТОЯНИЕ 2: Для центрального (активного) слайда. Кликабельная ссылка с текстом-оверлеем -->
-                            <a href="{{ service.vk_link|default:'#' }}" class="slide-state state-active-interactive" target="_blank" rel="noopener noreferrer">
-                                {% if service.image %}
-                                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="slide-image">
-                                {% else %}
-                                    <div class="slide-placeholder"></div>
-                                {% endif %}
-                                <div class="slide-text-overlay">
-                                    <h3>{{ service.name }}</h3>
-                                    {% if service.short_description %}
-                                        <p>{{ service.short_description }}</p>
-                                    {% endif %}
-                                </div>
-                            </a>
-
-                            <!-- СОСТОЯНИЕ 3: Плейсхолдер для будущих состояний -->
-                            <div class="slide-state state-future-placeholder">
-                                <!-- Тут может быть что-то еще, если понадобится 3е состояние -->
-                            </div>
-
-                        </div>
+                            {{ render_slide_content(service) }}
                         {% endfor %}
                     {% endif %}
 

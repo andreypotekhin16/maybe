@@ -671,7 +671,6 @@ main section {
 .booking-swiper .swiper-slide {
     width: 440px;
     height: 440px;
-    
     transform: scale(0.65);
     opacity: 0.6;
     transition: transform 0.4s ease, opacity 0.4s ease;
