@@ -67,51 +67,46 @@
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Функция-обертка для слайда, чтобы не дублировать код #}
-                    {% macro render_slide_states(service) %}
+                    {# Основной цикл #}
+                    {% for service in services %}
                     <div class="swiper-slide">
-
-                        <!-- СОСТОЯНИЕ 1: Боковой слайд (просто картинка) -->
-                        <div class="slide-state state-side">
-                            {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}">
+                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                             {% if service.image %}
+                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
-                                <div class="booking-slide-placeholder"></div>
+                                <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
-                        </div>
-
-                        <!-- СОСТОЯНИЕ 2: Центральный слайд (кликабельная ссылка с текстом) -->
-                        <a href="{{ service.vk_link|default:'#' }}" class="slide-state state-center" target="_blank" rel="noopener noreferrer">
-                            {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}">
-                            {% else %}
-                                <div class="booking-slide-placeholder"></div>
-                            {% endif %}
-                            <div class="info-overlay">
-                                <h3>{{ service.name }}</h3>
+                           
+                            <!-- ТЕКСТ ВНУТРИ ССЫЛКИ -->
+                            <div class="booking-slide-info">
+                                <h3 class="booking-slide-title">{{ service.name }}</h3>
                                 {% if service.short_description %}
-                                    <p>{{ service.short_description }}</p>
+                                <p class="booking-slide-description">{{ service.short_description }}</p>
                                 {% endif %}
                             </div>
                         </a>
-
-                        <!-- СОСТОЯНИЕ 3: Будущее использование (скрыто) -->
-                        <div class="slide-state state-future">
-                            <p>Это состояние для будущих фич</p>
-                        </div>
-
                     </div>
-                    {% endmacro %}
-
-                    {# Основной цикл #}
-                    {% for service in services %}
-                        {{ render_slide_states(service) }}
                     {% endfor %}
 
                     {# Хак для зацикливания #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
-                            {{ render_slide_states(service) }}
+                        <div class="swiper-slide">
+                            <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                                 {% if service.image %}
+                                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
+                                {% else %}
+                                    <div class="booking-slide-placeholder">Арт</div>
+                                {% endif %}
+                               
+                                <div class="booking-slide-info">
+                                    <h3 class="booking-slide-title">{{ service.name }}</h3>
+                                    {% if service.short_description %}
+                                    <p class="booking-slide-description">{{ service.short_description }}</p>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
                         {% endfor %}
                     {% endif %}
 
@@ -130,7 +125,7 @@
 
         </div>
     </section>
-    
+
     <!-- 4. СЕКЦИЯ "ОРБИБОЛ" -->
     <section id="orbibol-section">
         <div class="container">
