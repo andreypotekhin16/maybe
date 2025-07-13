@@ -67,7 +67,7 @@
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Основной цикл #}
+                    {# Теперь один цикл, без макроса, с одной структурой внутри #}
                     {% for service in services %}
                     <div class="swiper-slide">
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
@@ -77,6 +77,7 @@
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
                            
+                            <!-- Оверлей с текстом: теперь это ЕДИНСТВЕННЫЙ текстовый блок -->
                             <div class="booking-slide-info">
                                 <h3 class="booking-slide-title">{{ service.name }}</h3>
                                 {% if service.short_description %}
@@ -87,7 +88,7 @@
                     </div>
                     {% endfor %}
 
-                    {# Хак для зацикливания #}
+                    {# Хак для зацикливания: просто дублируем основной цикл еще раз #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
                         <div class="swiper-slide">

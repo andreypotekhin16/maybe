@@ -662,13 +662,12 @@ main section {
     overflow: visible;
 }
 
-/* ИЗМЕНЕНИЕ: Жестко фиксируем flexbox для обертки слайдов */
 .booking-swiper .swiper-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important; /* Убираем перенос на новую строку */
-    align-items: center !important;
-    height: 100% !important; /* Гарантируем, что обертка займет всю высоту */
+    display: flex !important; /* Гарантируем flex-контейнер */
+    flex-direction: row !important; /* Гарантируем в один ряд */
+    flex-wrap: nowrap !important; /* Запрещаем перенос */
+    align-items: center !important; /* Выравнивание по центру */
+    height: 100% !important; /* Гарантируем высоту */
 }
 
 .booking-swiper .swiper-slide {
@@ -688,16 +687,24 @@ main section {
     z-index: 1;
 }
 
-/* Структура слайда - один элемент */
+/* Структура слайда - одна ссылка */
 .booking-slide-link {
-    display: block; /* Важно, чтобы ссылка занимала все пространство */
+    display: block; 
     width: 100%;
     height: 100%;
     position: relative;
     border-radius: 50%;
     overflow: hidden;
     background-color: #222;
+    /* ИЗМЕНЕНИЕ: Управление кликабельностью для боковых слайдов */
+    pointer-events: auto; /* По умолчанию кликабелен */
 }
+
+/* Боковые слайды - НЕКЛИКАБЕЛЬНЫ */
+.booking-swiper .swiper-slide:not(.swiper-slide-active) .booking-slide-link {
+    pointer-events: none !important; /* Делаем некликабельным */
+}
+
 
 .booking-slide-art, .booking-slide-placeholder {
     width: 100%;
@@ -731,9 +738,9 @@ main section {
     text-align: center;
     padding: 20px;
     
-    /* ИЗМЕНЕНИЕ: opacity и pointer-events управляются классом .swiper-slide-active */
-    opacity: 0; /* Невидимый по умолчанию */
-    pointer-events: none; /* Некликабельный по умолчанию */
+    /* ИЗМЕНЕНИЕ: По умолчанию невидим и некликабелен */
+    opacity: 0; 
+    pointer-events: none; 
     transition: opacity 0.3s ease;
 }
 
@@ -744,11 +751,11 @@ main section {
 }
 
 /* Ховер-эффект на активном слайде */
-.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
+.booking-swiper .swiper-slide-active .booking-slide-link:hover .booking-slide-art {
     transform: scale(1.1); 
 }
-.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
-    background: rgba(0, 0, 0, 0.9); /* Увеличиваем затемнение при наведении */
+.booking-swiper .swiper-slide-active .booking-slide-link:hover .booking-slide-info {
+    background: rgba(0, 0, 0, 0.9);
 }
 
 /* Текстовые стили */
@@ -763,12 +770,13 @@ main section {
     opacity: 0.9;
 }
 
-/* ИЗМЕНЕНИЕ: АГРЕССИВНО СКРЫВАЕМ СТАНДАРТНУЮ ПАГИНАЦИЮ SWIPER */
+/* АГРЕССИВНО СКРЫВАЕМ СТАНДАРТНУЮ ПАГИНАЦИЮ SWIPER */
 .swiper-pagination,
 .swiper-pagination-fraction,
 .swiper-pagination-bullets,
 .swiper-pagination-progressbar {
     display: none !important;
+    visibility: hidden !important; /* Дополнительная гарантия */
 }
 
 /* СТИЛИ ДЛЯ НАШЕЙ КАСТОМНОЙ ПАГИНАЦИИ */
