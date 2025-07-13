@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (Обновлено) -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (ИСПРАВЛЕНО) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
@@ -70,20 +70,19 @@
                     {% for service in services %}
                     <div class="swiper-slide">
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                            <!-- Слой с картинкой -->
                             {% if service.image %}
                                 <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
                            
+                            <!-- Слой-оверлей с текстом. Он гарантированно будет внутри ссылки -->
                             <div class="booking-slide-info">
-                                <!-- Обертка для двух состояний текста -->
                                 <div class="info-content-wrapper">
-                                    <!-- Текст по умолчанию (виден на центральном слайде) -->
                                     <div class="info-default">
                                         <h3 class="booking-slide-title">{{ service.name }}</h3>
                                     </div>
-                                    <!-- Текст при наведении (появляется только при наведении на центральный слайд) -->
                                     <div class="info-hover">
                                         {% if service.short_description %}
                                             <p>{{ service.short_description }}</p>
@@ -124,11 +123,10 @@
                     {% endif %}
 
                 </div>
-                <!-- Стрелки навигации и пагинация полностью удалены -->
             </div>
         </div>
     </section>
-
+    
     <!-- 4. СЕКЦИЯ "ОРБИБОЛ" -->
     <section id="orbibol-section">
         <div class="container">
