@@ -29,7 +29,7 @@ class CompanyProfile(models.Model):
         verbose_name_plural = "1. Главные настройки сайта"
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
-    
+
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
     name = models.CharField(max_length=200, verbose_name='Название/Заголовок слайда')

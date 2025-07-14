@@ -2,22 +2,29 @@
 from django.shortcuts import render
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, Section, CarouselSlide  # 1. ИМПОРТИРУЕМ CarouselSlide
+    BackgroundSettings, Section, CarouselSlide
 )
 
 def home_page_view(request):
-    company_profile = CompanyProfile.objects.first() 
-    orbibol_info = OrbibolInfo.objects.first()
-    features = Feature.objects.all() 
-    game_types = GameType.objects.all()
-    products = Product.objects.all()
-    gallery_items = GalleryItem.objects.all()
+    company_profile = CompanyProfile.objects.first()
+    if company_profile:
+        carousel_slides = company_profile.carousel_slides.all()
+        orbibol_info = getattr(company_profile, 'orbibol_info', None)
+        features = company_profile.features.all()
+        game_types = company_profile.game_types.all()
+        products = company_profile.products.all()
+        gallery_items = company_profile.gallery_items.all()
+    else:
+        carousel_slides = []
+        orbibol_info = None
+        features = []
+        game_types = []
+        products = []
+        gallery_items = []
+
     background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
     sections = Section.objects.filter(is_active=True).all()
-    
-    # 2. ПОЛУЧАЕМ ВСЕ СЛАЙДЫ ИЗ БАЗЫ ДАННЫХ
-    carousel_slides = CarouselSlide.objects.all()
-                                                    
+
     context = {
         'company_profile': company_profile,
         'orbibol_info': orbibol_info,
@@ -26,12 +33,11 @@ def home_page_view(request):
         'products': products,
         'gallery_items': gallery_items,
         'background_settings': background_settings,
-        'sections': sections,  
-        'carousel_slides': carousel_slides, # 3. ПЕРЕДАЕМ СЛАЙДЫ В ШАБЛОН
+        'sections': sections,
+        'carousel_slides': carousel_slides,
     }
     return render(request, 'main/home_page.html', context)
 
-# Обработчики ошибок остаются без изменений
 def custom_handler404(request, exception):
     context = {
         'company_profile': CompanyProfile.objects.first(),

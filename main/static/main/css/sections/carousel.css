@@ -4,9 +4,8 @@
 }
 
 .carousel-container {
-    overflow-x: auto; /* Включаем горизонтальную прокрутку */
-    padding-bottom: 1.5rem; /* Оставляем место для скроллбара */
-    /* Стилизация скроллбара (опционально, для красоты) */
+    overflow-x: auto;
+    padding-bottom: 1.5rem;
     scrollbar-width: thin;
     scrollbar-color: var(--color-pink-accent) var(--color-green-dark-bg);
 }
@@ -24,14 +23,14 @@
 }
 
 .carousel-wrapper {
-    display: flex; /* Выстраиваем слайды в ряд */
-    gap: 2rem; /* Расстояние между слайдами */
-    width: max-content; /* Позволяем контейнеру растягиваться */
+    display: flex;
+    gap: 2rem;
+    width: max-content;
 }
 
 .carousel-slide {
-    flex-shrink: 0; /* Запрещаем слайдам сжиматься */
-    width: 380px; /* Фиксированная ширина слайда */
+    flex-shrink: 0;
+    width: 380px;
     border: 2px solid var(--color-green-accent);
     border-radius: 10px;
     overflow: hidden;

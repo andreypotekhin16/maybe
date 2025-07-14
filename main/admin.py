@@ -3,12 +3,9 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject, Section, CarouselSlide 
+    BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
-# =============================================================================
-# МИКСИН ДЛЯ ПРЕДПРОСМОТРА ИЗОБРАЖЕНИЙ
-# =============================================================================
 class ImagePreviewAdminMixin:
     """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
@@ -128,11 +125,10 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         })
     )
 
-    # ИЗМЕНЕН ПОРЯДОК ИНЛАЙНОВ ЗДЕСЬ
     inlines = [
         SectionInline, 
-        CarouselSlideInline,
         OrbibolInfoInline,
+        CarouselSlideInline,
         FeatureInline,
         GameTypeInline,
         ProductInline,
