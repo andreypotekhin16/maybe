@@ -1320,6 +1320,61 @@ class Migration(migrations.Migration):
 ```
 --- END OF FILE: main\migrations\0035_alter_orbibolinfo_options_alter_section_section_type_and_more.py ---
 
+--- START OF FILE: main\migrations\0036_create_all_sections.py ---
+```py
+# main/migrations/0036_create_all_sections.py
+from django.db import migrations
+
+def create_initial_sections(apps, schema_editor):
+    """
+    Создает все недостающие секции для существующего профиля компании.
+    Это гарантирует, что все типы секций, включая 'Карусель', существуют в БД.
+    """
+    CompanyProfile = apps.get_model('main', 'CompanyProfile')
+    Section = apps.get_model('main', 'Section')
+
+    # ВАЖНО: Мы определяем список секций прямо здесь, внутри миграции,
+    # а не берем его из модели, чтобы избежать ошибки AttributeError.
+    ALL_SECTIONS = [
+        ('about_us', 'О нас'),
+        ('features', 'Что мы предлагаем (Преимущества)'),
+        ('carousel', 'Карусель'),
+        ('orbibol', 'Орбибол'),
+        ('games', 'Игры'),
+        ('market', 'Маркет'),
+        ('gallery', 'Фото и видео галерея'),
+        ('contacts', 'Контакты'),
+    ]
+
+    profile = CompanyProfile.objects.first()
+    if not profile:
+        return
+
+    for index, (section_type, display_name) in enumerate(ALL_SECTIONS):
+        # Используем get_or_create, чтобы создать секцию, только если ее нет
+        obj, created = Section.objects.get_or_create(
+            company_profile=profile,
+            section_type=section_type,
+            defaults={
+                'title': display_name,
+                'order': index
+            }
+        )
+        if created:
+            print(f"Создана недостающая секция: {display_name}")
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('main', '0035_alter_orbibolinfo_options_alter_section_section_type_and_more'),
+    ]
+
+    operations = [
+        migrations.RunPython(create_initial_sections, reverse_code=migrations.RunPython.noop),
+    ]
+```
+--- END OF FILE: main\migrations\0036_create_all_sections.py ---
+
 --- START OF FILE: main\migrations\__init__.py ---
 ```py
 
@@ -1655,47 +1710,53 @@ main section {
     margin-bottom: 3rem;
 }
 
-.carousel-container {
-    overflow-x: auto; /* Включаем горизонтальную прокрутку */
-    padding-bottom: 1.5rem; /* Оставляем место для скроллбара */
-    /* Стилизация скроллбара (опционально, для красоты) */
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-pink-accent) var(--color-green-dark-bg);
+/* Новый контейнер для всего виджета (карусель + стрелки) */
+.carousel-widget-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.carousel-container::-webkit-scrollbar {
-    height: 8px;
-}
-.carousel-container::-webkit-scrollbar-track {
-    background: var(--color-green-dark-bg);
-    border-radius: 4px;
-}
-.carousel-container::-webkit-scrollbar-thumb {
-    background-color: var(--color-pink-accent);
-    border-radius: 4px;
+/* Основной контейнер Swiper */
+.booking-carousel {
+    width: 80%; /* Уменьшаем ширину, чтобы было видно стрелки */
+    height: 520px;
+    padding-top: 20px;
+    padding-bottom: 50px;
 }
 
-.carousel-wrapper {
-    display: flex; /* Выстраиваем слайды в ряд */
-    gap: 2rem; /* Расстояние между слайдами */
-    width: max-content; /* Позволяем контейнеру растягиваться */
-}
-
-.carousel-slide {
-    flex-shrink: 0; /* Запрещаем слайдам сжиматься */
-    width: 380px; /* Фиксированная ширина слайда */
-    border: 2px solid var(--color-green-accent);
+/* Стили отдельного слайда */
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 350px;
+    height: 480px;
     border-radius: 10px;
     overflow: hidden;
     background-color: rgba(var(--color-green-accent-rgb), 0.05);
-    display: flex;
-    flex-direction: column;
+    border: 2px solid rgba(var(--color-green-accent-rgb), 0.3);
+    
+    /* Плавные переходы для всех эффектов */
+    transition: transform 0.4s ease, border-color 0.4s ease, opacity 0.4s ease;
+    
+    /* Делаем боковые слайды полупрозрачными */
+    opacity: 0.5;
+}
+
+/* Центральный, активный слайд */
+.swiper-slide-active {
+    transform: scale(1.15); /* Делаем его немного больше */
+    border-color: var(--color-pink-accent);
+    opacity: 1; /* Полная непрозрачность */
+    z-index: 10;
 }
 
 .slide-image-wrapper {
     width: 100%;
-    height: 250px;
+    height: 280px;
 }
+
 .slide-image-wrapper img {
     width: 100%;
     height: 100%;
@@ -1705,10 +1766,6 @@ main section {
 .slide-content {
     padding: 1.5rem;
     text-align: center;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .slide-content h3 {
@@ -1723,7 +1780,33 @@ main section {
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
-    flex-grow: 1;
+}
+
+/* Стилизация стрелок */
+:root {
+    --swiper-navigation-color: var(--color-pink-accent); /* Цвет стрелок */
+    --swiper-navigation-size: 28px; /* Размер иконок внутри стрелок */
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    position: static; /* Убираем абсолютное позиционирование */
+    margin: 0 1rem; /* Добавляем отступы по бокам */
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-weight: 900 !important; /* Делаем иконки стрелок жирными */
 }
 ```
 --- END OF FILE: main\static\main\css\sections\carousel.css ---
@@ -2215,26 +2298,55 @@ export function setupHeader() {
 ```js
 import { setupHeader } from './global/header.js';
 import { setupDynamicBackground } from './global/background.js';
-
-// Когда добавим карусель, здесь будет её импорт
-// import { initCarousel } from './sections/carousel.js'; 
+// 1. ИМПОРТИРУЕМ ФУНКЦИЮ ИЗ НОВОГО ФАЙЛА
+import { initCarousel } from './sections/carousel.js'; 
 
 document.addEventListener('DOMContentLoaded', function() {
     // Запускаем глобальные скрипты
     setupHeader();
     setupDynamicBackground();
 
-    // Запускаем скрипты для секций (пока карусель закомментирована)
-    // if (document.querySelector('.booking-swiper')) {
-    //     initCarousel();
-    // }
+    // 2. ИЩЕМ НАШУ КАРУСЕЛЬ И ЗАПУСКАЕМ ЕЕ
+    if (document.querySelector('.booking-carousel')) {
+        initCarousel();
+    }
 });
 ```
 --- END OF FILE: main\static\main\js\main.js ---
 
 --- START OF FILE: main\static\main\js\sections\carousel.js ---
 ```js
+// main/static/main/js/sections/carousel.js
 
+export function initCarousel() {
+    const swiper = new Swiper('.booking-carousel', {
+        // Главное изменение: явно указываем, что хотим видеть 3 слайда
+        slidesPerView: 3,
+        
+        effect: 'coverflow',
+        grabCursor: true,
+        centeredSlides: true,
+        loop: true, // Включаем бесконечную прокрутку
+
+        // Расстояние между слайдами
+        spaceBetween: -30, 
+
+        // Настройки для эффекта
+        coverflowEffect: {
+            rotate: 0,       // Убираем поворот, чтобы слайды были прямыми
+            stretch: 0,
+            depth: 150,      // Глубина (расстояние)
+            modifier: 1,
+            slideShadows: false, // Отключаем тени
+        },
+
+        // Подключаем кнопки навигации, которые теперь вне карусели
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+}
 ```
 --- END OF FILE: main\static\main\js\sections\carousel.js ---
 
@@ -2327,20 +2439,78 @@ document.addEventListener('DOMContentLoaded', function() {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Стили для Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     
-    {# Новый блок для дополнительных стилей со страниц #}
     {% block extra_head %}{% endblock %}
 </head>
 <body {% if background_settings %}data-background-enabled="true" data-pattern-url="{% if background_settings.background_pattern %}{{ background_settings.background_pattern.url }}{% endif %}" data-pattern-size="{{ background_settings.pattern_size|default:'200px' }}" data-pattern-opacity="{{ background_settings.pattern_opacity|stringformat:'.2f'|cut:',' }}" data-bg-color="{{ background_settings.background_color|default:'#010101' }}"{% endif %}>
-    <div id="animated-background-container"><div id="background-pattern"></div>{% if background_settings %}{% for obj in background_settings.background_objects.all %}<div class="background-object-placeholder" data-image-url="{{ obj.image.url }}" data-width="{{ obj.width }}" data-top="{{ obj.initial_top }}" data-left="{{ obj.initial_left }}" data-z-index="{{ obj.z_index }}" data-opacity="{{ obj.opacity|stringformat:'.2f'|cut:',' }}" data-anim-duration="{{ obj.animation_duration }}" data-anim-delay="{{ obj.animation_delay }}" data-parallax-target-id="{{ obj.parallax_target_id|default:'' }}" data-parallax-speed="{{ obj.parallax_speed|stringformat:'.2f'|cut:',' }}"></div>{% endfor %}{% endif %}</div>
-    {% block header %}<header id="site-header"><div class="container header-container"><a href="/" class="logo">{% if company_profile and company_profile.logo_image %}<img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">{% endif %}</a><div class="header-center-text">May be</div><nav class="main-nav"><ul><li><a href="/#about-us-section">О нас</a></li><li><a href="/#features-section">Что мы предлагаем</a></li><li><a href="/#orbibol-section">Орбибол</a></li><li><a href="/#games-section">Игры</a></li><li><a href="/#market-section">Маркет</a></li><li><a href="/#gallery-section">Фото и видео галерея</a></li><li><a href="/#contacts-section">Контакты</a></li></ul></nav></div></header>{% endblock header %}
-    <main id="main-content">{% block content %}{% endblock %}</main>
-    {% block footer %}<footer id="site-footer-bottom"><div class="container"><p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p></div></footer>{% endblock footer %}
     
-     <script src="{% static 'main/js/main.js' %}" type="module"></script>
+    <div id="animated-background-container">
+        <div id="background-pattern"></div>
+        {% if background_settings %}
+            {% for obj in background_settings.background_objects.all %}
+                <div class="background-object-placeholder"
+                    data-image-url="{{ obj.image.url }}"
+                    data-width="{{ obj.width }}"
+                    data-top="{{ obj.initial_top }}"
+                    data-left="{{ obj.initial_left }}"
+                    data-z-index="{{ obj.z_index }}"
+                    data-opacity="{{ obj.opacity|stringformat:'.2f'|cut:',' }}"
+                    data-anim-duration="{{ obj.animation_duration }}"
+                    data-anim-delay="{{ obj.animation_delay }}"
+                    data-parallax-target-id="{{ obj.parallax_target_id|default:'' }}"
+                    data-parallax-speed="{{ obj.parallax_speed|stringformat:'.2f'|cut:',' }}"
+                ></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% block header %}
+        <header id="site-header">
+            <div class="container header-container">
+                <a href="/" class="logo">
+                    {% if company_profile and company_profile.logo_image %}
+                        <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
+                    {% endif %}
+                </a>
+                <div class="header-center-text">May be</div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="/#about-us-section">О нас</a></li>
+                        <li><a href="/#features-section">Что мы предлагаем</a></li>
+                        <li><a href="/#orbibol-section">Орбибол</a></li>
+                        <li><a href="/#games-section">Игры</a></li>
+                        <li><a href="/#market-section">Маркет</a></li>
+                        <li><a href="/#gallery-section">Фото и видео галерея</a></li>
+                        <li><a href="/#contacts-section">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    {% endblock header %}
+
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
     
-    {# Новый блок для дополнительных скриптов со страниц #}
+    {% block footer %}
+        <footer id="site-footer-bottom">
+            <div class="container">
+                <p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
+            </div>
+        </footer>
+    {% endblock footer %}
+    
+    <!-- Скрипт Swiper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Ваш главный JS файл -->
+    <script src="{% static 'main/js/main.js' %}" type="module"></script>
+    
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
@@ -2402,28 +2572,42 @@ document.addEventListener('DOMContentLoaded', function() {
 <section id="carousel-section" class="section-carousel">
     <div class="container">
         {% if section.show_title %}
-            <h2>{{ section.title|default:"Карусель" }}</h2>
+            <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
         
-        <div class="carousel-container">
-            <div class="carousel-wrapper">
-                {% for slide in carousel_slides %}
-                <div class="carousel-slide">
-                    <div class="slide-image-wrapper">
-                        {% if slide.image %}
-                            <img src="{{ slide.image.url }}" alt="{{ slide.name }}">
-                        {% endif %}
+        <!-- Добавляем обертку для всего виджета -->
+        <div class="carousel-widget-wrapper">
+            <!-- Стрелка "Назад" -->
+            <div class.="swiper-button-prev"></div>
+
+            <!-- Контейнер Swiper -->
+            <div class="swiper booking-carousel">
+                <div class="swiper-wrapper">
+                    {% for slide in carousel_slides %}
+                    <div class="swiper-slide">
+                        <div class="slide-image-wrapper">
+                            {% if slide.image %}
+                                <img src="{{ slide.image.url }}" alt="{{ slide.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="slide-content">
+                            <h3>{{ slide.name }}</h3>
+                            {% if slide.short_description %}<p>{{ slide.short_description }}</p>{% endif %}
+                            {% if slide.vk_link %}
+                                <a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="slide-content">
-                        <h3>{{ slide.name }}</h3>
-                        {% if slide.short_description %}<p>{{ slide.short_description }}</p>{% endif %}
-                        {% if slide.vk_link %}<a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>{% endif %}
-                    </div>
+                    {% empty %}
+                        <div class="swiper-slide">
+                            <p class="text-center" style="width: 100%;">Слайды для карусели еще не добавлены.</p>
+                        </div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                    <p class="text-center" style="width: 100%;">Слайды для карусели еще не добавлены в админ-панели.</p>
-                {% endfor %}
             </div>
+
+            <!-- Стрелка "Вперед" -->
+            <div class.="swiper-button-next"></div>
         </div>
     </div>
 </section>
@@ -2639,26 +2823,18 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject, Section, CarouselSlide 
+    BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
-# =============================================================================
-# МИКСИН ДЛЯ ПРЕДПРОСМОТРА ИЗОБРАЖЕНИЙ
-# =============================================================================
 class ImagePreviewAdminMixin:
     """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
-        """Возвращает HTML для предпросмотра."""
         field = getattr(obj, field_name, None)
         if field and hasattr(field, 'url'):
             if is_background:
                  return mark_safe(f'<div style="width:{max_height}px; height:{max_height}px; background-image:url({field.url}); background-size: cover; border: 1px solid #ddd;"></div>')
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
-
-# =============================================================================
-# ИНЛАЙНЫ ДЛЯ СЕКЦИЙ, УПРАВЛЯЕМЫЕ ВНУТРИ CompanyProfile
-# =============================================================================
 
 class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     model = OrbibolInfo
@@ -2670,15 +2846,10 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
         ('Сюжетный орбибол', {'fields': ('plot_title', 'plot_description', 'plot_icon', 'plot_icon_preview')}),
         ('Тактический орбибол', {'fields': ('tactical_title', 'tactical_description', 'tactical_icon', 'tactical_icon_preview')}),
     )
-
-    def plot_icon_preview(self, obj):
-        return self.get_preview(obj, 'plot_icon', max_height=75)
+    def plot_icon_preview(self, obj): return self.get_preview(obj, 'plot_icon', max_height=75)
     plot_icon_preview.short_description = 'Предпросмотр иконки (Сюжетный)'
-
-    def tactical_icon_preview(self, obj):
-        return self.get_preview(obj, 'tactical_icon', max_height=75)
+    def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
-
 
 class SectionInline(admin.TabularInline):
     model = Section
@@ -2687,13 +2858,9 @@ class SectionInline(admin.TabularInline):
     fields = ('get_section_type_display', 'title', 'show_title', 'order', 'is_active')
     readonly_fields = ('get_section_type_display',)
     ordering = ('order',)
-
-    def get_section_type_display(self, obj):
-        return obj.get_section_type_display()
+    def get_section_type_display(self, obj): return obj.get_section_type_display()
     get_section_type_display.short_description = 'Название секции'
-
-    def has_add_permission(self, request, obj=None):
-        return False
+    def has_add_permission(self, request, obj=None): return False
 
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
@@ -2725,46 +2892,16 @@ class GalleryItemInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('title', 'image', 'video', 'order_link', 'order')
 
-
-# =============================================================================
-# ГЛАВНАЯ АДМИН-МОДЕЛЬ: Профиль Компании (Центр Управления)
-# =============================================================================
-
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
-    readonly_fields = (
-        'logo_image_preview', 'logo_image_light_preview', 'favicon_preview', 'vk_icon_preview',
-        'youtube_icon_preview', 'telegram_icon_preview', 'nav_toggle_icon_preview'
-    )
-    
+    readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
     fieldsets = (
-        ('Основные настройки сайта', {
-            'fields': (
-                'site_name',
-                ('logo_image', 'logo_image_preview'),
-                ('logo_image_light', 'logo_image_light_preview'),
-                ('favicon', 'favicon_preview'),
-            )
-        }),
-        ('Секция "О нас"', {
-            'fields': ('motto', 'about_us_text')
-        }),
-        ('Настройки других секций', {
-             'description': 'Настройки для секций "Маркет" и "Галерея".',
-             'fields': ('market_link', 'gallery_description')
-        }),
-        ('Контакты и Соцсети', {
-            'classes': ('collapse',),
-            'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', 
-                       ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))
-        }),
-        ('Технические иконки', {
-            'classes': ('collapse',),
-            'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)
-        })
+        ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
+        ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
+        ('Настройки других секций', {'description': 'Настройки для секций "Маркет" и "Галерея".', 'fields': ('market_link', 'gallery_description')}),
+        ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
+        ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
-
-    # ИЗМЕНЕН ПОРЯДОК ИНЛАЙНОВ ЗДЕСЬ
     inlines = [
         SectionInline, 
         CarouselSlideInline,
@@ -2774,13 +2911,11 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ProductInline,
         GalleryItemInline,
     ]
-
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
         field = getattr(obj, field_name)
         if field and hasattr(field, 'url'):
             return mark_safe(f'<img src="{field.url}" style="{style}" />')
         return "Нет иконки"
-
     def logo_image_preview(self, obj): return self._icon_preview(obj, 'logo_image', "max-height: 80px; background: #ccc; padding: 5px;")
     def logo_image_light_preview(self, obj): return self._icon_preview(obj, 'logo_image_light', "max-height: 80px; background: #333; padding: 5px;")
     def favicon_preview(self, obj): return self._icon_preview(obj, 'favicon')
@@ -2788,16 +2923,8 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
     def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
     def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
-
-    def has_add_permission(self, request):
-        return self.model.objects.count() == 0
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-# =============================================================================
-# ОТДЕЛЬНЫЕ СТРАНИЦЫ ДЛЯ СЛОЖНЫХ НАСТРОЕК
-# =============================================================================
+    def has_add_permission(self, request): return self.model.objects.count() == 0
+    def has_delete_permission(self, request, obj=None): return False
 
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
@@ -2805,11 +2932,8 @@ class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     readonly_fields = ('image_preview',)
     fields = ('name', 'image', 'image_preview', 'width', 'initial_top', 'initial_left', 'opacity', 'z_index', 'animation_duration', 'animation_delay', 'parallax_target_id', 'parallax_speed', 'order')
     ordering = ('order',)
-
-    def image_preview(self, obj):
-        return self.get_preview(obj, 'image', max_height=75)
+    def image_preview(self, obj): return self.get_preview(obj, 'image', max_height=75)
     image_preview.short_description = 'Предпросмотр'
-
 
 @admin.register(BackgroundSettings)
 class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
@@ -2817,16 +2941,10 @@ class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     readonly_fields = ('pattern_preview',)
     fields = ('name', 'background_pattern', 'pattern_preview', 'pattern_size', 'pattern_opacity', 'background_color')
     inlines = [BackgroundObjectInline]
-
-    def pattern_preview(self, obj):
-        return self.get_preview(obj, 'background_pattern', is_background=True)
+    def pattern_preview(self, obj): return self.get_preview(obj, 'background_pattern', is_background=True)
     pattern_preview.short_description = 'Предпросмотр паттерна'
-
-    def has_add_permission(self, request):
-        return self.model.objects.count() == 0
-
-    def has_delete_permission(self, request, obj=None):
-        return False
+    def has_add_permission(self, request): return self.model.objects.count() == 0
+    def has_delete_permission(self, request, obj=None): return False
 ```
 --- END OF FILE: main\admin.py ---
 
@@ -2874,7 +2992,8 @@ class CompanyProfile(models.Model):
         verbose_name_plural = "1. Главные настройки сайта"
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
-    
+
+# НОВАЯ МОДЕЛЬ ДЛЯ СЛАЙДОВ КАРУСЕЛИ
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
     name = models.CharField(max_length=200, verbose_name='Название/Заголовок слайда')
@@ -2972,16 +3091,12 @@ class GalleryItem(models.Model):
     def __str__(self):
         return self.title
 
-# --- Отдельные, не связанные с CompanyProfile модели ---
-
 class OrbibolInfo(models.Model):
     company_profile = models.OneToOneField(
         CompanyProfile, 
         on_delete=models.CASCADE, 
         related_name='orbibol_info'
-        
     )
-
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     plot_title = models.CharField(max_length=100, default="Сюжетный орбибол", verbose_name="Заголовок блока 'Сюжетный'")
     plot_description = models.TextField(verbose_name="Описание для 'Сюжетный орбибол'")
@@ -3058,21 +3173,24 @@ urlpatterns = [
 from django.shortcuts import render
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, Section, CarouselSlide   
+    BackgroundSettings, Section, CarouselSlide
 )
 
 def home_page_view(request):
-    company_profile = CompanyProfile.objects.first() 
-    orbibol_info = OrbibolInfo.objects.first()
-    features = Feature.objects.all() 
-    game_types = GameType.objects.all()
-    products = Product.objects.all()
-    gallery_items = GalleryItem.objects.all()
-    background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
-    
+    company_profile = CompanyProfile.objects.first()
+    if company_profile:
+        orbibol_info = getattr(company_profile, 'orbibol_info', None)
+        features = company_profile.features.all()
+        game_types = company_profile.game_types.all()
+        products = company_profile.products.all()
+        gallery_items = company_profile.gallery_items.all()
+        carousel_slides = company_profile.carousel_slides.all()
+    else:
+        orbibol_info, features, game_types, products, gallery_items, carousel_slides = None, [], [], [], [], []
 
+    background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
     sections = Section.objects.filter(is_active=True).all()
-                                                    
+
     context = {
         'company_profile': company_profile,
         'orbibol_info': orbibol_info,
@@ -3081,21 +3199,22 @@ def home_page_view(request):
         'products': products,
         'gallery_items': gallery_items,
         'background_settings': background_settings,
-        'sections': sections,  
+        'sections': sections,
         'carousel_slides': carousel_slides,
     }
     return render(request, 'main/home_page.html', context)
+
 def custom_handler404(request, exception):
     context = {
-        'company_profile': None,
-        'background_settings': None,
+        'company_profile': CompanyProfile.objects.first(),
+        'background_settings': BackgroundSettings.objects.prefetch_related('background_objects').first(),
     }
     return render(request, "404.html", context, status=404)
 
 def custom_handler500(request):
     context = {
-        'company_profile': None,
-        'background_settings': None,
+        'company_profile': CompanyProfile.objects.first(),
+        'background_settings': BackgroundSettings.objects.prefetch_related('background_objects').first(),
     }
     return render(request, "500.html", context, status=500)
 ```

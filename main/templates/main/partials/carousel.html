@@ -4,10 +4,10 @@
             <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
         
-        <!-- Добавляем обертку для всего виджета -->
         <div class="carousel-widget-wrapper">
             <!-- Стрелка "Назад" -->
-            <div class.="swiper-button-prev"></div>
+            <!-- ИСПРАВЛЕНО: было class. стало class= -->
+            <div class="swiper-button-prev"></div>
 
             <!-- Контейнер Swiper -->
             <div class="swiper booking-carousel">
@@ -36,7 +36,8 @@
             </div>
 
             <!-- Стрелка "Вперед" -->
-            <div class.="swiper-button-next"></div>
+            <!-- ИСПРАВЛЕНО: было class. стало class= -->
+            <div class="swiper-button-next"></div>
         </div>
     </div>
 </section>
