@@ -3,30 +3,46 @@
     margin-bottom: 3rem;
 }
 
-/* Контейнер всей карусели */
+/* Новый контейнер для всего виджета (карусель + стрелки) */
+.carousel-widget-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Основной контейнер Swiper */
 .booking-carousel {
-    width: 100%;
-    padding-top: 50px;
+    width: 80%; /* Уменьшаем ширину, чтобы было видно стрелки */
+    height: 520px;
+    padding-top: 20px;
     padding-bottom: 50px;
 }
 
-/* Отдельный слайд */
+/* Стили отдельного слайда */
 .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 320px; /* Ширина боковых слайдов */
-    height: 480px; /* Высота боковых слайдов */
+    width: 350px;
+    height: 480px;
     border-radius: 10px;
     overflow: hidden;
     background-color: rgba(var(--color-green-accent-rgb), 0.05);
     border: 2px solid rgba(var(--color-green-accent-rgb), 0.3);
-    transition: transform 0.4s ease, border-color 0.4s ease;
+    
+    /* Плавные переходы для всех эффектов */
+    transition: transform 0.4s ease, border-color 0.4s ease, opacity 0.4s ease;
+    
+    /* Делаем боковые слайды полупрозрачными */
+    opacity: 0.5;
 }
 
 /* Центральный, активный слайд */
 .swiper-slide-active {
-    transform: scale(1.2); /* Делаем его больше */
+    transform: scale(1.15); /* Делаем его немного больше */
     border-color: var(--color-pink-accent);
+    opacity: 1; /* Полная непрозрачность */
+    z-index: 10;
 }
 
 .slide-image-wrapper {
@@ -62,11 +78,26 @@
 /* Стилизация стрелок */
 :root {
     --swiper-navigation-color: var(--color-pink-accent); /* Цвет стрелок */
-    --swiper-navigation-size: 34px; /* Размер стрелок */
+    --swiper-navigation-size: 28px; /* Размер иконок внутри стрелок */
 }
 
 .swiper-button-prev,
 .swiper-button-next {
-    top: 50%;
-    transform: translateY(-50%);
+    position: static; /* Убираем абсолютное позиционирование */
+    margin: 0 1rem; /* Добавляем отступы по бокам */
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-weight: 900 !important; /* Делаем иконки стрелок жирными */
 }
