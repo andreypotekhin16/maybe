@@ -1,6 +1,8 @@
 <section id="gallery-section">
         <div class="container">
-            <h2>Фото и видео галерея</h2>
+            {% if section.show_title %}
+                <h2>{{ section.title|default:"Фото и видео галерея" }}</h2>
+            {% endif %}
             {% if company_profile.gallery_description %}
                 <p class="gallery-description">{{ company_profile.gallery_description }}</p>
             {% endif %}

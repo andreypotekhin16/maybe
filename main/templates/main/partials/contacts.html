@@ -1,6 +1,8 @@
 <section id="contacts-section" class="section-contacts text-center">
         <div class="container">
-            <h2>Контакты</h2>
+            {% if section.show_title %}
+                <h2>{{ section.title|default:"Контакты" }}</h2>
+            {% endif %}
             {% if company_profile %}
                 <p><strong>Адрес:</strong><br>{{ company_profile.contact_address|linebreaksbr }}</p>
                 <p><strong>Телефон:</strong><br><a href="tel:{{ company_profile.contact_phone }}">{{ company_profile.contact_phone }}</a></p>

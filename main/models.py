@@ -133,7 +133,7 @@ class Section(models.Model):
     SECTION_CHOICES = [
         ('about_us', 'О нас'),
         ('features', 'Что мы предлагаем (Преимущества)'),
-        # ('booking', 'Запись на игру (Карусель)'), # <-- Вот сюда мы потом добавим карусель
+        # ('booking', 'Запись на игру (Карусель)'), # Раскомментируем позже
         ('orbibol', 'Орбибол'),
         ('games', 'Игры'),
         ('market', 'Маркет'),
@@ -147,13 +147,23 @@ class Section(models.Model):
         unique=True,
         verbose_name="Тип секции"
     )
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Заголовок секции",
+        help_text="Оставьте пустым, чтобы использовать заголовок по умолчанию."
+    )
+    show_title = models.BooleanField(
+        default=True,
+        verbose_name="Показывать заголовок"
+    )
     order = models.PositiveIntegerField(
         default=0,
         verbose_name="Порядок отображения"
     )
     is_active = models.BooleanField(
         default=True,
-        verbose_name="Включена"
+        verbose_name="Секция включена"
     )
 
     class Meta:

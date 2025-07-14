@@ -1,6 +1,8 @@
 <section id="games-section" class="section-games">
         <div class="container">
-            <h2>Игры</h2>
+            {% if section.show_title %}
+                <h2>{{ section.title|default:"Игры" }}</h2>
+            {% endif %}
             <div class="games-grid">
                 {% for type in game_types %}
                     <div class="game-type-item">

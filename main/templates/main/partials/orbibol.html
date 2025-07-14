@@ -1,6 +1,8 @@
 <section id="orbibol-section">
         <div class="container">
-            <h2>Орбибол</h2>
+            {% if section.show_title %}
+                <h2>{{ section.title|default:"Орбибол" }}</h2>
+            {% endif %}
             {% if orbibol_info %}
                 <p class="orbibol-general-info">{{ orbibol_info.general_info|linebreaksbr }}</p>
                 <div class="orbibol-content-wrapper">

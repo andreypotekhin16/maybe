@@ -1,6 +1,8 @@
 <section id="market-section">
         <div class="container">
-            <h2>Маркет</h2>
+            {% if section.show_title %}
+                <h2>{{ section.title|default:"Маркет" }}</h2>
+            {% endif %}
             <div class="market-grid">
                 {% for product in products %}
                     <a href="{{ product.link|default:'#' }}" class="product-card" target="_blank" rel="noopener noreferrer">

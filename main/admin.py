@@ -1,14 +1,16 @@
+# main/admin.py
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject, Section  
+    BackgroundSettings, BackgroundObject, Section
 )
 
+# =============================================================================
+# МИКСИН ДЛЯ ПРЕДПРОСМОТРА ИЗОБРАЖЕНИЙ
+# =============================================================================
 class ImagePreviewAdminMixin:
-    """
-    Миксин для добавления предпросмотра изображений в админ-панели Django.
-    """
+    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         """Возвращает HTML для предпросмотра."""
         field = getattr(obj, field_name, None)
@@ -18,59 +20,120 @@ class ImagePreviewAdminMixin:
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
 
+# =============================================================================
+# ИНЛАЙНЫ ДЛЯ СЕКЦИЙ, УПРАВЛЯЕМЫЕ ВНУТРИ CompanyProfile
+# =============================================================================
+
+class SectionInline(admin.TabularInline):
+    model = Section
+    extra = 0  # Не даем добавлять новые, так как их набор фиксирован
+    can_delete = False  # Запрещаем удаление
+    fields = ('get_section_type_display', 'title', 'show_title', 'order', 'is_active')
+    readonly_fields = ('get_section_type_display',)  # Тип секции не меняется
+    ordering = ('order',)
+
+    def get_section_type_display(self, obj):
+        return obj.get_section_type_display()
+    get_section_type_display.short_description = 'Название секции'
+
+    def has_add_permission(self, request, obj=None):
+        return False # Запрещаем добавление через инлайн
+
+class FeatureInline(admin.TabularInline):
+    model = Feature
+    extra = 1
+    ordering = ('order',)
+    fields = ('title', 'description', 'icon', 'order')
+
+class GameTypeInline(admin.TabularInline):
+    model = GameType
+    extra = 1
+    ordering = ('order',)
+    fields = ('name', 'description', 'icon', 'order')
+
+class ProductInline(admin.TabularInline):
+    model = Product
+    extra = 1
+    ordering = ('order',)
+    fields = ('name', 'price', 'description', 'image', 'link', 'order')
+
+class GalleryItemInline(admin.TabularInline):
+    model = GalleryItem
+    extra = 1
+    ordering = ('order',)
+    fields = ('title', 'image', 'video', 'order_link', 'order')
 
 
-@admin.register(Feature)
-class FeatureAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    list_display = ('title', 'order', 'icon_preview')
-    list_editable = ('order',)
-    readonly_fields = ('icon_preview',)
-    fields = ('title', 'description', 'icon', 'icon_preview', 'order')
+# =============================================================================
+# ГЛАВНАЯ АДМИН-МОДЕЛЬ: Профиль Компании (Центр Управления)
+# =============================================================================
 
-    def icon_preview(self, obj):
-        return self.get_preview(obj, 'icon')
-    icon_preview.short_description = 'Предпросмотр иконки'
+@admin.register(CompanyProfile)
+class CompanyProfileAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'logo_image_preview', 'logo_image_light_preview', 'favicon_preview', 'vk_icon_preview',
+        'youtube_icon_preview', 'telegram_icon_preview', 'nav_toggle_icon_preview'
+    )
+    
+    fieldsets = (
+        ('Основные настройки сайта', {
+            'fields': (
+                'site_name',
+                ('logo_image', 'logo_image_preview'),
+                ('logo_image_light', 'logo_image_light_preview'),
+                ('favicon', 'favicon_preview'),
+            )
+        }),
+        ('Секция "О нас"', {
+            'fields': ('motto', 'about_us_text')
+        }),
+        ('Настройки других секций', {
+             'description': 'Настройки для секций "Маркет" и "Галерея".',
+             'fields': ('market_link', 'gallery_description')
+        }),
+        ('Контакты и Соцсети', {
+            'classes': ('collapse',),
+            'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', 
+                       ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))
+        }),
+        ('Технические иконки', {
+            'classes': ('collapse',),
+            'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)
+        })
+    )
 
+    inlines = [
+        SectionInline, 
+        FeatureInline,
+        GameTypeInline,
+        ProductInline,
+        GalleryItemInline,
+    ]
 
-@admin.register(GameType)
-class GameTypeAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    list_display = ('name', 'order', 'icon_preview')
-    list_editable = ('order',)
-    readonly_fields = ('icon_preview',)
-    fields = ('name', 'description', 'icon', 'icon_preview', 'order')
+    def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
+        field = getattr(obj, field_name)
+        if field and hasattr(field, 'url'):
+            return mark_safe(f'<img src="{field.url}" style="{style}" />')
+        return "Нет иконки"
 
-    def icon_preview(self, obj):
-        return self.get_preview(obj, 'icon')
-    icon_preview.short_description = 'Предпросмотр иконки'
+    def logo_image_preview(self, obj): return self._icon_preview(obj, 'logo_image', "max-height: 80px; background: #ccc; padding: 5px;")
+    def logo_image_light_preview(self, obj): return self._icon_preview(obj, 'logo_image_light', "max-height: 80px; background: #333; padding: 5px;")
+    def favicon_preview(self, obj): return self._icon_preview(obj, 'favicon')
+    def vk_icon_preview(self, obj): return self._icon_preview(obj, 'vk_icon')
+    def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
+    def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
+    def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
 
+    # Логика для "синглтона" - чтобы нельзя было создать больше одного профиля
+    def has_add_permission(self, request):
+        return self.model.objects.count() == 0
 
-@admin.register(Product)
-class ProductAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    list_display = ('name', 'price', 'order', 'image_preview')
-    list_editable = ('order',)
-    readonly_fields = ('image_preview',)
-    fields = ('name', 'price', 'description', 'image', 'image_preview', 'link', 'order')
+    def has_delete_permission(self, request, obj=None):
+        return False
 
-    def image_preview(self, obj):
-        return self.get_preview(obj, 'image', max_height=150)
-    image_preview.short_description = 'Предпросмотр'
-
-
-@admin.register(GalleryItem)
-class GalleryItemAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    list_display = ('title', 'order', 'media_preview')
-    list_editable = ('order',)
-    readonly_fields = ('media_preview',)
-    fields = ('title', 'image', 'video', 'media_preview', 'order_link', 'order')
-
-    def media_preview(self, obj):
-        if obj.image:
-            return self.get_preview(obj, 'image', max_height=150)
-        if obj.video:
-            return mark_safe(f'<video src="{obj.video.url}" controls style="max-height: 150px; max-width: 300px;"></video>')
-        return "Нет медиа"
-    media_preview.short_description = 'Предпросмотр'
-
+# =============================================================================
+# ОТДЕЛЬНЫЕ СТРАНИЦЫ ДЛЯ СЛОЖНЫХ НАСТРОЕК
+# =============================================================================
 
 @admin.register(OrbibolInfo)
 class OrbibolInfoAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
@@ -81,72 +144,14 @@ class OrbibolInfoAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
         ('Тактический орбибол', {'fields': ('tactical_title', 'tactical_description', 'tactical_icon', 'tactical_icon_preview')}),
     )
 
-    def plot_icon_preview(self, obj):
-        return self.get_preview(obj, 'plot_icon')
+    def plot_icon_preview(self, obj): return self.get_preview(obj, 'plot_icon')
     plot_icon_preview.short_description = 'Предпросмотр иконки'
 
-    def tactical_icon_preview(self, obj):
-        return self.get_preview(obj, 'tactical_icon')
+    def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon')
     tactical_icon_preview.short_description = 'Предпросмотр иконки'
-
-
-@admin.register(CompanyProfile)
-class CompanyProfileAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    readonly_fields = (
-        'logo_image_preview', 'logo_image_light_preview', 'favicon_preview', 'vk_icon_preview',
-        'youtube_icon_preview', 'telegram_icon_preview', 'nav_toggle_icon_preview'
-    )
-    fieldsets = (
-        ('Основные настройки', {
-            'fields': (
-                'site_name',
-                ('logo_image', 'logo_image_preview'),
-                ('logo_image_light', 'logo_image_light_preview'),
-                ('favicon', 'favicon_preview'),
-                'motto', 'about_us_text'
-            )
-        }),
-        ('Ссылки на страницы', {'fields': ('market_link', 'gallery_description')}),
-        ('Контакты и Соцсети', {'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link')}),
-        ('Иконки', {
-            'classes': ('collapse',),
-            'fields': (
-                ('vk_icon', 'vk_icon_preview'),
-                ('youtube_icon', 'youtube_icon_preview'),
-                ('telegram_icon', 'telegram_icon_preview'),
-                ('nav_toggle_icon', 'nav_toggle_icon_preview')
-            )
-        }),
-    )
-
-    def _icon_preview(self, obj, field_name, style="max-height: 50px; max-width: 50px;"):
-        field = getattr(obj, field_name)
-        if field and hasattr(field, 'url'):
-            return mark_safe(f'<img src="{field.url}" style="{style}" />')
-        return "Нет иконки"
-
-    def logo_image_preview(self, obj):
-        return self._icon_preview(obj, 'logo_image', "max-height: 100px; max-width: 100px; background: #ccc; padding: 5px;")
-    logo_image_preview.short_description = 'Предпросмотр'
-
-    def logo_image_light_preview(self, obj):
-        return self._icon_preview(obj, 'logo_image_light', "max-height: 100px; max-width: 100px; background: #333; padding: 5px;")
-    logo_image_light_preview.short_description = 'Предпросмотр (светлый)'
     
-    def favicon_preview(self, obj): return self._icon_preview(obj, 'favicon')
-    favicon_preview.short_description = 'Предпросмотр Фавикона'
-
-    def vk_icon_preview(self, obj): return self._icon_preview(obj, 'vk_icon')
-    vk_icon_preview.short_description = 'Предпросмотр VK'
-
-    def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
-    youtube_icon_preview.short_description = 'Предпросмотр YouTube'
-
-    def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
-    telegram_icon_preview.short_description = 'Предпросмотр Telegram'
-
-    def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
-    nav_toggle_icon_preview.short_description = 'Предпросмотр иконки меню'
+    def has_add_permission(self, request): return self.model.objects.count() == 0
+    def has_delete_permission(self, request, obj=None): return False
 
 
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
@@ -173,14 +178,7 @@ class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     pattern_preview.short_description = 'Предпросмотр паттерна'
 
     def has_add_permission(self, request):
-        if self.model.objects.count() >= 1:
-            return False
-        return super().has_add_permission(request)
+        return self.model.objects.count() == 0
 
     def has_delete_permission(self, request, obj=None):
         return False
-    
-@admin.register(Section)
-class SectionAdmin(admin.ModelAdmin):
-    list_display = ('get_section_type_display', 'order', 'is_active')
-    list_editable = ('order', 'is_active')

@@ -1,6 +1,8 @@
 <section id="features-section" class="section-features">
         <div class="container">
-            <h2>Что мы предлагаем</h2>
+            {% if section.show_title %}
+                <h2>{{ section.title|default:"Что мы предлагаем" }}</h2>
+            {% endif %}
             <div class="features-grid">
                 {% for feature in features %}
                     <div class="feature-item">
