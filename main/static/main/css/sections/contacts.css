@@ -1,0 +1,22 @@
+.section-contacts p { margin-bottom: 0.75rem; }
+.section-contacts a { color: var(--color-green-accent); text-decoration: underline; }
+.section-contacts a:hover { text-decoration: none; }
+
+.social-icons-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.social-icons-footer a {
+    text-decoration: none;
+}
+.social-icons-footer img {
+    height: 30px;
+    width: 30px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+.social-icons-footer a:hover img {
+    opacity: 1;
+}

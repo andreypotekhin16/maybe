@@ -1,0 +1,57 @@
+.section-about-us {
+    min-height: 80vh; 
+    padding-top: 9rem; 
+    padding-bottom: 5rem;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: flex-start; 
+    text-align: left;
+}
+.section-about-us .container {
+    width: 100%; 
+}
+.about-us-content {
+    max-width: 65ch; 
+    margin: 0; 
+}
+.about-us-social-icons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.about-us-social-icons img {
+    height: 40px;
+    width: 40px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease-in-out;
+}
+.about-us-social-icons a:hover img {
+    opacity: 1;
+}
+.section-about-us .slogan {
+    font-family: var(--font-sunday); 
+    font-size: var(--fs-main-slogan); 
+    color: var(--color-green-accent); 
+    font-weight: normal; 
+    text-transform: uppercase; 
+    margin-bottom: 2rem; 
+    line-height: 1.2;
+}
+.section-about-us .about-us-text { 
+    font-family: var(--font-fortunec); 
+    font-size: var(--fs-about-text); 
+    font-weight: normal; 
+    color: var(--color-white); 
+    line-height: 1.7;
+    text-align: left; 
+    margin: 0;
+}
+.section-about-us .about-us-text p { margin-bottom: 1em; }
+.section-about-us .about-us-text p:last-child { margin-bottom: 0; }
+@media (max-width: 768px) {
+    .about-us-content {
+        padding: 0 15px; 
+    }
+}

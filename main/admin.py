@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject
+    BackgroundSettings, BackgroundObject, Section  
 )
 
 class ImagePreviewAdminMixin:
@@ -179,3 +179,8 @@ class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+    
+@admin.register(Section)
+class SectionAdmin(admin.ModelAdmin):
+    list_display = ('get_section_type_display', 'order', 'is_active')
+    list_editable = ('order', 'is_active')

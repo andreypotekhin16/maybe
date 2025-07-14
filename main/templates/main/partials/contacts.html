@@ -1,0 +1,28 @@
+<section id="contacts-section" class="section-contacts text-center">
+        <div class="container">
+            <h2>Контакты</h2>
+            {% if company_profile %}
+                <p><strong>Адрес:</strong><br>{{ company_profile.contact_address|linebreaksbr }}</p>
+                <p><strong>Телефон:</strong><br><a href="tel:{{ company_profile.contact_phone }}">{{ company_profile.contact_phone }}</a></p>
+                <p><strong>Email:</strong><br><a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>
+                
+                <div class="social-icons-footer">
+                     {% if company_profile.vk_profile_link and company_profile.vk_icon %}
+                        <a href="{{ company_profile.vk_profile_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ company_profile.vk_icon.url }}" alt="VK">
+                        </a>
+                    {% endif %}
+                    {% if company_profile.youtube_profile_link and company_profile.youtube_icon %}
+                        <a href="{{ company_profile.youtube_profile_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ company_profile.youtube_icon.url }}" alt="YouTube">
+                        </a>
+                    {% endif %}
+                    {% if company_profile.telegram_profile_link and company_profile.telegram_icon %}
+                        <a href="{{ company_profile.telegram_profile_link }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ company_profile.telegram_icon.url }}" alt="Telegram">
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </section>

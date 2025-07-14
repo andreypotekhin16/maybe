@@ -127,3 +127,39 @@ class BackgroundObject(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
+    
+
+class Section(models.Model):
+    SECTION_CHOICES = [
+        ('about_us', 'О нас'),
+        ('features', 'Что мы предлагаем (Преимущества)'),
+        # ('booking', 'Запись на игру (Карусель)'), # <-- Вот сюда мы потом добавим карусель
+        ('orbibol', 'Орбибол'),
+        ('games', 'Игры'),
+        ('market', 'Маркет'),
+        ('gallery', 'Фото и видео галерея'),
+        ('contacts', 'Контакты'),
+    ]
+
+    section_type = models.CharField(
+        max_length=50,
+        choices=SECTION_CHOICES,
+        unique=True,
+        verbose_name="Тип секции"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Порядок отображения"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Включена"
+    )
+
+    class Meta:
+        verbose_name = "Секция на главной странице"
+        verbose_name_plural = "Секции на главной странице"
+        ordering = ['order']
+
+    def __str__(self):
+        return self.get_section_type_display()

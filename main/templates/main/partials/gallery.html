@@ -1,0 +1,28 @@
+<section id="gallery-section">
+        <div class="container">
+            <h2>Фото и видео галерея</h2>
+            {% if company_profile.gallery_description %}
+                <p class="gallery-description">{{ company_profile.gallery_description }}</p>
+            {% endif %}
+            <div class="gallery-grid">
+                {% for item in gallery_items %}
+                    <div class="gallery-item">
+                        <h3>{{ item.title }}</h3>
+                        <a href="{{ item.order_link }}" target="_blank" rel="noopener noreferrer" class="gallery-content-link">
+                            <div class="gallery-media-wrapper">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                                {% elif item.video %}
+                                    <video src="{{ item.video.url }}" autoplay muted loop playsinline></video>
+                                {% endif %}
+                            </div>
+                        </a>
+                        <a href="{{ item.order_link }}" target="_blank" rel="noopener noreferrer" class="gallery-order-link">Заказать</a>
+                    </div>
+                {% empty %}
+                    <p>Элементы галереи не добавлены.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    

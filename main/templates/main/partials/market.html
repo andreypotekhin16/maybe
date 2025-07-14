@@ -1,0 +1,22 @@
+<section id="market-section">
+        <div class="container">
+            <h2>Маркет</h2>
+            <div class="market-grid">
+                {% for product in products %}
+                    <a href="{{ product.link|default:'#' }}" class="product-card" target="_blank" rel="noopener noreferrer">
+                        <div class="product-image-wrapper">
+                            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% endif %}
+                        </div>
+                        <h3 class="product-title">{{ product.name }}</h3>
+                        <div class="product-price">{{ product.price }} ₽</div>
+                        <p class="product-description">{{ product.description }}</p>
+                    </a>
+                {% empty %}
+                     <p>Товары не добавлены.</p>
+                {% endfor %}
+            </div>
+            {% if company_profile.market_link %}
+                <a href="{{ company_profile.market_link }}" class="market-more-link" target="_blank" rel="noopener noreferrer">Еще больше товаров в нашем маркете</a>
+            {% endif %}
+        </div>
+    </section>
