@@ -1,11 +1,7 @@
 {% extends "main/base.html" %}
 {% load static %}
 
-{# Подключаем стили для Swiper и нашей карусели #}
-{% block extra_head %}
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="{% static 'main/carousel/carousel.css' %}">
-{% endblock %}
+
 
 
 {% block content %}
@@ -66,46 +62,7 @@
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" -->
-    <section id="booking-section">
-        <div class="container">
-            <h2>Запись на игру</h2>
-            
-            <div class="swiper booking-swiper">
-                <div class="swiper-wrapper">
-                    
-                    {% for service in services %}
-                    <div class="swiper-slide">
-                        <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                            {% if service.image %}
-                                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
-                            {% else %}
-                                <div class="booking-slide-placeholder">Арт</div>
-                            {% endif %}
-                        </a>
-                    </div>
-                    {% endfor %}
-
-                    {# Хак для зацикливания, если слайдов мало #}
-                    {% if services|length > 0 and services|length < 5 %}
-                        {% for service in services %}
-                        <div class="swiper-slide" aria-hidden="true">
-                           <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                                {% if service.image %}
-                                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
-                                {% else %}
-                                    <div class="booking-slide-placeholder">Арт</div>
-                                {% endif %}
-                            </a>
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-
-                </div>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- 4. СЕКЦИЯ "ОРБИБОЛ" (и далее без изменений) -->
     <section id="orbibol-section">
         <div class="container">
@@ -249,8 +206,3 @@
 {% endblock %}
 
 
-{# Подключаем скрипты для Swiper и нашей карусели #}
-{% block extra_scripts %}
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="{% static 'main/carousel/carousel.js' %}"></script>
-{% endblock %}

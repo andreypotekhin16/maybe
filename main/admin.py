@@ -18,7 +18,7 @@ class ImagePreviewAdminMixin:
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
 
-# Класс ServiceAdmin удален
+
 
 @admin.register(Feature)
 class FeatureAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
