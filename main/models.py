@@ -25,8 +25,8 @@ class CompanyProfile(models.Model):
     nav_toggle_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка для раскрытия меню (в свернутом хедере)", blank=True, null=True)
     
     class Meta:
-        verbose_name = "1. Настройки главной страницы"
-        verbose_name_plural = "1. Настройки главной страницы"
+        verbose_name = "1. Главные настройки сайта"
+        verbose_name_plural = "1. Главные настройки сайта"
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
 
@@ -114,6 +114,13 @@ class GalleryItem(models.Model):
 # --- Отдельные, не связанные с CompanyProfile модели ---
 
 class OrbibolInfo(models.Model):
+    company_profile = models.OneToOneField(
+        CompanyProfile, 
+        on_delete=models.CASCADE, 
+        related_name='orbibol_info'
+        
+    )
+
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     plot_title = models.CharField(max_length=100, default="Сюжетный орбибол", verbose_name="Заголовок блока 'Сюжетный'")
     plot_description = models.TextField(verbose_name="Описание для 'Сюжетный орбибол'")
