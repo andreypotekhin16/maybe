@@ -130,8 +130,8 @@ class OrbibolInfo(models.Model):
     tactical_icon = models.FileField(upload_to='orbibol_icons/', verbose_name="Иконка для \"Тактический орбибол\" (SVG/PNG)", blank=True, null=True)
     details_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка 'Узнать подробнее'")
     class Meta:
-        verbose_name = "2. Настройки секции 'Орбибол'"
-        verbose_name_plural = "2. Настройки секции 'Орбибол'"
+        verbose_name = "Настройки секции 'Орбибол'"
+        verbose_name_plural = "Настройки секции 'Орбибол'"
     def __str__(self):
         return "Информация для секции Орбибол"
 

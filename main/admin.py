@@ -24,12 +24,32 @@ class ImagePreviewAdminMixin:
 # ИНЛАЙНЫ ДЛЯ СЕКЦИЙ, УПРАВЛЯЕМЫЕ ВНУТРИ CompanyProfile
 # =============================================================================
 
+class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
+    model = OrbibolInfo
+    can_delete = False
+    verbose_name_plural = 'Настройки для секции "Орбибол"'
+    readonly_fields = ('plot_icon_preview', 'tactical_icon_preview')
+    fieldsets = (
+        (None, {'fields': ('general_info', 'details_link')}),
+        ('Сюжетный орбибол', {'fields': ('plot_title', 'plot_description', 'plot_icon', 'plot_icon_preview')}),
+        ('Тактический орбибол', {'fields': ('tactical_title', 'tactical_description', 'tactical_icon', 'tactical_icon_preview')}),
+    )
+
+    def plot_icon_preview(self, obj):
+        return self.get_preview(obj, 'plot_icon', max_height=75)
+    plot_icon_preview.short_description = 'Предпросмотр иконки (Сюжетный)'
+
+    def tactical_icon_preview(self, obj):
+        return self.get_preview(obj, 'tactical_icon', max_height=75)
+    tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
+
+
 class SectionInline(admin.TabularInline):
     model = Section
-    extra = 0  # Не даем добавлять новые, так как их набор фиксирован
-    can_delete = False  # Запрещаем удаление
+    extra = 0
+    can_delete = False
     fields = ('get_section_type_display', 'title', 'show_title', 'order', 'is_active')
-    readonly_fields = ('get_section_type_display',)  # Тип секции не меняется
+    readonly_fields = ('get_section_type_display',)
     ordering = ('order',)
 
     def get_section_type_display(self, obj):
@@ -37,7 +57,7 @@ class SectionInline(admin.TabularInline):
     get_section_type_display.short_description = 'Название секции'
 
     def has_add_permission(self, request, obj=None):
-        return False # Запрещаем добавление через инлайн
+        return False
 
 class FeatureInline(admin.TabularInline):
     model = Feature
@@ -103,6 +123,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     )
 
     inlines = [
+        OrbibolInfoInline,
         SectionInline, 
         FeatureInline,
         GameTypeInline,
@@ -124,7 +145,6 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
     def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
 
-    # Логика для "синглтона" - чтобы нельзя было создать больше одного профиля
     def has_add_permission(self, request):
         return self.model.objects.count() == 0
 
@@ -134,25 +154,6 @@ class CompanyProfileAdmin(admin.ModelAdmin):
 # =============================================================================
 # ОТДЕЛЬНЫЕ СТРАНИЦЫ ДЛЯ СЛОЖНЫХ НАСТРОЕК
 # =============================================================================
-
-@admin.register(OrbibolInfo)
-class OrbibolInfoAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    readonly_fields = ('plot_icon_preview', 'tactical_icon_preview')
-    fieldsets = (
-        (None, {'fields': ('general_info', 'details_link')}),
-        ('Сюжетный орбибол', {'fields': ('plot_title', 'plot_description', 'plot_icon', 'plot_icon_preview')}),
-        ('Тактический орбибол', {'fields': ('tactical_title', 'tactical_description', 'tactical_icon', 'tactical_icon_preview')}),
-    )
-
-    def plot_icon_preview(self, obj): return self.get_preview(obj, 'plot_icon')
-    plot_icon_preview.short_description = 'Предпросмотр иконки'
-
-    def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon')
-    tactical_icon_preview.short_description = 'Предпросмотр иконки'
-    
-    def has_add_permission(self, request): return self.model.objects.count() == 0
-    def has_delete_permission(self, request, obj=None): return False
-
 
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
