@@ -122,9 +122,10 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         })
     )
 
+    # ИЗМЕНЕН ПОРЯДОК ИНЛАЙНОВ ЗДЕСЬ
     inlines = [
-        OrbibolInfoInline,
         SectionInline, 
+        OrbibolInfoInline,
         FeatureInline,
         GameTypeInline,
         ProductInline,
