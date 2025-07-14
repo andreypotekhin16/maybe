@@ -1,5 +1,3 @@
-// main/static/main/js/main.js
-
 document.addEventListener('DOMContentLoaded', function() {
     
     function setupHeader() {
@@ -94,8 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-
     setupHeader();
     setupDynamicBackground();
- 
 });

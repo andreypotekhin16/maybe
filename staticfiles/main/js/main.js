@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     
     function setupHeader() {
@@ -93,58 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function setupSwiper() {
-        const swiperContainer = document.querySelector('.booking-swiper');
-        if (swiperContainer) {
-            new Swiper(swiperContainer, {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 3, 
-                loop: true,
-                slideToClickedSlide: true,
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: -150, 
-                    depth: 100, 
-                    modifier: 1,
-                    scale: 0.7, 
-                    slideShadows: false, 
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.booking-carousel-nav-next',
-                    prevEl: '.booking-carousel-nav-prev',
-                },
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        coverflowEffect: {
-                            stretch: 0,
-                            depth: 200,
-                            modifier: 1,
-                            scale: 0.85,
-                        },
-                    },
-                    768: {
-                        slidesPerView: 3,
-                         coverflowEffect: {
-                            rotate: 0,
-                            stretch: -150, 
-                            depth: 100, 
-                            modifier: 1,
-                            scale: 0.7, 
-                        },
-                    }
-                }
-            });
-        }
-    }
-
     setupHeader();
     setupDynamicBackground();
-    setupSwiper();
 });
