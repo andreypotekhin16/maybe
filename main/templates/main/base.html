@@ -9,20 +9,78 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Стили для Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     
-    {# Новый блок для дополнительных стилей со страниц #}
     {% block extra_head %}{% endblock %}
 </head>
 <body {% if background_settings %}data-background-enabled="true" data-pattern-url="{% if background_settings.background_pattern %}{{ background_settings.background_pattern.url }}{% endif %}" data-pattern-size="{{ background_settings.pattern_size|default:'200px' }}" data-pattern-opacity="{{ background_settings.pattern_opacity|stringformat:'.2f'|cut:',' }}" data-bg-color="{{ background_settings.background_color|default:'#010101' }}"{% endif %}>
-    <div id="animated-background-container"><div id="background-pattern"></div>{% if background_settings %}{% for obj in background_settings.background_objects.all %}<div class="background-object-placeholder" data-image-url="{{ obj.image.url }}" data-width="{{ obj.width }}" data-top="{{ obj.initial_top }}" data-left="{{ obj.initial_left }}" data-z-index="{{ obj.z_index }}" data-opacity="{{ obj.opacity|stringformat:'.2f'|cut:',' }}" data-anim-duration="{{ obj.animation_duration }}" data-anim-delay="{{ obj.animation_delay }}" data-parallax-target-id="{{ obj.parallax_target_id|default:'' }}" data-parallax-speed="{{ obj.parallax_speed|stringformat:'.2f'|cut:',' }}"></div>{% endfor %}{% endif %}</div>
-    {% block header %}<header id="site-header"><div class="container header-container"><a href="/" class="logo">{% if company_profile and company_profile.logo_image %}<img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">{% endif %}</a><div class="header-center-text">May be</div><nav class="main-nav"><ul><li><a href="/#about-us-section">О нас</a></li><li><a href="/#features-section">Что мы предлагаем</a></li><li><a href="/#orbibol-section">Орбибол</a></li><li><a href="/#games-section">Игры</a></li><li><a href="/#market-section">Маркет</a></li><li><a href="/#gallery-section">Фото и видео галерея</a></li><li><a href="/#contacts-section">Контакты</a></li></ul></nav></div></header>{% endblock header %}
-    <main id="main-content">{% block content %}{% endblock %}</main>
-    {% block footer %}<footer id="site-footer-bottom"><div class="container"><p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p></div></footer>{% endblock footer %}
     
-     <script src="{% static 'main/js/main.js' %}" type="module"></script>
+    <div id="animated-background-container">
+        <div id="background-pattern"></div>
+        {% if background_settings %}
+            {% for obj in background_settings.background_objects.all %}
+                <div class="background-object-placeholder"
+                    data-image-url="{{ obj.image.url }}"
+                    data-width="{{ obj.width }}"
+                    data-top="{{ obj.initial_top }}"
+                    data-left="{{ obj.initial_left }}"
+                    data-z-index="{{ obj.z_index }}"
+                    data-opacity="{{ obj.opacity|stringformat:'.2f'|cut:',' }}"
+                    data-anim-duration="{{ obj.animation_duration }}"
+                    data-anim-delay="{{ obj.animation_delay }}"
+                    data-parallax-target-id="{{ obj.parallax_target_id|default:'' }}"
+                    data-parallax-speed="{{ obj.parallax_speed|stringformat:'.2f'|cut:',' }}"
+                ></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% block header %}
+        <header id="site-header">
+            <div class="container header-container">
+                <a href="/" class="logo">
+                    {% if company_profile and company_profile.logo_image %}
+                        <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
+                    {% endif %}
+                </a>
+                <div class="header-center-text">May be</div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="/#about-us-section">О нас</a></li>
+                        <li><a href="/#features-section">Что мы предлагаем</a></li>
+                        <li><a href="/#orbibol-section">Орбибол</a></li>
+                        <li><a href="/#games-section">Игры</a></li>
+                        <li><a href="/#market-section">Маркет</a></li>
+                        <li><a href="/#gallery-section">Фото и видео галерея</a></li>
+                        <li><a href="/#contacts-section">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    {% endblock header %}
+
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
     
-    {# Новый блок для дополнительных скриптов со страниц #}
+    {% block footer %}
+        <footer id="site-footer-bottom">
+            <div class="container">
+                <p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
+            </div>
+        </footer>
+    {% endblock footer %}
+    
+    <!-- Скрипт Swiper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Ваш главный JS файл -->
+    <script src="{% static 'main/js/main.js' %}" type="module"></script>
+    
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

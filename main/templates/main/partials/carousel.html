@@ -1,13 +1,15 @@
 <section id="carousel-section" class="section-carousel">
     <div class="container">
         {% if section.show_title %}
-            <h2>{{ section.title|default:"Карусель" }}</h2>
+            <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
         
-        <div class="carousel-container">
-            <div class="carousel-wrapper">
+        <!-- Обертка для Swiper -->
+        <div class="swiper booking-carousel">
+            <div class="swiper-wrapper">
+                <!-- Цикл для слайдов остается прежним -->
                 {% for slide in carousel_slides %}
-                <div class="carousel-slide">
+                <div class="swiper-slide">
                     <div class="slide-image-wrapper">
                         {% if slide.image %}
                             <img src="{{ slide.image.url }}" alt="{{ slide.name }}">
@@ -20,9 +22,15 @@
                     </div>
                 </div>
                 {% empty %}
-                    <p class="text-center" style="width: 100%;">Слайды для карусели еще не добавлены в админ-панели.</p>
+                    <div class="swiper-slide">
+                        <p class="text-center" style="width: 100%;">Слайды для карусели еще не добавлены.</p>
+                    </div>
                 {% endfor %}
             </div>
+
+            <!-- Стрелки навигации -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
     </div>
 </section>

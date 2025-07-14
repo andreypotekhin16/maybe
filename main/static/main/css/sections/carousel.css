@@ -3,46 +3,37 @@
     margin-bottom: 3rem;
 }
 
-.carousel-container {
-    overflow-x: auto;
-    padding-bottom: 1.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-pink-accent) var(--color-green-dark-bg);
+/* Контейнер всей карусели */
+.booking-carousel {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
-.carousel-container::-webkit-scrollbar {
-    height: 8px;
-}
-.carousel-container::-webkit-scrollbar-track {
-    background: var(--color-green-dark-bg);
-    border-radius: 4px;
-}
-.carousel-container::-webkit-scrollbar-thumb {
-    background-color: var(--color-pink-accent);
-    border-radius: 4px;
-}
-
-.carousel-wrapper {
-    display: flex;
-    gap: 2rem;
-    width: max-content;
-}
-
-.carousel-slide {
-    flex-shrink: 0;
-    width: 380px;
-    border: 2px solid var(--color-green-accent);
+/* Отдельный слайд */
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 320px; /* Ширина боковых слайдов */
+    height: 480px; /* Высота боковых слайдов */
     border-radius: 10px;
     overflow: hidden;
     background-color: rgba(var(--color-green-accent-rgb), 0.05);
-    display: flex;
-    flex-direction: column;
+    border: 2px solid rgba(var(--color-green-accent-rgb), 0.3);
+    transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+/* Центральный, активный слайд */
+.swiper-slide-active {
+    transform: scale(1.2); /* Делаем его больше */
+    border-color: var(--color-pink-accent);
 }
 
 .slide-image-wrapper {
     width: 100%;
-    height: 250px;
+    height: 280px;
 }
+
 .slide-image-wrapper img {
     width: 100%;
     height: 100%;
@@ -52,10 +43,6 @@
 .slide-content {
     padding: 1.5rem;
     text-align: center;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .slide-content h3 {
@@ -70,5 +57,16 @@
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
-    flex-grow: 1;
+}
+
+/* Стилизация стрелок */
+:root {
+    --swiper-navigation-color: var(--color-pink-accent); /* Цвет стрелок */
+    --swiper-navigation-size: 34px; /* Размер стрелок */
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    top: 50%;
+    transform: translateY(-50%);
 }
