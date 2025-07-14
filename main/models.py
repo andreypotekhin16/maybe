@@ -52,7 +52,7 @@ class Section(models.Model):
     SECTION_CHOICES = [
         ('about_us', 'О нас'),
         ('features', 'Что мы предлагаем (Преимущества)'),
-        ('carousel', 'Карусель'), # <-- ДОБАВЛЕНО
+        ('carousel', 'Карусель'),
         ('orbibol', 'Орбибол'),
         ('games', 'Игры'),
         ('market', 'Маркет'),
@@ -133,7 +133,6 @@ class OrbibolInfo(models.Model):
         CompanyProfile, 
         on_delete=models.CASCADE, 
         related_name='orbibol_info'
-        
     )
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     plot_title = models.CharField(max_length=100, default="Сюжетный орбибол", verbose_name="Заголовок блока 'Сюжетный'")

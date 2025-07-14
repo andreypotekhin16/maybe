@@ -1,4 +1,3 @@
-# main/views.py
 from django.shortcuts import render
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,

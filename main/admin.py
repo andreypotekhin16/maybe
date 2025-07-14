@@ -26,7 +26,6 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
         ('Сюжетный орбибол', {'fields': ('plot_title', 'plot_description', 'plot_icon', 'plot_icon_preview')}),
         ('Тактический орбибол', {'fields': ('tactical_title', 'tactical_description', 'tactical_icon', 'tactical_icon_preview')}),
     )
-
     def plot_icon_preview(self, obj): return self.get_preview(obj, 'plot_icon', max_height=75)
     plot_icon_preview.short_description = 'Предпросмотр иконки (Сюжетный)'
     def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
@@ -85,20 +84,18 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     )
     inlines = [
         SectionInline, 
-        OrbibolInfoInline,
         CarouselSlideInline,
+        OrbibolInfoInline,
         FeatureInline,
         GameTypeInline,
         ProductInline,
         GalleryItemInline,
     ]
-
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
         field = getattr(obj, field_name)
         if field and hasattr(field, 'url'):
             return mark_safe(f'<img src="{field.url}" style="{style}" />')
         return "Нет иконки"
-
     def logo_image_preview(self, obj): return self._icon_preview(obj, 'logo_image', "max-height: 80px; background: #ccc; padding: 5px;")
     def logo_image_light_preview(self, obj): return self._icon_preview(obj, 'logo_image_light', "max-height: 80px; background: #333; padding: 5px;")
     def favicon_preview(self, obj): return self._icon_preview(obj, 'favicon')
@@ -106,7 +103,6 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
     def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
     def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
-
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
