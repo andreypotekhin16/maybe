@@ -1222,6 +1222,80 @@ main section {
     line-height: 1.6;
 }
 
+/* === УПРОЩЕННЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ (БЕЗ ТЕКСТА) === */
+#booking-section {
+    position: relative;
+    padding: 4rem 0;
+    overflow: hidden;
+}
+
+.booking-swiper {
+    width: 100%;
+    height: 550px; 
+    overflow: visible;
+}
+
+.booking-swiper .swiper-wrapper {
+    display: flex;
+    align-items: center; 
+}
+
+/* Состояние 1: Боковой слайд (базовый стиль) */
+.booking-swiper .swiper-slide {
+    width: 440px;
+    height: 440px;
+    flex-shrink: 0;
+    transform: scale(0.65);
+    opacity: 0.5;
+    filter: brightness(0.7);
+    transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Состояние 2: Центральный слайд */
+.booking-swiper .swiper-slide-active {
+    transform: scale(1.1);
+    opacity: 1;
+    filter: brightness(1);
+    z-index: 10;
+}
+
+/* Состояние 3: Наведение на центральный слайд */
+.booking-swiper .swiper-slide-active:hover {
+    transform: scale(1.15);
+}
+
+/* Ссылка-обертка, она же круглая маска */
+.booking-slide-link {
+    display: block; 
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #222;
+    cursor: grab;
+    
+    pointer-events: none; 
+}
+.swiper-slide-active .booking-slide-link {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Картинка */
+.booking-slide-art, .booking-slide-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.booking-slide-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #888;
+}
 
 #orbibol-section .container {
     max-width: 800px;
@@ -1570,179 +1644,6 @@ main section {
     margin: 0 auto 3rem auto;
 }
 
-/* === СТИЛИ ДЛЯ КАРУСЕЛИ === */
-#booking-section {
-    position: relative;
-    padding: 4rem 0;
-    overflow: hidden;
-}
-
-.booking-swiper {
-    width: 100%;
-    height: 550px; 
-    overflow: visible;
-}
-
-.booking-swiper .swiper-wrapper {
-    display: flex !important; /* Гарантируем flex-контейнер */
-    flex-direction: row !important; /* Гарантируем в один ряд */
-    flex-wrap: nowrap !important; /* Запрещаем перенос */
-    align-items: center !important; /* Выравнивание по центру */
-    height: 100% !important; /* Гарантируем высоту */
-}
-
-.booking-swiper .swiper-slide {
-    width: 440px;
-    height: 440px;
-    transform: scale(0.65);
-    opacity: 0.6;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    margin: 0 -40px;
-    
-    position: relative; 
-}
-
-.booking-swiper .swiper-slide-active {
-    transform: scale(1.1);
-    opacity: 1;
-    z-index: 1;
-}
-
-.booking-slide-link {
-    display: block; 
-    width: 100%;
-    height: 100%;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #222;
-    /* ИЗМЕНЕНИЕ: По умолчанию некликабелен */
-    pointer-events: none !important; 
-}
-
-/* ИЗМЕНЕНИЕ: Активный слайд - кликабелен */
-.swiper-slide-active .booking-slide-link {
-    pointer-events: auto !important; 
-}
-
-.booking-slide-art, .booking-slide-placeholder {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.booking-slide-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: #888;
-}
-
-/* Оверлей с текстом */
-.booking-slide-info {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75); 
-    color: #fff;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    
-    /* ИЗМЕНЕНИЕ: По умолчанию невидим и некликабелен */
-    opacity: 0 !important; 
-    pointer-events: none !important; 
-    transition: opacity 0.3s ease;
-}
-
-/* ИЗМЕНЕНИЕ: Показываем текст ТОЛЬКО на активном слайде */
-.swiper-slide-active .booking-slide-info {
-    opacity: 1 !important;
-    pointer-events: auto !important; 
-}
-
-/* Ховер-эффект на активном слайде */
-.swiper-slide-active .booking-slide-link:hover .booking-slide-art {
-    transform: scale(1.1); 
-}
-.swiper-slide-active .booking-slide-link:hover .booking-slide-info {
-    background: rgba(0, 0, 0, 0.9);
-}
-
-/* Текстовые стили */
-.booking-slide-title {
-    font-family: var(--font-sunday);
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-.booking-slide-description {
-    font-family: var(--font-fortunec);
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-
-/* АГРЕССИВНО СКРЫВАЕМ СТАНДАРТНУЮ ПАГИНАЦИЮ SWIPER */
-.swiper-pagination,
-.swiper-pagination-fraction,
-.swiper-pagination-bullets,
-.swiper-pagination-progressbar {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
-}
-
-/* СТИЛИ ДЛЯ НАШЕЙ КАСТОМНОЙ ПАГИНАЦИИ */
-.custom-pagination {
-    text-align: center;
-    margin-top: 1rem; 
-    position: relative;
-    z-index: 10;
-}
-
-.custom-pagination-bullet {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #fff;
-    opacity: 0.4;
-    margin: 0 6px;
-    cursor: pointer;
-    transition: opacity 0.3s, background-color 0.3s;
-}
-
-.custom-pagination-bullet-active {
-    background: var(--color-pink-accent);
-    opacity: 1;
-}
-
-/* Стрелки */
-.booking-swiper .swiper-button-prev,
-.booking-swiper .swiper-button-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    color: var(--color-white);
-    z-index: 20;
-}
-.booking-swiper .swiper-button-prev::after,
-.booking-swiper .swiper-button-next::after {
-    font-size: 2rem;
-}
-
-
 /* Медиа-запросы */
 @media (max-width: 1100px) {
     .features-grid,
@@ -1775,17 +1676,20 @@ main section {
         font-size: 2.2rem;
     }
 
+    /* Адаптация карусели для мобильных */
     .booking-swiper .swiper-slide {
         width: 300px;
-        height: 300px; /* Фиксируем высоту круга */
+        height: 300px;
         transform: scale(0.7);
-        margin: 0 -20px;
     }
     .booking-swiper .swiper-slide-active {
         transform: scale(1);
     }
+    .booking-swiper .swiper-slide-active:hover {
+        transform: scale(1.05);
+    }
     .booking-swiper {
-        height: 350px; /* Подстраиваем высоту контейнера под мобильный размер */
+        height: 350px;
     }
 }
 
@@ -1905,45 +1809,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Обновленная функция для карусели
     function setupSwiper() {
         const swiperContainer = document.querySelector('.booking-swiper');
         if (swiperContainer) {
             const slides = swiperContainer.querySelectorAll('.swiper-slide');
-            const customPaginationBullets = document.querySelectorAll('.custom-pagination-bullet');
             
-            const mySwiper = new Swiper(swiperContainer, {
+            new Swiper(swiperContainer, {
                 loop: true,
                 centeredSlides: true,
                 slidesPerView: 'auto',
+                // Эта опция помогает Swiper корректно создавать дубликаты
+                // для зацикливания, когда реальных слайдов мало.
                 loopAdditionalSlides: slides.length,
                 
-                // ИЗМЕНЕНИЕ: Устанавливаем нужное расстояние
-                spaceBetween: 15,
+                // Расстояние между слайдами, но основной эффект сжатия достигается
+                // отрицательными отступами в CSS.
+                spaceBetween: 0,
                 
+                // Пагинация и навигация полностью отключены
                 pagination: false, 
-
-                navigation: {
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev',
-                },
-
-                on: {
-                    slideChange: function () {
-                        let currentIndex = this.realIndex;
-                        customPaginationBullets.forEach((bullet, index) => {
-                            if (index === currentIndex) {
-                                bullet.classList.add('custom-pagination-bullet-active');
-                            } else {
-                                bullet.classList.remove('custom-pagination-bullet-active');
-                            }
-                        });
-                    },
-                },
+                navigation: false,
             });
-
-            if (customPaginationBullets.length > 0) {
-                 customPaginationBullets[mySwiper.realIndex].classList.add('custom-pagination-bullet-active');
-            }
         }
     }
 
@@ -2044,7 +1931,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </section>
 
-    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" -->
+    <!-- 3. СЕКЦИЯ "ЗАПИСЬ НА ИГРУ" (БЕЗ ТЕКСТА) -->
     <section id="booking-section">
         <div class="container">
             <h2>Запись на игру</h2>
@@ -2052,61 +1939,36 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="swiper booking-swiper">
                 <div class="swiper-wrapper">
                     
-                    {# Основной цикл #}
                     {% for service in services %}
                     <div class="swiper-slide">
                         <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                             {% if service.image %}
+                            {% if service.image %}
                                 <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                             {% else %}
                                 <div class="booking-slide-placeholder">Арт</div>
                             {% endif %}
-                           
-                            <div class="booking-slide-info">
-                                <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                {% if service.short_description %}
-                                <p class="booking-slide-description">{{ service.short_description }}</p>
-                                {% endif %}
-                            </div>
+                            <!-- Блок с текстом полностью удален -->
                         </a>
                     </div>
                     {% endfor %}
 
-                    {# Хак для зацикливания #}
+                    {# Хак для зацикливания, если слайдов мало #}
                     {% if services|length > 0 and services|length < 4 %}
                         {% for service in services %}
                         <div class="swiper-slide">
-                            <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
-                                 {% if service.image %}
+                           <a href="{{ service.vk_link|default:'#' }}" class="booking-slide-link" target="_blank" rel="noopener noreferrer">
+                                {% if service.image %}
                                     <img src="{{ service.image.url }}" alt="{{ service.name }}" class="booking-slide-art">
                                 {% else %}
                                     <div class="booking-slide-placeholder">Арт</div>
                                 {% endif %}
-                               
-                                <div class="booking-slide-info">
-                                    <h3 class="booking-slide-title">{{ service.name }}</h3>
-                                    {% if service.short_description %}
-                                    <p class="booking-slide-description">{{ service.short_description }}</p>
-                                    {% endif %}
-                                </div>
                             </a>
                         </div>
                         {% endfor %}
                     {% endif %}
 
                 </div>
-                <!-- Стрелки удалены из HTML -->
-                <!-- <div class="swiper-button-prev"></div> -->
-                <!-- <div class="swiper-button-next"></div> -->
             </div>
-
-            <!-- Кастомная пагинация удалена из HTML -->
-            <!-- <div class="custom-pagination"> -->
-            <!--     {% for service in services %} -->
-            <!--         <span class="custom-pagination-bullet"></span> -->
-            <!--     {% endfor %} -->
-            <!-- </div> -->
-
         </div>
     </section>
 
@@ -2473,10 +2335,10 @@ class MainConfig(AppConfig):
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# ВОЗВРАЩАЕМ МОДЕЛЬ ДЛЯ КАРУСЕЛИ
+# Модель для карусели
 class Service(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название игры/услуги")
-    short_description = models.CharField(max_length=255, verbose_name="Краткое описание (под названием)", blank=True)
+    short_description = models.CharField(max_length=255, verbose_name="Краткое описание (под названием)", blank=True, help_text="Этот текст появится при наведении на слайд в карусели.")
     image = models.FileField(upload_to='service_images/', verbose_name="Изображение (для карточки в карусели)")
     vk_link = models.URLField(verbose_name="Ссылка на VK для записи", blank=True, null=True)
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
@@ -2525,22 +2387,22 @@ class OrbibolInfo(models.Model):
     details_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка 'Узнать подробнее'")
     class Meta:
         verbose_name = "Информация об Орбиболе"
-        verbose_name_plural = "Информация об Орбиболе" 
+        verbose_name_plural = "Информация об Орбиболе"
     def __str__(self):
         return "Информация для секции Орбибол"
-    
+
 class Feature(models.Model):
     title = models.CharField(max_length=100, verbose_name="Заголовок преимущества")
     description = models.TextField(verbose_name="Описание преимущества")
-    icon = models.FileField(upload_to='feature_icons/', verbose_name="Иконка (SVG или PNG)") 
+    icon = models.FileField(upload_to='feature_icons/', verbose_name="Иконка (SVG или PNG)")
     order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок отображения")
     class Meta:
         verbose_name = "Преимущество (Что мы предлагаем)"
         verbose_name_plural = "Преимущества (Что мы предлагаем)"
         ordering = ['order']
     def __str__(self):
-        return self.title    
-    
+        return self.title
+
 class GameType(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название типа игры")
     description = models.TextField(verbose_name="Краткое описание типа игры")

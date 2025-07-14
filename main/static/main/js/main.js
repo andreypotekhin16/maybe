@@ -1,3 +1,5 @@
+// main/static/main/js/main.js
+
 document.addEventListener('DOMContentLoaded', function() {
     
     function setupHeader() {
@@ -92,32 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Обновленная функция для карусели
-    function setupSwiper() {
-        const swiperContainer = document.querySelector('.booking-swiper');
-        if (swiperContainer) {
-            const slides = swiperContainer.querySelectorAll('.swiper-slide');
-            
-            new Swiper(swiperContainer, {
-                loop: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                // Эта опция помогает Swiper корректно создавать дубликаты
-                // для зацикливания, когда реальных слайдов мало.
-                loopAdditionalSlides: slides.length,
-                
-                // Расстояние между слайдами, но основной эффект сжатия достигается
-                // отрицательными отступами в CSS.
-                spaceBetween: 0,
-                
-                // Пагинация и навигация полностью отключены
-                pagination: false, 
-                navigation: false,
-            });
-        }
-    }
 
     setupHeader();
     setupDynamicBackground();
-    setupSwiper();
+ 
 });

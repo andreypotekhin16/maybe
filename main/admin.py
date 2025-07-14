@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
-    Service,
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
     BackgroundSettings, BackgroundObject
 )
@@ -19,17 +18,7 @@ class ImagePreviewAdminMixin:
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
 
-@admin.register(Service)
-class ServiceAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
-    list_display = ('name', 'order', 'image_preview')
-    list_editable = ('order',)
-    readonly_fields = ('image_preview',)
-    fields = ('name', 'short_description', 'image', 'image_preview', 'vk_link', 'order')
-
-    def image_preview(self, obj):
-        return self.get_preview(obj, 'image', max_height=150)
-    image_preview.short_description = 'Предпросмотр'
-
+# Класс ServiceAdmin удален
 
 @admin.register(Feature)
 class FeatureAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):

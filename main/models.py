@@ -1,21 +1,8 @@
+# main\models.py
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Модель для карусели
-class Service(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Название игры/услуги")
-    short_description = models.CharField(max_length=255, verbose_name="Краткое описание (под названием)", blank=True, help_text="Этот текст появится при наведении на слайд в карусели.")
-    image = models.FileField(upload_to='service_images/', verbose_name="Изображение (для карточки в карусели)")
-    vk_link = models.URLField(verbose_name="Ссылка на VK для записи", blank=True, null=True)
-    order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
-
-    class Meta:
-        verbose_name = "Игра/Услуга для карусели"
-        verbose_name_plural = "Игры/Услуги для карусели"
-        ordering = ['order']
-
-    def __str__(self):
-        return self.name
+# Модель Service была удалена
 
 class CompanyProfile(models.Model):
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")
