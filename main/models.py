@@ -30,6 +30,7 @@ class CompanyProfile(models.Model):
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
 
+# НОВАЯ МОДЕЛЬ ДЛЯ СЛАЙДОВ КАРУСЕЛИ
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
     name = models.CharField(max_length=200, verbose_name='Название/Заголовок слайда')
@@ -51,7 +52,7 @@ class Section(models.Model):
     SECTION_CHOICES = [
         ('about_us', 'О нас'),
         ('features', 'Что мы предлагаем (Преимущества)'),
-        ('carousel', 'Карусель'),
+        ('carousel', 'Карусель'), # <-- ДОБАВЛЕНО
         ('orbibol', 'Орбибол'),
         ('games', 'Игры'),
         ('market', 'Маркет'),
@@ -127,8 +128,6 @@ class GalleryItem(models.Model):
     def __str__(self):
         return self.title
 
-# --- Отдельные, не связанные с CompanyProfile модели ---
-
 class OrbibolInfo(models.Model):
     company_profile = models.OneToOneField(
         CompanyProfile, 
@@ -136,7 +135,6 @@ class OrbibolInfo(models.Model):
         related_name='orbibol_info'
         
     )
-
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     plot_title = models.CharField(max_length=100, default="Сюжетный орбибол", verbose_name="Заголовок блока 'Сюжетный'")
     plot_description = models.TextField(verbose_name="Описание для 'Сюжетный орбибол'")

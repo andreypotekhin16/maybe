@@ -8,19 +8,14 @@ from .models import (
 def home_page_view(request):
     company_profile = CompanyProfile.objects.first()
     if company_profile:
-        carousel_slides = company_profile.carousel_slides.all()
         orbibol_info = getattr(company_profile, 'orbibol_info', None)
         features = company_profile.features.all()
         game_types = company_profile.game_types.all()
         products = company_profile.products.all()
         gallery_items = company_profile.gallery_items.all()
+        carousel_slides = company_profile.carousel_slides.all()
     else:
-        carousel_slides = []
-        orbibol_info = None
-        features = []
-        game_types = []
-        products = []
-        gallery_items = []
+        orbibol_info, features, game_types, products, gallery_items, carousel_slides = None, [], [], [], [], []
 
     background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
     sections = Section.objects.filter(is_active=True).all()
