@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject, Section
+    BackgroundSettings, BackgroundObject, Section, CarouselSlide 
 )
 
 # =============================================================================
@@ -58,6 +58,12 @@ class SectionInline(admin.TabularInline):
 
     def has_add_permission(self, request, obj=None):
         return False
+
+class CarouselSlideInline(admin.TabularInline):
+    model = CarouselSlide
+    extra = 1
+    ordering = ('order',)
+    fields = ('name', 'short_description', 'image', 'vk_link', 'order')
 
 class FeatureInline(admin.TabularInline):
     model = Feature
@@ -125,6 +131,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     # ИЗМЕНЕН ПОРЯДОК ИНЛАЙНОВ ЗДЕСЬ
     inlines = [
         SectionInline, 
+        CarouselSlideInline,
         OrbibolInfoInline,
         FeatureInline,
         GameTypeInline,

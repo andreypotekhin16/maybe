@@ -29,13 +29,29 @@ class CompanyProfile(models.Model):
         verbose_name_plural = "1. Главные настройки сайта"
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
+    
+class CarouselSlide(models.Model):
+    company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
+    name = models.CharField(max_length=200, verbose_name='Название/Заголовок слайда')
+    short_description = models.CharField(max_length=255, blank=True, verbose_name='Краткое описание (под названием)')
+    image = models.FileField(upload_to='carousel_slides/', verbose_name="Изображение для слайда")
+    vk_link = models.URLField(blank=True, null=True, verbose_name="Ссылка для кнопки")
+    order = models.PositiveIntegerField(default=0, verbose_name='Порядок сортировки')
+    
+    class Meta:
+        verbose_name = 'Слайд для карусели'
+        verbose_name_plural = 'Слайды для карусели'
+        ordering = ['order']
 
+    def __str__(self):
+        return self.name
+    
 class Section(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='sections')
     SECTION_CHOICES = [
         ('about_us', 'О нас'),
         ('features', 'Что мы предлагаем (Преимущества)'),
-        # ('booking', 'Запись на игру (Карусель)'),
+        ('carousel', 'Карусель'),
         ('orbibol', 'Орбибол'),
         ('games', 'Игры'),
         ('market', 'Маркет'),

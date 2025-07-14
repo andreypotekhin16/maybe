@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, Section  
+    BackgroundSettings, Section, CarouselSlide   
 )
 
 def home_page_view(request):
@@ -25,6 +25,7 @@ def home_page_view(request):
         'gallery_items': gallery_items,
         'background_settings': background_settings,
         'sections': sections,  
+        'carousel_slides': carousel_slides,
     }
     return render(request, 'main/home_page.html', context)
 def custom_handler404(request, exception):

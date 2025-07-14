@@ -4,6 +4,7 @@
 /* Стили для секций */
 @import url('sections/about_us.css');
 @import url('sections/features.css');
+@import url('sections/carousel.css');
 @import url('sections/orbibol.css');
 @import url('sections/games.css');
 @import url('sections/market.css');
