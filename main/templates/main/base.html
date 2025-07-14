@@ -13,7 +13,8 @@
     <!-- Стили для Swiper.js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     
-    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <!-- Добавляем "cache-buster" для принудительной загрузки новой версии файла -->
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v={% now 'U' %}">
     
     {% block extra_head %}{% endblock %}
 </head>
@@ -75,11 +76,11 @@
         </footer>
     {% endblock footer %}
     
-    <!-- Скрипт Swiper.js -->
+    <!-- Скрипт Swiper.js (должен быть перед вашим main.js) -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- Ваш главный JS файл -->
-    <script src="{% static 'main/js/main.js' %}" type="module"></script>
+    <!-- Ваш главный JS файл с "cache-buster" -->
+    <script src="{% static 'main/js/main.js' %}?v={% now 'U' %}" type="module"></script>
     
     {% block extra_scripts %}{% endblock %}
 </body>

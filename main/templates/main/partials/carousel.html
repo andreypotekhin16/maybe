@@ -4,40 +4,28 @@
             <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
         
-        <!-- Обертка для всего виджета -->
         <div class="carousel-widget-wrapper">
-            <!-- Стрелка "Назад" -->
-            <!-- ИСПРАВЛЕНО: было class. стало class= -->
             <div class="swiper-button-prev"></div>
-
-            <!-- Контейнер Swiper -->
             <div class="swiper booking-carousel">
                 <div class="swiper-wrapper">
                     {% for slide in carousel_slides %}
                     <div class="swiper-slide">
                         <div class="slide-image-wrapper">
-                            {% if slide.image %}
-                                <img src="{{ slide.image.url }}" alt="{{ slide.name }}">
-                            {% endif %}
+                            {% if slide.image %}<img src="{{ slide.image.url }}" alt="{{ slide.name }}">{% endif %}
                         </div>
                         <div class="slide-content">
                             <h3>{{ slide.name }}</h3>
                             {% if slide.short_description %}<p>{{ slide.short_description }}</p>{% endif %}
-                            {% if slide.vk_link %}
-                                <a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>
-                            {% endif %}
+                            {% if slide.vk_link %}<a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>{% endif %}
                         </div>
                     </div>
                     {% empty %}
-                        <div class="swiper-slide">
-                            <p class="text-center" style="width: 100%;">Слайды для карусели еще не добавлены.</p>
-                        </div>
+                    <div class="swiper-slide">
+                        <p class="text-center" style="width: 100%;">Слайды для карусели не добавлены.</p>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
-
-            <!-- Стрелка "Вперед" -->
-            <!-- ИСПРАВЛЕНО: было class. стало class= -->
             <div class="swiper-button-next"></div>
         </div>
     </div>

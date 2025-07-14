@@ -1,24 +1,22 @@
 export function initCarousel() {
     const swiper = new Swiper('.booking-carousel', {
-        // Указываем, что активный слайд по центру
+        effect: 'coverflow',
+        grabCursor: true,
         centeredSlides: true,
-        
-        // Показываем по 3 слайда
-        slidesPerView: 3,
-        
-        // Включаем бесконечную прокрутку
+        slidesPerView: 'auto', // 'auto' лучше работает с coverflow
         loop: true,
         
-        // Расстояние между слайдами, можно подбирать
-        spaceBetween: 20, 
+        coverflowEffect: {
+            rotate: 0,
+            stretch: -20, // Небольшое растяжение для эффекта
+            depth: 100,
+            modifier: 1.5, // Увеличиваем модификатор для более выраженного эффекта
+            slideShadows: false,
+        },
 
-        // Подключаем кнопки навигации
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
-
-        // Чтобы карусель работала и при малом количестве слайдов
-        loopPreventsSliding: false, 
     });
 }
