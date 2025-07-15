@@ -1,30 +1,35 @@
-<section id="gallery-section">
-        <div class="container">
-            {% if section.show_title %}
-                <h2>{{ section.title|default:"Фото и видео галерея" }}</h2>
-            {% endif %}
-            {% if company_profile.gallery_description %}
-                <p class="gallery-description">{{ company_profile.gallery_description }}</p>
-            {% endif %}
-            <div class="gallery-grid">
-                {% for item in gallery_items %}
-                    <div class="gallery-item">
-                        <h3>{{ item.title }}</h3>
-                        <a href="{{ item.order_link }}" target="_blank" rel="noopener noreferrer" class="gallery-content-link">
-                            <div class="gallery-media-wrapper">
-                                {% if item.image %}
-                                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
-                                {% elif item.video %}
-                                    <video src="{{ item.video.url }}" autoplay muted loop playsinline></video>
-                                {% endif %}
-                            </div>
-                        </a>
-                        <a href="{{ item.order_link }}" target="_blank" rel="noopener noreferrer" class="gallery-order-link">Заказать</a>
+<section id="gallery-section" class="gallery-section">
+    <div class="container">
+        <!-- Заголовок и описание секции (остаются без изменений) -->
+        {% if section.show_title %}
+            <h2 class="gallery-title">{{ section.title|default:"Фото и видео галерея" }}</h2>
+        {% endif %}
+        {% if company_profile.gallery_description %}
+            <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
+        {% endif %}
+        
+        <!-- Контейнер для нашей сетки кружочков -->
+        <div class="gallery-grid">
+            {% for item in gallery_items %}
+                <div class="gallery-card">
+                    <!-- Круглый контейнер для изображения или видео -->
+                    <div class="gallery-media-circle">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                        {% elif item.video %}
+                            <!-- loop muted autoplay playsinline - стандартный набор для фоновых видео -->
+                            <video src="{{ item.video.url }}" loop muted autoplay playsinline></video>
+                        {% endif %}
                     </div>
-                {% empty %}
-                    <p>Элементы галереи не добавлены.</p>
-                {% endfor %}
-            </div>
+                    
+                    <!-- Кнопка-ссылка под кругом -->
+                    <a href="{{ item.order_link }}" class="btn gallery-details-link" target="_blank" rel="noopener noreferrer">
+                        Узнать подробнее
+                    </a>
+                </div>
+            {% empty %}
+                <p style="text-align: center; width: 100%;">Элементы для галереи пока не добавлены.</p>
+            {% endfor %}
         </div>
-    </section>
-    
+    </div>
+</section>

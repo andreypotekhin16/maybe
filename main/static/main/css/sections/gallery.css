@@ -1,63 +1,65 @@
-#gallery-section h2 {
+/* main/static/main/css/sections/gallery.css */
+
+.gallery-section .gallery-title {
+    text-align: center;
     color: var(--color-white);
 }
-.gallery-description {
+
+.gallery-section .gallery-main-description {
     text-align: center;
     max-width: 65ch;
     margin: 0 auto 4rem auto;
     font-size: 1.25rem;
     line-height: 1.7;
 }
+
+/* 1. Создаем адаптивную, центрированную сетку */
 .gallery-grid {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8rem;
-    align-items: flex-start;
+    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку */
+    justify-content: center; /* Центрирует всю группу карточек */
+    gap: 4rem 3rem; /* Отступы: 4rem по вертикали, 3rem по горизонтали */
 }
-.gallery-item {
-    text-align: center;
+
+/* 2. Стилизуем одну карточку (круг + кнопка) */
+.gallery-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 220px; /* Фиксированная ширина для одной карточки */
+    transition: transform 0.3s ease;
 }
-.gallery-item h3 {
-    font-family: var(--font-sunday);
-    font-weight: normal;
-    text-transform: uppercase;
-    font-size: 2.5rem;
-    color: var(--color-white);
-    margin-bottom: 2rem;
+
+/* При наведении карточка будет немного "приподниматься" */
+.gallery-card:hover {
+    transform: translateY(-8px);
 }
-.gallery-content-link {
-    display: inline-block;
-    text-decoration: none;
+
+/* 3. Стилизуем сам круг для медиа */
+.gallery-media-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%; /* <<<<<<< ВОТ ОНИ, КРУЖОЧКИ */
+    overflow: hidden; /* Обрезаем все, что выходит за пределы круга */
+    margin-bottom: 2rem; /* Отступ до кнопки */
+    border: 3px solid var(--color-green-accent);
+    background-color: #111; /* Фон на случай, если картинка не загрузится */
+    transition: border-color 0.3s ease;
 }
-.gallery-content-link:hover .gallery-media-wrapper {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(var(--color-green-accent-rgb), 0.5);
+
+.gallery-card:hover .gallery-media-circle {
+    border-color: var(--color-pink-accent); /* Меняем цвет рамки при наведении на всю карточку */
 }
-.gallery-content-link:hover .gallery-order-link {
-    color: var(--color-white);
-}
-.gallery-media-wrapper {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.gallery-media-wrapper img,
-.gallery-media-wrapper video {
+
+/* 4. Картинка или видео должны полностью заполнять круг */
+.gallery-media-circle img,
+.gallery-media-circle video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Масштабирует медиа, чтобы оно заполнило контейнер */
 }
-.gallery-order-link {
-    display: inline-block;
-    margin-top: 2rem;
-    font-family: var(--font-sunday);
-    font-size: 2rem;
-    color: var(--color-green-accent);
-    text-transform: uppercase;
-    transition: color 0.3s ease;
-    text-decoration: none;
+
+/* 5. Добавляем отступ для кнопки, используя уже существующий класс .btn */
+.gallery-details-link {
+    width: 100%; /* Растягиваем кнопку на всю ширину карточки */
 }
