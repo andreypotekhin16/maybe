@@ -8,7 +8,6 @@
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    /* overflow: hidden; */ /* На всякий случай оставляем, но он не должен быть главным решением */
 }
 .simple-carousel {
     width: 100%;
@@ -17,41 +16,52 @@
 }
 
 
-/* --- ГЛАВНАЯ ЛОГИКА --- */
+/* --- ГЛАВНАЯ ЛОГИКА АНИМАЦИИ --- */
 
-/* Сначала делаем все слайды невидимыми и маленькими */
+/* Контейнер для слайда. Его размер определяет максимальный размер слайда */
 .swiper-slide {
-    opacity: 0;
-    transform: scale(0.5);
+    width: 400px;
+    height: 400px;
+    position: relative; /* Важно для z-index */
+    
+    /* Делаем все переходы плавными */
     transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
-/* Затем делаем видимыми ТОЛЬКО ТРИ НУЖНЫХ СЛАЙДА */
+/* Сначала скрываем ВСЕ слайды */
+.swiper-slide {
+    transform: scale(0);
+    opacity: 0;
+    z-index: 1;
+}
 
-/* 1. Центральный (активный) слайд */
+/* 1. Центральный (активный) слайд. Делаем его большим и видимым. */
 .swiper-slide-active {
-    opacity: 1;
     transform: scale(1);
-    z-index: 10;
+    opacity: 1;
+    z-index: 10; /* Он должен быть НАД всеми остальными */
 }
 
-/* 2. Следующий за ним слайд */
+/* 2. Следующий слайд. Делаем его маленьким, сдвинутым и под центральным. */
 .swiper-slide-next {
+    /* scale(0.5) - уменьшаем в 2 раза. translateX(-75%) - сдвигаем влево на 75% его ширины для перекрытия */
+    transform: scale(0.5) translateX(-75%);
     opacity: 0.5;
-    transform: scale(0.5) translateX(-50%); /* Сдвигаем его ближе к центру */
-    z-index: 5;
+    z-index: 5; /* Ниже, чем активный слайд */
 }
 
-/* 3. Предыдущий слайд */
+/* 3. Предыдущий слайд. То же самое, но в другую сторону. */
 .swiper-slide-prev {
+    /* translateX(75%) - сдвигаем вправо на 75% */
+    transform: scale(0.5) translateX(75%);
     opacity: 0.5;
-    transform: scale(0.5) translateX(50%); /* Сдвигаем его ближе к центру */
-    z-index: 5;
+    z-index: 5; /* Ниже, чем активный слайд */
 }
 
 /* --- Конец главной логики --- */
 
 
+/* Стили для самого круга внутри .swiper-slide */
 .circular-slide {
     display: flex;
     justify-content: center;
@@ -65,33 +75,26 @@
     background-position: center;
     border: 3px solid var(--color-green-accent);
 }
+
 .swiper-slide-active .circular-slide {
     border-color: var(--color-pink-accent);
 }
 .circular-slide:hover {
-    border-color: var(--color-pink-accent);
+    border-color: var(--color-pink-accent) !important; /* Усиливаем приоритет, чтобы работало при наведении */
 }
 
+/* Остальные стили для текста и оверлея остаются без изменений */
 .always-visible-content {
-    position: absolute;
-    width: 100%; height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: border-box;
-    text-align: center;
-    color: white;
-    transition: opacity 0.3s ease;
-    opacity: 1;
+    position: absolute; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 1rem; box-sizing: border-box; text-align: center; color: white;
+    transition: opacity 0.3s ease; opacity: 1;
 }
 .always-visible-content h3, .always-visible-content p {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 .always-visible-content h3 { font-family: var(--font-sunday); font-size: 2rem; margin: 0; }
 .always-visible-content p { font-family: var(--font-fortunec); font-size: 1rem; margin: 0.25rem 0 0 0; }
-
 .hover-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     display: flex; justify-content: center; align-items: center;
@@ -100,8 +103,6 @@
     transition: opacity 0.3s ease; opacity: 0;
 }
 .hover-overlay p { font-size: 1.1rem; line-height: 1.5; }
-
 .circular-slide:hover .always-visible-content { opacity: 0; }
 .circular-slide:hover .hover-overlay { opacity: 1; }
-
 .swiper-button-prev, .swiper-button-next { color: var(--color-pink-accent); }
