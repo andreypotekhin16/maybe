@@ -51,13 +51,28 @@
                 <div class="header-center-text">May be</div>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="/#about-us-section">О нас</a></li>
-                        <li><a href="/#features-section">Что мы предлагаем</a></li>
-                        <li><a href="/#orbibol-section">Орбибол</a></li>
-                        <li><a href="/#games-section">Игры</a></li>
-                        <li><a href="/#market-section">Маркет</a></li>
-                        <li><a href="/#gallery-section">Фото и видео галерея</a></li>
-                        <li><a href="/#contacts-section">Контакты</a></li>
+                        {% for section in nav_sections %}
+                            {# Проверяем, что у секции есть ID (тип секции) #}
+                            {% if section.section_type %}
+                                <li>
+                                    {# 
+                                        Ссылка ведет на /#<тип_секции>-section 
+                                        Например: /#about_us-section
+                                    #}
+                                    <a href="/#{{ section.section_type }}-section">
+                                        {# 
+                                            Используем кастомный заголовок, если он есть,
+                                            иначе - заголовок по умолчанию.
+                                        #}
+                                        {% if section.title %}
+                                            {{ section.title }}
+                                        {% else %}
+                                            {{ section.get_section_type_display }}
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
                     </ul>
                 </nav>
             </div>
