@@ -4,33 +4,26 @@
     text-align: center;
     margin-bottom: 2rem;
 }
-
 .carousel-wrapper {
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
 }
-
 .simple-carousel {
     width: 100%;
-    height: 400px; /* Высота равна высоте круглого слайда */
+    height: 400px;
     padding: 20px 0;
 }
-
-/* Контейнер слайда в Swiper, сам по себе невидимый */
 .swiper-slide {
-    width: 350px; /* Ширина должна совпадать с шириной круга */
+    width: 350px;
     height: 350px;
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    /* Стили для coverflow эффекта */
     transition: transform 0.5s, opacity 0.5s;
     opacity: 0.5;
     transform: scale(0.8);
 }
-
 .swiper-slide-active {
     opacity: 1;
     transform: scale(1);
@@ -39,69 +32,78 @@
 
 /* Наш круглый слайд-ссылка */
 .circular-slide {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 350px;
     height: 350px;
-    border-radius: 50%; /* <<<<<<<<<< САМОЕ ГЛАВНОЕ: ДЕЛАЕМ КРУГЛЫМ */
+    border-radius: 50%;
     position: relative;
-    overflow: hidden; /* Обрезаем все, что выходит за круг */
-    
-    /* Настройки фона (нашей картинки) */
+    overflow: hidden;
     background-size: cover;
     background-position: center;
-    
     transition: transform 0.3s ease;
     border: 3px solid var(--color-green-accent);
 }
-
-/* При наведении слайд немного увеличивается */
 .circular-slide:hover {
     transform: scale(1.05);
     border-color: var(--color-pink-accent);
 }
 
-/* Оверлей с текстом, который будет поверх картинки */
-.slide-overlay {
+/* Блок с постоянно видимым текстом */
+.always-visible-content {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    
+    right: 0;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    color: white;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+    transition: opacity 0.3s ease;
+    opacity: 1; /* Виден по умолчанию */
+}
+.always-visible-content h3 {
+    font-family: var(--font-sunday);
+    font-size: 2rem;
+    margin: 0;
+}
+.always-visible-content p {
+    font-family: var(--font-fortunec);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Блок с оверлеем, который появляется при наведении */
+.hover-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
     text-align: center;
-    
     color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-    
-    /* По умолчанию оверлей скрыт */
-    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.7);
     transition: opacity 0.3s ease;
+    opacity: 0; /* Скрыт по умолчанию */
 }
-
-/* При наведении на слайд, оверлей становится видимым */
-.circular-slide:hover .slide-overlay {
-    opacity: 1;
-}
-
-.slide-overlay h3 {
-    font-family: var(--font-sunday);
-    font-size: 2.2rem;
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0 1rem;
-}
-
-.slide-overlay p {
+.hover-overlay p {
     font-size: 1.1rem;
-    padding: 0 1rem;
-    margin-top: 0.5rem;
+    line-height: 1.5;
 }
 
-/* Настройка стрелок навигации */
+/* ЛОГИКА ПРИ НАВЕДЕНИИ */
+.circular-slide:hover .always-visible-content {
+    opacity: 0; /* Скрываем основной текст */
+}
+.circular-slide:hover .hover-overlay {
+    opacity: 1; /* Показываем оверлей */
+}
+
+/* Навигация */
 .swiper-button-prev,
 .swiper-button-next {
     color: var(--color-pink-accent);

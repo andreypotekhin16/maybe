@@ -11,18 +11,24 @@
                 <div class="swiper-wrapper">
                     {% for slide in carousel_slides %}
                     <div class="swiper-slide">
-                        <!-- ВЕСЬ СЛАЙД ТЕПЕРЬ - ЭТО ССЫЛКА -->
                         <a href="{{ slide.vk_link|default:'#' }}" 
                            class="circular-slide" 
                            target="_blank" 
                            rel="noopener noreferrer"
                            style="background-image: url('{{ slide.image.url }}');">
                            
-                           <!-- Этот блок будет накладываться поверх картинки -->
-                           <div class="slide-overlay">
+                           <!-- БЛОК 1: Текст, который виден всегда -->
+                           <div class="always-visible-content">
                                <h3>{{ slide.name }}</h3>
-                               {% if slide.short_description %}
-                                   <p>{{ slide.short_description }}</p>
+                               {% if slide.date_text %}
+                                   <p>{{ slide.date_text }}</p>
+                               {% endif %}
+                           </div>
+
+                           <!-- БЛОК 2: Оверлей, который появляется при наведении -->
+                           <div class="hover-overlay">
+                               {% if slide.hover_description %}
+                                   <p>{{ slide.hover_description }}</p>
                                {% endif %}
                            </div>
                         </a>

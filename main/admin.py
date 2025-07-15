@@ -46,7 +46,8 @@ class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
     extra = 1
     ordering = ('order',)
-    fields = ('name', 'short_description', 'image', 'vk_link', 'order')
+  
+    fields = ('name', 'date_text', 'hover_description', 'image', 'vk_link', 'order')
 
 class FeatureInline(admin.TabularInline):
     model = Feature
