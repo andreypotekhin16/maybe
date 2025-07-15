@@ -10,11 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Стили для Swiper.js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     
-    <!-- Добавляем "cache-buster" для принудительной загрузки новой версии файла -->
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v={% now 'U' %}">
+    
+    {% if company_profile.favicon %}
+        <link rel="icon" href="{{ company_profile.favicon.url }}">
+    {% endif %}
     
     {% block extra_head %}{% endblock %}
 </head>
@@ -52,18 +54,9 @@
                 <nav class="main-nav">
                     <ul>
                         {% for section in nav_sections %}
-                            {# Проверяем, что у секции есть ID (тип секции) #}
                             {% if section.section_type %}
                                 <li>
-                                    {# 
-                                        Ссылка ведет на /#<тип_секции>-section 
-                                        Например: /#about_us-section
-                                    #}
                                     <a href="/#{{ section.section_type }}-section">
-                                        {# 
-                                            Используем кастомный заголовок, если он есть,
-                                            иначе - заголовок по умолчанию.
-                                        #}
                                         {% if section.title %}
                                             {{ section.title }}
                                         {% else %}
@@ -91,10 +84,8 @@
         </footer>
     {% endblock footer %}
     
-    <!-- Скрипт Swiper.js (должен быть перед вашим main.js) -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- Ваш главный JS файл с "cache-buster" -->
     <script src="{% static 'main/js/main.js' %}?v={% now 'U' %}" type="module"></script>
     
     {% block extra_scripts %}{% endblock %}

@@ -1,3 +1,5 @@
+# main/context_processors.py
+
 from .models import Section
 
 def nav_sections(request):
