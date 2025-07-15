@@ -1,72 +1,80 @@
-/* ---- НОВАЯ ВЕРСИЯ СТИЛЕЙ от [текущее время] ---- */
-/* ---- Если вы видите этот комментарий, файл обновился ---- */
-
-.section-carousel {
-    padding: 4rem 0;
-    /* ЯРКО-КРАСНАЯ РАМКА ДЛЯ ПРОВЕРКИ ЗАГРУЗКИ НОВОГО ФАЙЛА */
-    border: 5px solid red; 
-}
+/* main/static/main/css/sections/carousel.css */
 
 .section-carousel h2 {
-    text-align: center;
+    color: var(--color-white);
     margin-bottom: 3rem;
 }
 
-/* Обертка для карусели, чтобы задать ей максимальную ширину */
-.my-awesome-carousel-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative; /* Нужно для позиционирования стрелок */
-}
-
-/* Главный контейнер Swiper */
-.simple-carousel {
-    width: 100%;
-    height: 480px;
-    border-radius: 15px;
-    background: #111;
-}
-
-/* Стилизация одного слайда */
-.simple-carousel .swiper-slide {
-    color: white;
-    text-align: center;
+/* Обертка для позиционирования элементов управления */
+.carousel-widget-wrapper {
+    position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 2rem;
-    box-sizing: border-box;
+    justify-content: center;
+    max-width: 1100px; /* Увеличим ширину для лучшего вида */
+    margin: 0 auto;
 }
 
-.simple-carousel .slide-img {
+/* Задаем высоту, чтобы карусель не "прыгала" при загрузке */
+.booking-carousel {
     width: 100%;
-    height: 300px;
-    object-fit: cover;
-    margin-bottom: 1rem;
+    height: 520px;
+    padding-top: 20px;
+    padding-bottom: 50px;
 }
 
-.simple-carousel .slide-title {
-    font-family: var(--font-sunday);
-    font-size: 2rem;
-    color: var(--color-green-accent);
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 350px;
+    height: 480px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid rgba(var(--color-green-accent-rgb), 0.3);
+    
+    /* Плавные переходы для эффекта */
+    transition: transform 0.5s, opacity 0.5s;
+    
+    /* Делаем неактивные слайды меньше и прозрачнее */
+    opacity: 0.4;
+    transform: scale(0.85);
 }
 
-.simple-carousel .slide-description {
-    font-size: 1rem;
-    padding: 0 1rem;
-    line-height: 1.5;
+/* Активный слайд в центре - яркий, большой и с акцентной рамкой */
+.swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+    border-color: var(--color-pink-accent);
+    z-index: 1; /* Чтобы он был поверх других слайдов */
 }
 
-/* Переменные для кастомизации Swiper */
+/* Стили для контента внутри слайда */
+.slide-image-wrapper { width: 100%; height: 280px; }
+.slide-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.slide-content { padding: 1.5rem; text-align: center; }
+.slide-content h3 { font-family: var(--font-sunday); font-size: 1.8rem; color: var(--color-green-accent); text-transform: uppercase; margin-bottom: 0.75rem; }
+.slide-content p { font-size: 1rem; line-height: 1.5; margin-bottom: 1.5rem; }
+
+/* Настройка стандартных переменных Swiper */
 :root {
-    --swiper-theme-color: var(--color-pink-accent); /* Делаем стрелки и точки розовыми */
+    --swiper-navigation-color: var(--color-pink-accent);
+    --swiper-navigation-size: 28px;
 }
 
 /* Позиционирование стрелок */
-.my-awesome-carousel-wrapper .swiper-button-prev {
-    left: -10px;
+.swiper-button-prev,
+.swiper-button-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
 }
-.my-awesome-carousel-wrapper .swiper-button-next {
-    right: -10px;
-}
+.swiper-button-prev:hover, .swiper-button-next:hover { background-color: rgba(255, 255, 255, 0.25); }
+.swiper-button-prev { left: -10px; }
+.swiper-button-next { right: -10px; }
+.swiper-button-prev::after, .swiper-button-next::after { font-weight: 900 !important; }
