@@ -46,7 +46,6 @@ class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
     extra = 1
     ordering = ('order',)
-  
     fields = ('name', 'date_text', 'hover_description', 'image', 'vk_link', 'order')
 
 class FeatureInline(admin.TabularInline):
@@ -67,11 +66,11 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-class GalleryItemInline(admin.TabularInline):
-    model = GalleryItem
-    extra = 1
+@admin.register(GalleryItem)
+class GalleryItemAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'company_profile', 'order')
+    list_filter = ('company_profile',)
     ordering = ('order',)
-    fields = ('title', 'image', 'video', 'order_link', 'order')
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
@@ -79,10 +78,14 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
-        ('Настройки других секций', {'description': 'Настройки для секций "Маркет" и "Галерея".', 'fields': ('market_link', 'gallery_description')}),
+        ('Настройки других секций', {
+            'description': 'Настройки для секций "Маркет" и "Галерея".', 
+            'fields': ('market_link', 'gallery_description', 'gallery_button_link')
+        }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
+    
     inlines = [
         SectionInline, 
         CarouselSlideInline,
@@ -90,8 +93,35 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         FeatureInline,
         GameTypeInline,
         ProductInline,
-        GalleryItemInline,
     ]
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        files = request.FILES.getlist('gallery_files')
+        if files:
+            profile = form.instance
+            for f in files:
+                is_video = 'video' in f.content_type
+                item_data = {
+                    'company_profile': profile,
+                    'image': f if not is_video else None,
+                    'video': f if is_video else None,
+                }
+                GalleryItem.objects.create(**item_data)
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        # Мы используем уникальное имя 'gallery_files'
+        form.base_fields['gallery_files'] = models.FileField(
+            label='Добавить изображения/видео в галерею',
+            help_text='Можно выбрать несколько файлов одновременно',
+            required=False, # Делаем поле необязательным
+            widget=admin.widgets.AdminFileWidget(
+                attrs={'multiple': True}
+            )
+        )
+        return form
+
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
         field = getattr(obj, field_name)
         if field and hasattr(field, 'url'):
@@ -104,6 +134,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
     def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
     def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
+    
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 

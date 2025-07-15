@@ -19,6 +19,15 @@ class CompanyProfile(models.Model):
     telegram_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль Telegram")
     youtube_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль YouTube")
     market_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка \"Еще больше товаров\" в Маркете")
+    
+    # НОВОЕ ПОЛЕ ДЛЯ ССЫЛКИ ГАЛЕРЕИ
+    gallery_button_link = models.URLField(
+        max_length=250, 
+        blank=True, 
+        null=True, 
+        verbose_name="Ссылка для кнопки 'Узнать подробнее' в галерее"
+    )
+    
     vk_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка VK (SVG/PNG)", blank=True, null=True)
     youtube_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка YouTube (SVG/PNG)", blank=True, null=True)
     telegram_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка Telegram (SVG/PNG)", blank=True, null=True)
@@ -33,20 +42,12 @@ class CompanyProfile(models.Model):
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
     name = models.CharField(max_length=200, verbose_name='Название/Заголовок слайда (виден всегда)')
-    
-    # НОВОЕ ПОЛЕ: для даты или короткого текста под названием
     date_text = models.CharField(max_length=100, blank=True, verbose_name="Дата/Подзаголовок (виден всегда)")
-    
-    # ПЕРЕИМЕНОВАНО: для текста, который появляется при наведении
     hover_description = models.TextField(blank=True, verbose_name="Описание (появляется при наведении)")
-    
     image = models.FileField(upload_to='carousel_slides/', verbose_name="Изображение для слайда")
     vk_link = models.URLField(blank=True, null=True, verbose_name="Ссылка для кнопки (весь слайд)")
     order = models.PositiveIntegerField(default=0, verbose_name='Порядок сортировки')
     
-    # Удаляем старое поле 'short_description', оно нам больше не нужно
-    # short_description = ...
-
     class Meta:
         verbose_name = 'Слайд для карусели'
         verbose_name_plural = 'Слайды для карусели'
@@ -122,19 +123,24 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+# ---- ИЗМЕНЕННАЯ МОДЕЛЬ GALLERYITEM ----
 class GalleryItem(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='gallery_items')
-    title = models.CharField(max_length=100, verbose_name="Заголовок (напр. Фотосъемка)")
     image = models.FileField(upload_to='gallery/', verbose_name="Изображение", blank=True, null=True, help_text="Загрузите, если это фото.")
     video = models.FileField(upload_to='gallery/', verbose_name="Видео (mp4, webm)", blank=True, null=True, help_text="Загрузите, если это видео.")
-    order_link = models.URLField(verbose_name='Ссылка для кнопки "Заказать"')
     order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок отображения")
+    
     class Meta:
         verbose_name = "Элемент галереи"
         verbose_name_plural = "Элементы галереи"
         ordering = ['order']
+
     def __str__(self):
-        return self.title
+        if self.image:
+            return f"Изображение: {self.image.name}"
+        elif self.video:
+            return f"Видео: {self.video.name}"
+        return f"Элемент галереи #{self.pk}"
 
 class OrbibolInfo(models.Model):
     company_profile = models.OneToOneField(
