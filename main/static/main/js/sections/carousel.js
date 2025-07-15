@@ -4,19 +4,28 @@ export function setupSimpleCarousel() {
     
     const swiper = new Swiper('.simple-carousel', {
         
+        // --- ПАРАМЕТРЫ ДЛЯ ПЛАВНОСТИ ---
+
+        // 1. Увеличиваем время анимации (в миллисекундах).
+        // Стандартно: 300. Чем выше значение, тем медленнее и плавнее.
+        speed: 800, // Попробуем 800 мс
+
+        // 2. Улучшаем отслеживание прогресса для более точной анимации
+        watchSlidesProgress: true,
+
+
+        // --- Основные настройки (остаются прежними) ---
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
-        slidesPerView: 'auto',
-        
-        // --- ВОТ ЭТА СТРОКА ---
-        loop: true, // Включаем бесконечную прокрутку
-        // ----------------------
-        
+        slidesPerView: 3,
+        loop: true, // Помните: требует минимум 6 слайдов для идеальной работы
+
         coverflowEffect: {
             rotate: 0,
-            stretch: 40,
-            depth: 150,
+            // 3. Немного уменьшаем "размах" боковых слайдов, чтобы сделать движение менее агрессивным
+            stretch: 40,  // Было: 80
+            depth: 120, // Было: 150
             modifier: 1,
             slideShadows: false,
         },
