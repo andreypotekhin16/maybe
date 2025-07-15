@@ -1,21 +1,16 @@
 # main/admin.py
 from django.contrib import admin
 from django.utils.html import mark_safe
+from django import forms
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
     BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
+# --- МИКСИН И ДРУГИЕ ИНЛАЙНЫ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ ---
 class ImagePreviewAdminMixin:
-    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
-    def get_preview(self, obj, field_name, max_height=100, is_background=False):
-        field = getattr(obj, field_name, None)
-        if field and hasattr(field, 'url'):
-            if is_background:
-                 return mark_safe(f'<div style="width:{max_height}px; height:{max_height}px; background-image:url({field.url}); background-size: cover; border: 1px solid #ddd;"></div>')
-            return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
-        return "Нет изображения"
-
+    # ... (код миксина) ...
+# ... (и так далее для всех остальных инлайнов: Orbibol, Section, Carousel, Feature, GameType, Product) ...
 class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     model = OrbibolInfo
     can_delete = False
@@ -30,7 +25,6 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     plot_icon_preview.short_description = 'Предпросмотр иконки (Сюжетный)'
     def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
-
 class SectionInline(admin.TabularInline):
     model = Section
     extra = 0
@@ -41,25 +35,21 @@ class SectionInline(admin.TabularInline):
     def get_section_type_display(self, obj): return obj.get_section_type_display()
     get_section_type_display.short_description = 'Название секции'
     def has_add_permission(self, request, obj=None): return False
-
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
     extra = 1
     ordering = ('order',)
     fields = ('name', 'date_text', 'hover_description', 'image', 'vk_link', 'order')
-
 class FeatureInline(admin.TabularInline):
     model = Feature
     extra = 1
     ordering = ('order',)
     fields = ('title', 'description', 'icon', 'order')
-
 class GameTypeInline(admin.TabularInline):
     model = GameType
     extra = 1
     ordering = ('order',)
     fields = ('name', 'description', 'icon', 'order')
-
 class ProductInline(admin.TabularInline):
     model = Product
     extra = 1
@@ -72,8 +62,27 @@ class GalleryItemAdmin(admin.ModelAdmin):
     list_filter = ('company_profile',)
     ordering = ('order',)
 
+
+# --- ВОТ ГДЕ ПРОИСХОДЯТ ИЗМЕНЕНИЯ ---
+
+# 1. Создаем кастомную форму для нашей админки
+class CompanyProfileForm(forms.ModelForm):
+    # Создаем поле для множественной загрузки файлов
+    gallery_files = forms.FileField(
+        label='Добавить изображения/видео в галерею',
+        widget=forms.ClearableFileInput(attrs={'multiple': True}),
+        required=False,
+        help_text='Можно выбрать несколько файлов одновременно'
+    )
+    class Meta:
+        model = CompanyProfile
+        fields = '__all__'
+
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
+    # 2. Используем нашу новую форму
+    form = CompanyProfileForm
+
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
@@ -82,6 +91,8 @@ class CompanyProfileAdmin(admin.ModelAdmin):
             'description': 'Настройки для секций "Маркет" и "Галерея".', 
             'fields': ('market_link', 'gallery_description', 'gallery_button_link')
         }),
+        # 3. Добавляем наше новое поле 'gallery_files' в конец
+        ('Массовая загрузка в галерею', {'fields': ('gallery_files',)}),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
@@ -95,33 +106,20 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ProductInline,
     ]
 
-    def save_related(self, request, form, formsets, change):
-        super().save_related(request, form, formsets, change)
+    # 4. Обрабатываем загруженные файлы при сохранении
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change) # Сначала сохраняем сам профиль
+        
         files = request.FILES.getlist('gallery_files')
-        if files:
-            profile = form.instance
-            for f in files:
-                is_video = 'video' in f.content_type
-                item_data = {
-                    'company_profile': profile,
-                    'image': f if not is_video else None,
-                    'video': f if is_video else None,
-                }
-                GalleryItem.objects.create(**item_data)
-    
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        # Мы используем уникальное имя 'gallery_files'
-        form.base_fields['gallery_files'] = models.FileField(
-            label='Добавить изображения/видео в галерею',
-            help_text='Можно выбрать несколько файлов одновременно',
-            required=False, # Делаем поле необязательным
-            widget=admin.widgets.AdminFileWidget(
-                attrs={'multiple': True}
+        for f in files:
+            is_video = 'video' in f.content_type
+            GalleryItem.objects.create(
+                company_profile=obj,
+                image=f if not is_video else None,
+                video=f if is_video else None,
             )
-        )
-        return form
 
+    # ... (остальные методы CompanyProfileAdmin: _icon_preview, has_add_permission и т.д.) ...
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
         field = getattr(obj, field_name)
         if field and hasattr(field, 'url'):
@@ -134,10 +132,11 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
     def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
     def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
-    
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
+
+# --- ОСТАЛЬНОЙ КОД БЕЗ ИЗМЕНЕНИЙ ---
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1

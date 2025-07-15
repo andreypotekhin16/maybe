@@ -1,23 +1,21 @@
 <section id="gallery-section" class="gallery-section">
     <div class="container">
-        <!-- Заголовок и описание секции (если есть) -->
-        {% if section.show_title %}
-            <h2 class="gallery-title">{{ section.title|default:"Фото и видео галерея" }}</h2>
-        {% endif %}
+        <h2 class="gallery-title">
+            {{ section.title|default:"Фото и видео галерея" }}
+        </h2>
         {% if company_profile.gallery_description %}
             <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
         {% endif %}
         
-        <!-- Контейнер для сетки кружочков -->
-        <div class="gallery-grid">
+        <!-- НАШ ХОЛСТ ДЛЯ ПУЗЫРЕЙ -->
+        <div class="gallery-grid bubble-container">
             {% for item in gallery_items %}
+                <!-- ЭТО БУДУЩИЙ ПУЗЫРЬ -->
                 <div class="gallery-card">
-                    <!-- Круглый контейнер для изображения или видео -->
                     <div class="gallery-media-circle">
                         {% if item.image %}
                             <img src="{{ item.image.url }}" alt="Элемент галереи">
                         {% elif item.video %}
-                            <!-- loop muted autoplay playsinline - стандартный набор для фоновых видео -->
                             <video src="{{ item.video.url }}" loop muted autoplay playsinline></video>
                         {% endif %}
                     </div>
@@ -26,8 +24,7 @@
                 <p style="text-align: center; width: 100%;">Элементы для галереи пока не добавлены.</p>
             {% endfor %}
         </div>
-
-        {# ЕДИНАЯ КНОПКА ПОД ВСЕЙ ГАЛЕРЕЕЙ #}
+        
         {% if company_profile.gallery_button_link %}
         <div style="text-align: center; margin-top: 4rem;">
             <a href="{{ company_profile.gallery_button_link }}" class="btn" target="_blank" rel="noopener noreferrer">

@@ -2,64 +2,55 @@
 
 .gallery-section .gallery-title {
     text-align: center;
-    color: var(--color-white);
 }
-
 .gallery-section .gallery-main-description {
     text-align: center;
     max-width: 65ch;
-    margin: 0 auto 4rem auto;
-    font-size: 1.25rem;
-    line-height: 1.7;
+    margin: 0 auto 3rem auto;
 }
 
-/* 1. Создаем адаптивную, центрированную сетку */
-.gallery-grid {
-    display: flex;
-    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку */
-    justify-content: center; /* Центрирует всю группу карточек */
-    gap: 4rem 3rem; /* Отступы: 4rem по вертикали, 3rem по горизонтали */
+/* Наш "холст". Он должен иметь позиционирование и высоту. */
+.bubble-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Занимает почти весь экран в высоту */
+    margin-bottom: 3rem;
 }
 
-/* 2. Стилизуем одну карточку (круг + кнопка) */
+/* Карточка - это теперь пузырь */
 .gallery-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 220px; /* Фиксированная ширина для одной карточки */
-    transition: transform 0.3s ease;
+    /* Позиция будет задана через JS */
+    border-radius: 50%;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* При наведении карточка будет немного "приподниматься" */
 .gallery-card:hover {
-    transform: translateY(-8px);
+    transform: scale(1.1); /* При наведении пузырь увеличивается */
+    z-index: 11 !important; /* и всплывает на самый верх */
+    box-shadow: 0 10px 30px rgba(var(--color-pink-accent-rgb), 0.4);
 }
 
-/* 3. Стилизуем сам круг для медиа */
+/* Круглый контейнер внутри, наследует размер */
 .gallery-media-circle {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%; /* <<<<<<< ВОТ ОНИ, КРУЖОЧКИ */
-    overflow: hidden; /* Обрезаем все, что выходит за пределы круга */
-    margin-bottom: 2rem; /* Отступ до кнопки */
-    border: 3px solid var(--color-green-accent);
-    background-color: #111; /* Фон на случай, если картинка не загрузится */
-    transition: border-color 0.3s ease;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.3); /* Полупрозрачная рамка */
 }
 
-.gallery-card:hover .gallery-media-circle {
-    border-color: var(--color-pink-accent); /* Меняем цвет рамки при наведении на всю карточку */
-}
-
-/* 4. Картинка или видео должны полностью заполнять круг */
 .gallery-media-circle img,
 .gallery-media-circle video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Масштабирует медиа, чтобы оно заполнило контейнер */
+    object-fit: cover;
+    opacity: 0.85; /* Делаем медиа чуть-чуть прозрачным для эффекта */
+    transition: opacity 0.4s ease;
 }
 
-/* 5. Добавляем отступ для кнопки, используя уже существующий класс .btn */
-.gallery-details-link {
-    width: 100%; /* Растягиваем кнопку на всю ширину карточки */
+.gallery-card:hover .gallery-media-circle img,
+.gallery-card:hover .gallery-media-circle video {
+    opacity: 1; /* При наведении делаем картинку яркой */
 }
