@@ -8,7 +8,7 @@ export function setupSimpleCarousel() {
 
         // 1. Увеличиваем время анимации (в миллисекундах).
         // Стандартно: 300. Чем выше значение, тем медленнее и плавнее.
-        speed: 800, // Попробуем 800 мс
+        speed: 300, // Попробуем 800 мс
 
         // 2. Улучшаем отслеживание прогресса для более точной анимации
         watchSlidesProgress: true,
@@ -19,7 +19,7 @@ export function setupSimpleCarousel() {
         grabCursor: true,
         centeredSlides: true,
         slidesPerView: 3,
-        loop: true, // Помните: требует минимум 6 слайдов для идеальной работы
+        loop: true, 
 
         coverflowEffect: {
             rotate: 0,
