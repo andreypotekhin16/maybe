@@ -24,7 +24,7 @@ export function initBubbleGallery() {
     const maxAttempts = 100; // Максимальное количество попыток найти место
 
     bubbles.forEach((bubble) => {
-        const BASE_SIZE = 280;
+        const BASE_SIZE = 500;
         const randomScale = getRandom(0.5, 1.1);
         const size = BASE_SIZE * randomScale;
         const radius = size / 2;
