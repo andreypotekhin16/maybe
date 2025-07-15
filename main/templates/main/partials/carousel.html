@@ -4,29 +4,32 @@
             <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
         
-        <!-- Используем обертку для корректного позиционирования стрелок -->
         <div class="carousel-wrapper">
             <div class="swiper-button-prev"></div>
             
-            <!-- ВАЖНО: оставляем класс 'simple-carousel', чтобы main.js его нашел -->
             <div class="swiper simple-carousel">
                 <div class="swiper-wrapper">
                     {% for slide in carousel_slides %}
                     <div class="swiper-slide">
-                        <div class="slide-image">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" alt="{{ slide.name }}">{% endif %}
-                        </div>
-                        <div class="slide-info">
-                            <h3>{{ slide.name }}</h3>
-                            {% if slide.short_description %}<p>{{ slide.short_description }}</p>{% endif %}
-                            {% if slide.vk_link %}
-                                <a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>
-                            {% endif %}
-                        </div>
+                        <!-- ВЕСЬ СЛАЙД ТЕПЕРЬ - ЭТО ССЫЛКА -->
+                        <a href="{{ slide.vk_link|default:'#' }}" 
+                           class="circular-slide" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           style="background-image: url('{{ slide.image.url }}');">
+                           
+                           <!-- Этот блок будет накладываться поверх картинки -->
+                           <div class="slide-overlay">
+                               <h3>{{ slide.name }}</h3>
+                               {% if slide.short_description %}
+                                   <p>{{ slide.short_description }}</p>
+                               {% endif %}
+                           </div>
+                        </a>
                     </div>
                     {% empty %}
                     <div class="swiper-slide">
-                        <p style="text-align: center; width: 100%;">Слайды не добавлены.</p>
+                        <p style="padding: 2rem; text-align: center; width: 100%;">Слайды не добавлены.</p>
                     </div>
                     {% endfor %}
                 </div>
