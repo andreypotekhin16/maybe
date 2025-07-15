@@ -17,7 +17,6 @@
                            rel="noopener noreferrer"
                            style="background-image: url('{{ slide.image.url }}');">
                            
-                           <!-- БЛОК 1: Текст, который виден всегда -->
                            <div class="always-visible-content">
                                <h3>{{ slide.name }}</h3>
                                {% if slide.date_text %}
@@ -25,7 +24,6 @@
                                {% endif %}
                            </div>
 
-                           <!-- БЛОК 2: Оверлей, который появляется при наведении -->
                            <div class="hover-overlay">
                                {% if slide.hover_description %}
                                    <p>{{ slide.hover_description }}</p>

@@ -1,24 +1,29 @@
 // main/static/main/js/sections/carousel.js
+// --- ФИНАЛЬНАЯ ВЕРСИЯ JS ---
 
 export function setupSimpleCarousel() {
     
     const swiper = new Swiper('.simple-carousel', {
         
-        // 1. ОТКЛЮЧАЕМ ВСТРОЕННЫЙ ЭФФЕКТ
-        // effect: 'coverflow', // <<-- УДАЛЕНО
-
-        // 2. Оставляем базовые настройки
+        // Включаем бесконечную прокрутку
         loop: true,
+        
+        // Указываем, что в видимой области всегда 3 слайда
         slidesPerView: 3,
+        
+        // Активный слайд всегда будет по центру
         centeredSlides: true,
+        
+        // Курсор-рука при наведении
         grabCursor: true,
         
-        // 3. Устанавливаем скорость анимации
-        speed: 600, // Плавный переход
+        // Скорость анимации перехода
+        speed: 600,
 
-        // 4. Добавляем отступы, чтобы слайды не слипались
+        // Отступы между "слотами" слайдов. Ноль - лучший вариант для нашего случая.
         spaceBetween: 0,
 
+        // Навигация (стрелки)
         navigation: {
             nextEl: '.carousel-wrapper .swiper-button-next',
             prevEl: '.carousel-wrapper .swiper-button-prev',
