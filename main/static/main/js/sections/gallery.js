@@ -9,25 +9,28 @@ export function initBubbleGallery() {
     if (!container) return;
 
     const bubbles = container.querySelectorAll('.gallery-card');
+    if (bubbles.length === 0) {
+        // Если пузырей нет, убираем высоту контейнера
+        container.style.minHeight = 'auto';
+        return;
+    }
     
-    // Теперь мы просто считываем размеры из CSS, ничего не вычисляя
+    // Используем ширину контейнера как основу для расчетов
     const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    // Создаем квадратную область для размещения
+    const placementAreaHeight = containerWidth; 
 
-    // Базовый размер для самого большого пузыря
-    const BASE_SIZE = 300; // Можете настроить этот параметр
+    const BASE_SIZE = 280; 
 
     bubbles.forEach((bubble) => {
-        const randomScale = getRandom(0.5, 1.1); // от 50% до 110%
+        const randomScale = getRandom(0.5, 1.1);
         const size = BASE_SIZE * randomScale;
 
-        // Расчет позиции внутри контейнера с уже известными размерами
         const x = getRandom(0, containerWidth - size);
-        const y = getRandom(0, containerHeight - size);
+        const y = getRandom(0, placementAreaHeight - size);
 
         const zIndex = Math.floor(getRandom(1, 10));
         
-        // Применяем стили (ничего не меняется)
         bubble.style.width = `${size}px`;
         bubble.style.height = `${size}px`;
         bubble.style.position = 'absolute';
@@ -36,5 +39,7 @@ export function initBubbleGallery() {
         bubble.style.zIndex = zIndex;
     });
 
-    // Строки, которые задавали высоту контейнеру, удалены.
+    // После размещения всех пузырей, принудительно устанавливаем высоту контейнера
+    container.style.height = `${placementAreaHeight}px`;
+    container.style.minHeight = 'auto'; // Убираем стартовую min-height
 }

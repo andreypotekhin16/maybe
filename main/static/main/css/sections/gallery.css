@@ -9,31 +9,30 @@
     margin: 0 auto 3rem auto;
 }
 
-/* === ИЗМЕНЕНИЯ ЗДЕСЬ === */
 .bubble-container {
     position: relative;
     width: 100%;
-    /* 1. Задаем минимальную высоту, чтобы контейнер не схлопывался */
+    /* Возвращаем min-height, чтобы у контейнера была хоть какая-то высота на старте */
     min-height: 80vh; 
-    /* 2. Добавляем временную рамку, чтобы видеть границы */
-    border: 2px dashed var(--color-pink-accent); 
-    padding: 1rem; /* Небольшой внутренний отступ */
+    padding: 1rem;
     box-sizing: border-box;
     margin-bottom: 3rem;
+    /* Убираем отладочную рамку */
+    /* border: 2px dashed var(--color-pink-accent); */ 
 }
 
 .gallery-card {
+    position: absolute; /* Позиция задается JS */
     border-radius: 50%;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    /* Позиция будет задана через JS */
 }
 
 .gallery-card:hover {
-    transform: scale(1.1) !important; /* Усиливаем приоритет */
+    transform: scale(1.1) !important;
     z-index: 11 !important;
-    box-shadow: 0 10px 30px rgba(var(--color-pink-accent-rgb), 0.4);
+    box-shadow: 0 10px 30px rgba(var(--color-pink-accent-rgb, 217, 12, 107), 0.4);
 }
 
 .gallery-media-circle {

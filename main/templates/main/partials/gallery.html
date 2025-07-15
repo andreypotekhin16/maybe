@@ -7,10 +7,8 @@
             <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
         {% endif %}
         
-        <!-- НАШ ХОЛСТ ДЛЯ ПУЗЫРЕЙ -->
         <div class="gallery-grid bubble-container">
             {% for item in gallery_items %}
-                <!-- ЭТО БУДУЩИЙ ПУЗЫРЬ -->
                 <div class="gallery-card">
                     <div class="gallery-media-circle">
                         {% if item.image %}
