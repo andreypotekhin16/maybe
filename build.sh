@@ -3,9 +3,8 @@ set -o errexit
 
 pip install -r requirements.txt
 
-# УБИРАЕМ --ignore main, ЧТОБЫ СЕРВЕР УВИДЕЛ ВАШИ ФАЙЛЫ CSS И JS
-python manage.py collectstatic --no-input
+# Собираем статику, ИГНОРИРУЯ только файлы пакета cloudinary
+python manage.py collectstatic --no-input --ignore cloudinary
 
 python manage.py migrate
-# Команду createsuper можно оставить, она не мешает
 python manage.py createsuper
