@@ -19,7 +19,7 @@ export function initBubbleGallery() {
 
     const placedBubbles = [];
     const maxAttemptsPerSize = 50; // Попыток для каждого размера
-    const BASE_SIZE = 500;
+    const BASE_SIZE = 400;
 
     bubbles.forEach((bubble) => {
         let randomScale = getRandom(0.5, 1.1);
