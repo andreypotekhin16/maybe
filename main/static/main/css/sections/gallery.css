@@ -9,36 +9,40 @@
     margin: 0 auto 3rem auto;
 }
 
-/* Наш "холст". Он должен иметь позиционирование и высоту. */
+/* === ИЗМЕНЕНИЯ ЗДЕСЬ === */
 .bubble-container {
     position: relative;
     width: 100%;
-    min-height: 100vh; /* Занимает почти весь экран в высоту */
+    /* 1. Задаем минимальную высоту, чтобы контейнер не схлопывался */
+    min-height: 80vh; 
+    /* 2. Добавляем временную рамку, чтобы видеть границы */
+    border: 2px dashed var(--color-pink-accent); 
+    padding: 1rem; /* Небольшой внутренний отступ */
+    box-sizing: border-box;
     margin-bottom: 3rem;
 }
 
-/* Карточка - это теперь пузырь */
 .gallery-card {
-    /* Позиция будет задана через JS */
     border-radius: 50%;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    /* Позиция будет задана через JS */
 }
 
 .gallery-card:hover {
-    transform: scale(1.1); /* При наведении пузырь увеличивается */
-    z-index: 11 !important; /* и всплывает на самый верх */
+    transform: scale(1.1) !important; /* Усиливаем приоритет */
+    z-index: 11 !important;
     box-shadow: 0 10px 30px rgba(var(--color-pink-accent-rgb), 0.4);
 }
 
-/* Круглый контейнер внутри, наследует размер */
 .gallery-media-circle {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid rgba(255, 255, 255, 0.3); /* Полупрозрачная рамка */
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background-color: #111;
 }
 
 .gallery-media-circle img,
@@ -46,11 +50,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.85; /* Делаем медиа чуть-чуть прозрачным для эффекта */
+    opacity: 0.85;
     transition: opacity 0.4s ease;
 }
 
 .gallery-card:hover .gallery-media-circle img,
 .gallery-card:hover .gallery-media-circle video {
-    opacity: 1; /* При наведении делаем картинку яркой */
+    opacity: 1;
 }

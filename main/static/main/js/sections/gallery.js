@@ -1,38 +1,35 @@
 // main/static/main/js/sections/gallery.js
 
-// Функция для генерации случайного числа в диапазоне
 function getRandom(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// Главная функция инициализации галереи
 export function initBubbleGallery() {
     const container = document.querySelector('.bubble-container');
-    if (!container) return; // Если контейнера нет, ничего не делаем
+    if (!container) return;
 
     const bubbles = container.querySelectorAll('.gallery-card');
-    const containerRect = container.getBoundingClientRect();
+    // Теперь размеры берем от реального, видимого контейнера
+    const containerWidth = container.clientWidth;
+    // Высоту берем такую же, как ширина, чтобы создать условный квадрат для размещения
+    const containerHeight = container.clientHeight > 200 ? container.clientHeight : containerWidth * 0.8; 
 
-    // Базовый размер пузыря
-    const BASE_SIZE = 280; // px
+    const BASE_SIZE = 250; 
 
     bubbles.forEach((bubble) => {
-        // 1. Генерируем случайный размер
-        const randomScale = getRandom(0.6, 1.1); // от 60% до 110% от базового размера
+        const randomScale = getRandom(0.5, 1.1);
         const size = BASE_SIZE * randomScale;
 
-        // 2. Генерируем случайную позицию внутри контейнера
-        // (с учетом размера пузыря, чтобы он не вылезал за края)
-        const x = getRandom(0, containerRect.width - size);
-        const y = getRandom(0, containerRect.height - size);
+        // Расчет позиции внутри видимой области
+        const x = getRandom(0, containerWidth - size);
+        const y = getRandom(0, containerHeight - size);
 
-        // 3. Генерируем случайный z-index для эффекта наложения
         const zIndex = Math.floor(getRandom(1, 10));
         
-        // 4. Применяем все случайные стили к пузырю
+        // Применяем стили
         bubble.style.width = `${size}px`;
         bubble.style.height = `${size}px`;
-        bubble.style.position = 'absolute'; // ОБЯЗАТЕЛЬНО
+        bubble.style.position = 'absolute';
         bubble.style.left = `${x}px`;
         bubble.style.top = `${y}px`;
         bubble.style.zIndex = zIndex;
