@@ -4,28 +4,20 @@ export function setupSimpleCarousel() {
     
     const swiper = new Swiper('.simple-carousel', {
         
-       
-        speed: 300, 
+        // 1. ОТКЛЮЧАЕМ ВСТРОЕННЫЙ ЭФФЕКТ
+        // effect: 'coverflow', // <<-- УДАЛЕНО
 
-      
-        watchSlidesProgress: true,
-
-
-        // --- Основные настройки (остаются прежними) ---
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
+        // 2. Оставляем базовые настройки
+        loop: true,
         slidesPerView: 3,
-        loop: true, 
+        centeredSlides: true,
+        grabCursor: true,
+        
+        // 3. Устанавливаем скорость анимации
+        speed: 600, // Плавный переход
 
-        coverflowEffect: {
-            rotate: 0,
-            // 3. Немного уменьшаем "размах" боковых слайдов, чтобы сделать движение менее агрессивным
-            stretch: 40,  // Было: 80
-            depth: 120, // Было: 150
-            modifier: 1,
-            slideShadows: false,
-        },
+        // 4. Добавляем отступы, чтобы слайды не слипались
+        spaceBetween: 0,
 
         navigation: {
             nextEl: '.carousel-wrapper .swiper-button-next',
