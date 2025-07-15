@@ -29,10 +29,8 @@
     transform: scale(1);
     z-index: 1;
 }
-
-/* Наш круглый слайд-ссылка */
 .circular-slide {
-    display: flex;
+    display: flex; /* <-- Это свойство нужно для дочерних элементов */
     justify-content: center;
     align-items: center;
     width: 350px;
@@ -50,18 +48,34 @@
     border-color: var(--color-pink-accent);
 }
 
+/* === ИЗМЕНЕНИЯ ЗДЕСЬ === */
+
 /* Блок с постоянно видимым текстом */
 .always-visible-content {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.5rem 1rem;
+    width: 100%;
+    height: 100%;
+    
+    /* Используем Flexbox для идеального центрирования текста */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрируем по вертикали */
+    align-items: center;     /* Центрируем по горизонтали */
+    
+    padding: 1rem;
+    box-sizing: border-box;
     text-align: center;
     color: white;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+    
+    /* Убираем градиент снизу, он больше не нужен */
+    background: none; 
+    
     transition: opacity 0.3s ease;
     opacity: 1; /* Виден по умолчанию */
+}
+.always-visible-content h3, .always-visible-content p {
+    /* Добавляем тень для лучшей читаемости на любом фоне */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 .always-visible-content h3 {
     font-family: var(--font-sunday);
@@ -71,10 +85,10 @@
 .always-visible-content p {
     font-family: var(--font-fortunec);
     font-size: 1rem;
-    margin: 0;
+    margin: 0.25rem 0 0 0;
 }
 
-/* Блок с оверлеем, который появляется при наведении */
+/* Блок с оверлеем (остается без изменений) */
 .hover-overlay {
     position: absolute;
     top: 0; left: 0;
@@ -88,22 +102,22 @@
     color: white;
     background-color: rgba(0, 0, 0, 0.7);
     transition: opacity 0.3s ease;
-    opacity: 0; /* Скрыт по умолчанию */
+    opacity: 0;
 }
 .hover-overlay p {
     font-size: 1.1rem;
     line-height: 1.5;
 }
 
-/* ЛОГИКА ПРИ НАВЕДЕНИИ */
+/* ЛОГИКА ПРИ НАВЕДЕНИИ (остается без изменений) */
 .circular-slide:hover .always-visible-content {
-    opacity: 0; /* Скрываем основной текст */
+    opacity: 0;
 }
 .circular-slide:hover .hover-overlay {
-    opacity: 1; /* Показываем оверлей */
+    opacity: 1;
 }
 
-/* Навигация */
+/* Навигация (остается без изменений) */
 .swiper-button-prev,
 .swiper-button-next {
     color: var(--color-pink-accent);
