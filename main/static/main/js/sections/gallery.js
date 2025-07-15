@@ -9,18 +9,21 @@ export function initBubbleGallery() {
     if (!container) return;
 
     const bubbles = container.querySelectorAll('.gallery-card');
-    // Теперь размеры берем от реального, видимого контейнера
+    
+    // --- ИСПРАВЛЕНИЕ ЗДЕСЬ ---
+    // Получаем реальные внутренние размеры контейнера
     const containerWidth = container.clientWidth;
-    // Высоту берем такую же, как ширина, чтобы создать условный квадрат для размещения
-    const containerHeight = container.clientHeight > 200 ? container.clientHeight : containerWidth * 0.8; 
+    const containerHeight = container.clientHeight;
+    // -------------------------
 
-    const BASE_SIZE = 250; 
+    // Базовый размер для самого большого пузыря
+    const BASE_SIZE = 280; 
 
     bubbles.forEach((bubble) => {
-        const randomScale = getRandom(0.5, 1.1);
+        const randomScale = getRandom(0.5, 1.0); // от 50% до 100% размера
         const size = BASE_SIZE * randomScale;
 
-        // Расчет позиции внутри видимой области
+        // Генерируем позицию СТРОГО внутри контейнера
         const x = getRandom(0, containerWidth - size);
         const y = getRandom(0, containerHeight - size);
 
