@@ -4,8 +4,7 @@ export function initCarousel() {
     const swiper = new Swiper('.booking-carousel', {
         // --- ОСНОВНЫЕ ПАРАМЕТРЫ ---
 
-        // Показывать 1 слайд за раз
-        slidesPerView: 1,
+        slidesPerView: 3,
         // Отступ между слайдами
         spaceBetween: 30,
         // Бесконечная прокрутка
