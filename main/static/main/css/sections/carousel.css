@@ -6,75 +6,80 @@
 }
 .carousel-wrapper {
     position: relative;
-    max-width: 1200px;
+    max-width: 1200px; /* Немного увеличим, чтобы большие слайды помещались */
     margin: 0 auto;
 }
 .simple-carousel {
     width: 100%;
-    height: 400px;
+    height: 450px; /* Увеличим высоту под большой слайд */
     padding: 20px 0;
 }
+
+/* === ИЗМЕНЕНИЯ ЗДЕСЬ === */
+
+/* Контейнер слайда теперь имеет размер самого большого (активного) слайда */
 .swiper-slide {
-    width: 350px;
-    height: 350px;
+    width: 400px; 
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.5s, opacity 0.5s;
-    opacity: 0.5;
-    transform: scale(0.8);
+    /* Убираем трансформации отсюда, будем применять их к содержимому */
+    transition: none;
 }
-.swiper-slide-active {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 1;
-}
+
+/* Круглый слайд-ссылка. Базовый размер - большой. */
 .circular-slide {
-    display: flex; /* <-- Это свойство нужно для дочерних элементов */
+    display: flex;
     justify-content: center;
     align-items: center;
-    width: 350px;
-    height: 350px;
+    width: 400px;   /* << НОВЫЙ РАЗМЕР */
+    height: 400px;  /* << НОВЫЙ РАЗМЕР */
     border-radius: 50%;
     position: relative;
     overflow: hidden;
     background-size: cover;
     background-position: center;
-    transition: transform 0.3s ease;
     border: 3px solid var(--color-green-accent);
+    
+    /* Анимация будет плавной */
+    transition: transform 0.5s ease, opacity 0.5s ease;
+
+    /* ПО УМОЛЧАНИЮ (ДЛЯ НЕАКТИВНЫХ СЛАЙДОВ) ОН УМЕНЬШЕН В 2 РАЗА И ПРОЗРАЧЕН */
+    transform: scale(0.5); /* << МАСШТАБИРУЕМ ДО 200px */
+    opacity: 0.5;
 }
-.circular-slide:hover {
-    transform: scale(1.05);
+
+/* КОГДА СЛАЙД АКТИВЕН, МЫ ВОЗВРАЩАЕМ ЕГО К ПОЛНОМУ РАЗМЕРУ (400px) */
+.swiper-slide-active .circular-slide {
+    transform: scale(1);
+    opacity: 1;
     border-color: var(--color-pink-accent);
 }
 
-/* === ИЗМЕНЕНИЯ ЗДЕСЬ === */
+.circular-slide:hover {
+    /* Эффект при наведении теперь не scale, а просто смена рамки, 
+       так как размер уже контролируется классом .swiper-slide-active */
+    border-color: var(--color-pink-accent);
+}
 
-/* Блок с постоянно видимым текстом */
+
+/* Текстовые блоки внутри. Стили остаются прежними, так как они масштабируются вместе с родителем */
 .always-visible-content {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    
-    /* Используем Flexbox для идеального центрирования текста */
+    width: 100%; height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Центрируем по вертикали */
-    align-items: center;     /* Центрируем по горизонтали */
-    
+    justify-content: center;
+    align-items: center;
     padding: 1rem;
     box-sizing: border-box;
     text-align: center;
     color: white;
-    
-    /* Убираем градиент снизу, он больше не нужен */
-    background: none; 
-    
     transition: opacity 0.3s ease;
-    opacity: 1; /* Виден по умолчанию */
+    opacity: 1;
 }
 .always-visible-content h3, .always-visible-content p {
-    /* Добавляем тень для лучшей читаемости на любом фоне */
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 .always-visible-content h3 {
@@ -87,8 +92,6 @@
     font-size: 1rem;
     margin: 0.25rem 0 0 0;
 }
-
-/* Блок с оверлеем (остается без изменений) */
 .hover-overlay {
     position: absolute;
     top: 0; left: 0;
@@ -108,8 +111,6 @@
     font-size: 1.1rem;
     line-height: 1.5;
 }
-
-/* ЛОГИКА ПРИ НАВЕДЕНИИ (остается без изменений) */
 .circular-slide:hover .always-visible-content {
     opacity: 0;
 }
@@ -117,7 +118,7 @@
     opacity: 1;
 }
 
-/* Навигация (остается без изменений) */
+/* Навигация */
 .swiper-button-prev,
 .swiper-button-next {
     color: var(--color-pink-accent);

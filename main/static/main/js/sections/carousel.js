@@ -15,7 +15,7 @@ export function setupSimpleCarousel() {
         
         coverflowEffect: {
             rotate: 0,
-            stretch: 50,
+            stretch: 40,
             depth: 150,
             modifier: 1,
             slideShadows: false,
