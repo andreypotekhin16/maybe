@@ -76,7 +76,9 @@ class GalleryItemAdmin(admin.ModelAdmin):
 class CompanyProfileForm(forms.ModelForm):
     gallery_files = forms.FileField(
         label='Добавить изображения/видео в галерею',
-        widget=forms.ClearableFileInput(attrs={'multiple': True}),
+        # --- ИСПРАВЛЕНИЕ ЗДЕСЬ ---
+        # Используем простой FileInput вместо ClearableFileInput
+        widget=forms.FileInput(attrs={'multiple': True}),
         required=False,
         help_text='Можно выбрать несколько файлов одновременно'
     )
