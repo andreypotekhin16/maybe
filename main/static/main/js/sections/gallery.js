@@ -10,15 +10,14 @@ export function initBubbleGallery() {
 
     const bubbles = container.querySelectorAll('.gallery-card');
     if (bubbles.length === 0) {
-        // Если пузырей нет, убираем высоту контейнера
         container.style.minHeight = 'auto';
         return;
     }
     
-    // Используем ширину контейнера как основу для расчетов
     const containerWidth = container.clientWidth;
-    // Создаем квадратную область для размещения
-    const placementAreaHeight = containerWidth; 
+    // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+    const placementAreaHeight = containerWidth / 2; // Делаем высоту в 2 раза меньше ширины
+    // -------------------------
 
     const BASE_SIZE = 280; 
 
@@ -39,7 +38,6 @@ export function initBubbleGallery() {
         bubble.style.zIndex = zIndex;
     });
 
-    // После размещения всех пузырей, принудительно устанавливаем высоту контейнера
     container.style.height = `${placementAreaHeight}px`;
-    container.style.minHeight = 'auto'; // Убираем стартовую min-height
+    container.style.minHeight = 'auto';
 }
