@@ -3,11 +3,14 @@
         {% if section.show_title %}
             <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
-        
-        <div class="carousel-widget-wrapper">
-            <div class="swiper-button-prev"></div>
+
+        <!-- Обертка для позиционирования стрелок -->
+        <div class="carousel-container">
+            <!-- Основной контейнер Swiper -->
             <div class="swiper booking-carousel">
+                <!-- Обязательная обертка для слайдов -->
                 <div class="swiper-wrapper">
+                    <!-- Цикл для генерации каждого слайда -->
                     {% for slide in carousel_slides %}
                     <div class="swiper-slide">
                         <div class="slide-image-wrapper">
@@ -16,7 +19,9 @@
                         <div class="slide-content">
                             <h3>{{ slide.name }}</h3>
                             {% if slide.short_description %}<p>{{ slide.short_description }}</p>{% endif %}
-                            {% if slide.vk_link %}<a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>{% endif %}
+                            {% if slide.vk_link %}
+                                <a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>
+                            {% endif %}
                         </div>
                     </div>
                     {% empty %}
@@ -25,7 +30,12 @@
                     </div>
                     {% endfor %}
                 </div>
+                <!-- Пагинация (точки) -->
+                <div class="swiper-pagination"></div>
             </div>
+
+            <!-- Кнопки навигации (стрелки) -->
+            <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
         </div>
     </div>
