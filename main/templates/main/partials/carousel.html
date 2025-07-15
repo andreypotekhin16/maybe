@@ -4,37 +4,31 @@
             <h2>{{ section.title|default:"Запись на игры" }}</h2>
         {% endif %}
 
-        <!-- Обертка для позиционирования стрелок -->
-        <div class="carousel-container">
-            <!-- Основной контейнер Swiper -->
-            <div class="swiper booking-carousel">
-                <!-- Обязательная обертка для слайдов -->
+        <div class="my-awesome-carousel-wrapper">
+            <!-- Класс контейнера изменен на 'simple-carousel' -->
+            <div class="swiper simple-carousel">
                 <div class="swiper-wrapper">
-                    <!-- Цикл для генерации каждого слайда -->
                     {% for slide in carousel_slides %}
                     <div class="swiper-slide">
-                        <div class="slide-image-wrapper">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" alt="{{ slide.name }}">{% endif %}
-                        </div>
-                        <div class="slide-content">
-                            <h3>{{ slide.name }}</h3>
-                            {% if slide.short_description %}<p>{{ slide.short_description }}</p>{% endif %}
-                            {% if slide.vk_link %}
-                                <a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>
+                        <!-- Классы элементов изменены -->
+                        <img src="{{ slide.image.url }}" alt="{{ slide.name }}" class="slide-img">
+                        <div>
+                            <h3 class="slide-title">{{ slide.name }}</h3>
+                            {% if slide.short_description %}
+                                <p class="slide-description">{{ slide.short_description }}</p>
                             {% endif %}
                         </div>
+                        {% if slide.vk_link %}
+                            <a href="{{ slide.vk_link }}" class="btn" target="_blank" rel="noopener noreferrer">Подробнее</a>
+                        {% endif %}
                     </div>
                     {% empty %}
-                    <div class="swiper-slide">
-                        <p class="text-center" style="width: 100%;">Слайды для карусели не добавлены.</p>
-                    </div>
+                    <div class="swiper-slide"><p>Слайды не добавлены.</p></div>
                     {% endfor %}
                 </div>
-                <!-- Пагинация (точки) -->
                 <div class="swiper-pagination"></div>
             </div>
 
-            <!-- Кнопки навигации (стрелки) -->
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
         </div>

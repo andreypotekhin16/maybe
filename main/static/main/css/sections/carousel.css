@@ -1,76 +1,72 @@
+/* ---- НОВАЯ ВЕРСИЯ СТИЛЕЙ от [текущее время] ---- */
+/* ---- Если вы видите этот комментарий, файл обновился ---- */
 
+.section-carousel {
+    padding: 4rem 0;
+    /* ЯРКО-КРАСНАЯ РАМКА ДЛЯ ПРОВЕРКИ ЗАГРУЗКИ НОВОГО ФАЙЛА */
+    border: 5px solid red; 
+}
 
 .section-carousel h2 {
+    text-align: center;
     margin-bottom: 3rem;
 }
 
-/* Контейнер для позиционирования стрелок */
-.carousel-container {
-    position: relative;
-    max-width: 900px;
+/* Обертка для карусели, чтобы задать ей максимальную ширину */
+.my-awesome-carousel-wrapper {
+    max-width: 800px;
     margin: 0 auto;
+    position: relative; /* Нужно для позиционирования стрелок */
 }
 
-/* Основной контейнер Swiper */
-.booking-carousel {
+/* Главный контейнер Swiper */
+.simple-carousel {
     width: 100%;
-    height: 500px; /* Задаем высоту, чтобы карусель не "прыгала" */
-    overflow: hidden; /* Скрываем слайды, которые не видны */
+    height: 480px;
+    border-radius: 15px;
+    background: #111;
 }
 
-/* Стили для одного слайда */
-.swiper-slide {
+/* Стилизация одного слайда */
+.simple-carousel .swiper-slide {
+    color: white;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    background-color: #14301F; /* Темный фон для слайда */
-    border-radius: 10px;
-    border: 1px solid var(--color-green-accent);
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
 }
 
-.slide-image-wrapper {
+.simple-carousel .slide-img {
     width: 100%;
     height: 300px;
-}
-
-.slide-image-wrapper img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
+    margin-bottom: 1rem;
 }
 
-.slide-content {
-    padding: 1.5rem;
-}
-
-.slide-content h3 {
+.simple-carousel .slide-title {
     font-family: var(--font-sunday);
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: var(--color-green-accent);
-    margin-bottom: 0.75rem;
 }
 
-.slide-content p {
+.simple-carousel .slide-description {
     font-size: 1rem;
+    padding: 0 1rem;
     line-height: 1.5;
-    margin-bottom: 1.5rem;
 }
 
-/* Стилизация навигации Swiper */
+/* Переменные для кастомизации Swiper */
 :root {
-    --swiper-navigation-color: var(--color-pink-accent);
-    --swiper-pagination-color: var(--color-pink-accent);
-    --swiper-navigation-size: 28px;
+    --swiper-theme-color: var(--color-pink-accent); /* Делаем стрелки и точки розовыми */
 }
 
-.swiper-pagination-bullet-active {
-    background: var(--color-pink-accent);
+/* Позиционирование стрелок */
+.my-awesome-carousel-wrapper .swiper-button-prev {
+    left: -10px;
 }
-
-.swiper-button-prev,
-.swiper-button-next {
-    top: 50%;
-    transform: translateY(-50%);
+.my-awesome-carousel-wrapper .swiper-button-next {
+    right: -10px;
 }
