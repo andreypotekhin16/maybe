@@ -15,7 +15,7 @@ export function initBubbleGallery() {
     const containerHeight = container.clientHeight;
 
     // Базовый размер для самого большого пузыря
-    const BASE_SIZE = 3000; // Можете настроить этот параметр
+    const BASE_SIZE = 300; // Можете настроить этот параметр
 
     bubbles.forEach((bubble) => {
         const randomScale = getRandom(0.5, 1.1); // от 50% до 110%
