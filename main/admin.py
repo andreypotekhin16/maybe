@@ -66,12 +66,14 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
+
+# --- ИЗМЕНЕНИЯ ЗДЕСЬ ---
+
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
     fields = ('image', 'video', 'order')
-    # --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
-    # Возвращаем стандартное поведение с одним слотом
-    extra = 1 
+    # Снова ставим 10 слотов для удобства
+    extra = 10 
     ordering = ('order',)
 
 
@@ -116,28 +118,23 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
-class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
-    model = BackgroundObject
-    extra = 1
-    readonly_fields = ('image_preview',)
-    fields = ('name', 'image', 'image_preview', 'width', 'initial_top', 'initial_left', 'opacity', 'z_index', 'animation_duration', 'animation_delay', 'parallax_target_id', 'parallax_speed', 'order')
-    ordering = ('order',)
-    def image_preview(self, obj): return self.get_preview(obj, 'image', max_height=75)
-    image_preview.short_description = 'Предпросмотр'
+# --- ВТОРОЕ ИЗМЕНЕНИЕ ---
+# Мы полностью удаляем отдельную регистрацию для GalleryItem.
+# Она больше не нужна и вызывает ошибку.
+# @admin.register(GalleryItem) ... <-- УДАЛЕНО
 
+# Админка для BackgroundSettings остается без изменений
 @admin.register(BackgroundSettings)
 class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     list_display = ('name', 'pattern_preview')
     readonly_fields = ('pattern_preview',)
     fields = ('name', 'background_pattern', 'pattern_preview', 'pattern_size', 'pattern_opacity', 'background_color')
-    inlines = [BackgroundObjectInline]
+    inlines = []
     def pattern_preview(self, obj): return self.get_preview(obj, 'background_pattern', is_background=True)
     pattern_preview.short_description = 'Предпросмотр паттерна'
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
-@admin.register(GalleryItem)
-class GalleryItemAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'company_profile', 'order')
-    list_filter = ('company_profile',)
-    ordering = ('order',)
+@admin.register(BackgroundObject)
+class BackgroundObjectAdmin(admin.ModelAdmin):
+    list_display = ('name', 'settings')
