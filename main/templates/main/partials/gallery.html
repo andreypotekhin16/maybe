@@ -7,8 +7,10 @@
             <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
         {% endif %}
         
+        <!-- Холст для мозаики -->
         <div class="voronoi-gallery-container">
             {% for item in gallery_items %}
+                <!-- Ячейка мозаики -->
                 <div class="gallery-cell">
                     {% if item.image %}
                         <img src="{{ item.image.url }}" alt="Элемент галереи">
