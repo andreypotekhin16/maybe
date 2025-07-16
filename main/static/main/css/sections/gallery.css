@@ -1,46 +1,36 @@
 /* main/static/main/css/sections/gallery.css */
 
-.gallery-section .gallery-title {
-    text-align: center;
-}
+.gallery-section .gallery-title { text-align: center; }
 .gallery-section .gallery-main-description {
-    text-align: center;
-    max-width: 65ch;
+    text-align: center; max-width: 65ch;
     margin: 0 auto 3rem auto;
 }
 
-/* Холст, на котором будет рисоваться мозаика */
 .voronoi-gallery-container {
-    position: relative; /* Все дочерние элементы будут позиционироваться внутри него */
+    position: relative;
     width: 100%;
-    height: 90vh; /* Занимает 90% высоты экрана */
-    overflow: hidden; /* Обрезаем все, что может вылезти */
+    height: 90vh;
+    overflow: hidden;
+    background-color: #050505; /* Темный фон на случай, если картинки не покроют всё */
 }
 
-/* Ячейка мозаики */
-.gallery-cell {
+/* Стили для одной ячейки, которая будет создана JS */
+.voronoi-cell {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Форма ячейки будет задана через clip-path в JS */
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease, z-index 0s 0.15s;
+    cursor: pointer;
 }
 
-.gallery-cell img,
-.gallery-cell video {
-    /* Растягиваем медиа на весь холст, чтобы clip-path правильно его обрезал */
+.voronoi-cell:hover {
+    transform: scale(1.03);
+    z-index: 100;
+    transition-delay: 0s;
+}
+
+.voronoi-cell video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-/* Эффект приближения при наведении на ячейку */
-.gallery-cell:hover {
-    z-index: 10; /* Всплывает наверх */
-}
-.gallery-cell:hover img,
-.gallery-cell:hover video {
-    transform: scale(1.05); 
 }

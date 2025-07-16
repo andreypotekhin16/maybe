@@ -14,8 +14,9 @@
     
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v={% now 'U' %}">
     
-    <!-- ПОДКЛЮЧАЕМ D3 ДЛЯ ГАЛЕРЕИ -->
+    <!-- ПОДКЛЮЧАЕМ БИБЛИОТЕКИ ДЛЯ ГАЛЕРЕИ -->
     <script src="https://cdn.jsdelivr.net/npm/d3-delaunay@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pds.js@1.1.0/pds.min.js"></script>
     
     {% if company_profile.favicon %}
         <link rel="icon" href="{{ company_profile.favicon.url }}">
