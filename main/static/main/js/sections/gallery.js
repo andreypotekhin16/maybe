@@ -10,28 +10,28 @@ export function initBubbleGallery() {
 
     const bubbles = container.querySelectorAll('.gallery-card');
     if (bubbles.length === 0) {
+        container.style.height = 'auto'; // Если нет картинок, убираем высоту
         container.style.minHeight = 'auto';
         return;
     }
 
     const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    // Создаем область для размещения, равную квадрату по ширине контейнера
+    const placementAreaHeight = containerWidth; 
 
     const placedBubbles = [];
     const maxAttempts = 100;
-
-    // НАСТРАИВАЕМ РАЗМЕР И ПЕРЕКРЫТИЕ
-    const BASE_SIZE = 400; // Базовый размер
-    const OVERLAP_FACTOR = 0.9; // 1.0 - касаются, 0.8 - сильно перекрываются
+    const BASE_SIZE = 300; // Базовый размер пузыря
+    const OVERLAP_FACTOR = 0.95; // Коэффициент перекрытия (1.0 = касание)
 
     bubbles.forEach((bubble) => {
-        let size = BASE_SIZE * getRandom(0.5, 1.1); // Случайный размер
+        let size = BASE_SIZE * getRandom(0.6, 1.2);
         let radius = size / 2;
         let isPlaced = false;
 
         for (let i = 0; i < maxAttempts; i++) {
             let x = getRandom(0, containerWidth - size);
-            let y = getRandom(0, containerHeight - size);
+            let y = getRandom(0, placementAreaHeight - size);
             let isColliding = false;
 
             for (const placed of placedBubbles) {
@@ -58,6 +58,12 @@ export function initBubbleGallery() {
                 break;
             }
         }
-        // Если за 100 попыток место не нашлось, пузырь просто не будет показан
+        if (!isPlaced) {
+            bubble.style.display = 'none'; // Скрываем пузырь, если место не нашлось
+        }
     });
+
+    // В конце принудительно устанавливаем высоту контейнера
+    container.style.height = `${placementAreaHeight}px`;
+    container.style.minHeight = 'auto'; // Убираем стартовый min-height
 }
