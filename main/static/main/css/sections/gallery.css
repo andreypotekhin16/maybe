@@ -1,5 +1,3 @@
-/* main/static/main/css/sections/gallery.css */
-
 .gallery-section .gallery-title {
     text-align: center;
 }
@@ -9,49 +7,28 @@
     margin: 0 auto 3rem auto;
 }
 
-.bubble-container {
+.voronoi-gallery-container {
     position: relative;
     width: 100%;
-    /* ЗАДАЕМ ЯВНУЮ ВЫСОТУ */
-    height: 80vh; 
-    padding: 1rem;
-    box-sizing: border-box;
-    margin-bottom: 3rem;
-}
-
-.gallery-card {
-    position: absolute;
-    border-radius: 50%;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.gallery-card:hover {
-    transform: scale(1.1) !important;
-    z-index: 11 !important;
-    box-shadow: 0 10px 30px rgba(var(--color-pink-accent-rgb, 217, 12, 107), 0.4);
-}
-
-.gallery-media-circle {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+    height: 90vh;
     overflow: hidden;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    background-color: #111;
 }
 
-.gallery-media-circle img,
-.gallery-media-circle video {
+.gallery-cell {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    opacity: 0.85;
-    transition: opacity 0.4s ease;
 }
 
-.gallery-card:hover .gallery-media-circle img,
-.gallery-card:hover .gallery-media-circle video {
-    opacity: 1;
+.gallery-cell img,
+.gallery-cell video {
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.gallery-cell:hover img,
+.gallery-cell:hover video {
+    transform: scale(1.05);
 }

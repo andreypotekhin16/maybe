@@ -6,6 +6,7 @@ from .models import (
     BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
+# Миксин и другие инлайны остаются без изменений
 class ImagePreviewAdminMixin:
     """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
@@ -66,12 +67,17 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-# Возвращаем стандартный инлайн для галереи
+
+# --- ВОТ ИСПРАВЛЕННАЯ ЛОГИКА ДЛЯ ГАЛЕРЕИ ---
+
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
+    # Поля соответствуют упрощенной модели: только файл и порядок
     fields = ('image', 'video', 'order')
+    # Предоставляем сразу 10 пустых слотов для быстрой загрузки
     extra = 10 
     ordering = ('order',)
+
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
@@ -81,12 +87,14 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
             'description': 'Настройки для секций "Маркет" и "Галерея".', 
+            # Убедитесь, что поле gallery_button_link здесь есть
             'fields': ('market_link', 'gallery_description', 'gallery_button_link')
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
     
+    # Возвращаем GalleryItemInline в список инлайнов
     inlines = [
         SectionInline, 
         CarouselSlideInline,
@@ -94,9 +102,10 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         FeatureInline,
         GameTypeInline,
         ProductInline,
-        GalleryItemInline,
+        GalleryItemInline, # <<-- ВОТ ОН
     ]
 
+    # Все методы для превью иконок остаются без изменений
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
         field = getattr(obj, field_name)
         if field and hasattr(field, 'url'):
@@ -114,6 +123,8 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
+
+# Админка для BackgroundSettings остается без изменений
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
