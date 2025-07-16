@@ -7,7 +7,6 @@ from .models import (
 )
 
 class ImagePreviewAdminMixin:
-    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
         if field and hasattr(field, 'url'):
@@ -66,13 +65,13 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-# Возвращаемся к простому и надежному инлайну
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
     fields = ('image', 'video', 'order')
-    extra = 5  # Даем 5 пустых слотов для добавления
+    extra = 10 
     ordering = ('order',)
-
+    verbose_name = "Элемент галереи"
+    verbose_name_plural = "Элементы галереи"
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
@@ -95,7 +94,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         FeatureInline,
         GameTypeInline,
         ProductInline,
-        GalleryItemInline, # <-- ВОТ ОН
+        GalleryItemInline,
     ]
 
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
@@ -115,7 +114,6 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
-# Этот код не менялся, но пусть будет для полноты
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
@@ -135,3 +133,4 @@ class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     pattern_preview.short_description = 'Предпросмотр паттерна'
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
+
