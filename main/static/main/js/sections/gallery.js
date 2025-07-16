@@ -1,33 +1,67 @@
-export function initVoronoiGallery() {
-    const container = document.querySelector('.voronoi-gallery-container');
+// main/static/main/js/sections/gallery.js
+
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+export function initBubbleGallery() {
+    const container = document.querySelector('.bubble-container');
     if (!container) return;
 
-    const cells = Array.from(container.querySelectorAll('.gallery-cell'));
-    if (cells.length === 0) return;
+    const bubbles = container.querySelectorAll('.gallery-card');
+    if (bubbles.length === 0) return;
+    
+    // Считываем реальные размеры контейнера, которые ЗАДАНЫ В CSS
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const placedBubbles = [];
+    const maxAttempts = 100;
+    const BASE_SIZE = 500;
 
-    const points = cells.map(() => [Math.random() * width, Math.random() * height]);
-
-    const voronoi = d3.Delaunay.from(points).voronoi([0, 0, width, height]);
-
-    cells.forEach((cell, i) => {
-        const polygonPoints = voronoi.cellPolygon(i);
+    bubbles.forEach((bubble) => {
+        let randomScale = getRandom(0.5, 1.1);
+        let size = BASE_SIZE * randomScale;
         
-        if (polygonPoints) {
-            const clipPathString = polygonPoints.map(p => `${(p[0] / width) * 100}% ${(p[1] / height) * 100}%`).join(', ');
+        let foundSpot = false;
+        let x, y;
 
-            cell.style.clipPath = `polygon(${clipPathString})`;
+        for (let i = 0; i < maxAttempts; i++) {
+            x = getRandom(0, containerWidth - size);
+            y = getRandom(0, containerHeight - size);
+            let radius = size / 2;
+            let isColliding = false;
 
-            const media = cell.querySelector('img, video');
-            if (media) {
-                media.style.position = 'absolute';
-                media.style.left = `-${polygonPoints.bounds.x0}px`;
-                media.style.top = `-${polygonPoints.bounds.y0}px`;
-                media.style.width = `${width}px`;
-                media.style.height = `${height}px`;
+            for (const placed of placedBubbles) {
+                const dx = (x + radius) - (placed.x + placed.radius);
+                const dy = (y + radius) - (placed.y + placed.radius);
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const minDistance = (radius + placed.radius) * 0.95; 
+
+                if (distance < minDistance) {
+                    isColliding = true;
+                    break;
+                }
+            }
+            
+            if (!isColliding) {
+                foundSpot = true;
+                break;
             }
         }
+        
+        if (!foundSpot) {
+             x = getRandom(0, containerWidth - size);
+             y = getRandom(0, containerHeight - size);
+        }
+
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        bubble.style.position = 'absolute';
+        bubble.style.left = `${x}px`;
+        bubble.style.top = `${y}px`;
+        bubble.style.zIndex = Math.floor(getRandom(1, 10));
+
+        placedBubbles.push({ x, y, radius: size / 2 });
     });
 }
