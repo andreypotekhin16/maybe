@@ -7,16 +7,14 @@
             <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
         {% endif %}
         
-        <div class="gallery-grid bubble-container">
+        <div class="voronoi-gallery-container">
             {% for item in gallery_items %}
-                <div class="gallery-card">
-                    <div class="gallery-media-circle">
-                        {% if item.image %}
-                            <img src="{{ item.image.url }}" alt="Элемент галереи">
-                        {% elif item.video %}
-                            <video src="{{ item.video.url }}" loop muted autoplay playsinline></video>
-                        {% endif %}
-                    </div>
+                <div class="gallery-cell">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="Элемент галереи">
+                    {% elif item.video %}
+                        <video src="{{ item.video.url }}" loop muted autoplay playsinline></video>
+                    {% endif %}
                 </div>
             {% empty %}
                 <p style="text-align: center; width: 100%;">Элементы для галереи пока не добавлены.</p>

@@ -1,105 +1,33 @@
-// main/static/main/js/sections/gallery.js
-
-function getRandom(min, max) {
-    return Math.random() * (max - min) + min;
-}
-
-export function initBubbleGallery() {
-    const container = document.querySelector('.bubble-container');
+export function initVoronoiGallery() {
+    const container = document.querySelector('.voronoi-gallery-container');
     if (!container) return;
 
-    const bubbles = container.querySelectorAll('.gallery-card');
-    if (bubbles.length === 0) {
-        container.style.minHeight = 'auto';
-        return;
-    }
+    const cells = Array.from(container.querySelectorAll('.gallery-cell'));
+    if (cells.length === 0) return;
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
 
-    const placedBubbles = [];
-    const maxAttemptsPerSize = 50; // Попыток для каждого размера
-    const BASE_SIZE = 400;
+    const points = cells.map(() => [Math.random() * width, Math.random() * height]);
 
-    bubbles.forEach((bubble) => {
-        let randomScale = getRandom(0.5, 1.1);
-        let size = BASE_SIZE * randomScale;
+    const voronoi = d3.Delaunay.from(points).voronoi([0, 0, width, height]);
+
+    cells.forEach((cell, i) => {
+        const polygonPoints = voronoi.cellPolygon(i);
         
-        let foundSpot = false;
-        let x, y;
+        if (polygonPoints) {
+            const clipPathString = polygonPoints.map(p => `${(p[0] / width) * 100}% ${(p[1] / height) * 100}%`).join(', ');
 
-        // --- НОВЫЙ АЛГОРИТМ С ДВУМЯ ПОПЫТКАМИ ---
+            cell.style.clipPath = `polygon(${clipPathString})`;
 
-        // Попытка №1: разместить с оригинальным размером
-        for (let i = 0; i < maxAttemptsPerSize; i++) {
-            x = getRandom(0, containerWidth - size);
-            y = getRandom(0, containerHeight - size);
-            let radius = size / 2;
-            let isColliding = false;
-
-            for (const placed of placedBubbles) {
-                const dx = (x + radius) - (placed.x + placed.radius);
-                const dy = (y + radius) - (placed.y + placed.radius);
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const minDistance = (radius + placed.radius) * 0.9;
-
-                if (distance < minDistance) {
-                    isColliding = true;
-                    break;
-                }
-            }
-            
-            if (!isColliding) {
-                foundSpot = true;
-                break; // Успех! Выходим из цикла.
+            const media = cell.querySelector('img, video');
+            if (media) {
+                media.style.position = 'absolute';
+                media.style.left = `-${polygonPoints.bounds.x0}px`;
+                media.style.top = `-${polygonPoints.bounds.y0}px`;
+                media.style.width = `${width}px`;
+                media.style.height = `${height}px`;
             }
         }
-
-        // Если не получилось с первого раза...
-        if (!foundSpot) {
-            // Попытка №2: Уменьшаем размер и пробуем снова
-            size = size * 0.7; // Уменьшаем на 30%
-
-            for (let i = 0; i < maxAttemptsPerSize; i++) {
-                x = getRandom(0, containerWidth - size);
-                y = getRandom(0, containerHeight - size);
-                let radius = size / 2;
-                let isColliding = false;
-
-                for (const placed of placedBubbles) {
-                    const dx = (x + radius) - (placed.x + placed.radius);
-                    const dy = (y + radius) - (placed.y + placed.radius);
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const minDistance = (radius + placed.radius) * 0.9;
-
-                    if (distance < minDistance) {
-                        isColliding = true;
-                        break;
-                    }
-                }
-                
-                if (!isColliding) {
-                    foundSpot = true;
-                    break; // Успех!
-                }
-            }
-        }
-        
-        // Крайний случай: если даже маленький не влез, ставим его куда попало
-        if (!foundSpot) {
-             x = getRandom(0, containerWidth - size);
-             y = getRandom(0, containerHeight - size);
-        }
-
-        // Применяем финальный размер и позицию
-        bubble.style.width = `${size}px`;
-        bubble.style.height = `${size}px`;
-        bubble.style.position = 'absolute';
-        bubble.style.left = `${x}px`;
-        bubble.style.top = `${y}px`;
-        bubble.style.zIndex = Math.floor(getRandom(1, 10));
-
-        // Добавляем пузырь в список размещенных
-        placedBubbles.push({ x, y, radius: size / 2 });
     });
 }

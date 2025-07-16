@@ -1,8 +1,7 @@
 import { setupHeader } from './global/header.js';
 import { setupDynamicBackground } from './global/background.js';
 import { setupSimpleCarousel } from './sections/carousel.js'; 
-
-import { initBubbleGallery } from './sections/gallery.js';
+import { initVoronoiGallery } from './sections/gallery.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     setupHeader();
@@ -12,8 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setupSimpleCarousel();
     }
     
-    // ДОБАВЛЯЕМ ВЫЗОВ ДЛЯ ГАЛЕРЕИ
-    if (document.querySelector('.bubble-container')) {
-        initBubbleGallery();
+    if (document.querySelector('.voronoi-gallery-container')) {
+        initVoronoiGallery();
     }
 });
