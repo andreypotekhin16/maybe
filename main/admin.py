@@ -6,8 +6,8 @@ from .models import (
     BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
+# Этот миксин и все инлайны, КРОМЕ галереи, остаются как есть.
 class ImagePreviewAdminMixin:
-    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
         if field and hasattr(field, 'url'):
@@ -66,16 +66,20 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-# Возвращаемся к простому и надежному инлайну
+# --- ВОТ ПРАВИЛЬНЫЙ ИНЛАЙН ДЛЯ ГАЛЕРЕИ ---
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
+    # Поля соответствуют упрощенной модели: только файл и порядок
     fields = ('image', 'video', 'order')
-    extra = 5  # Даем 5 пустых слотов для добавления
+    # Предоставляем сразу 10 пустых слотов для быстрой загрузки
+    extra = 10 
     ordering = ('order',)
-
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
+    # Убираем все упоминания кастомной формы
+    # form = CompanyProfileForm <-- УДАЛЕНО
+
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
@@ -88,6 +92,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
     
+    # Возвращаем GalleryItemInline в список инлайнов
     inlines = [
         SectionInline, 
         CarouselSlideInline,
@@ -95,9 +100,10 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         FeatureInline,
         GameTypeInline,
         ProductInline,
-        GalleryItemInline, # <-- ВОТ ОН
+        GalleryItemInline, # <<-- ВОТ ОН, НА СВОЕМ МЕСТЕ
     ]
 
+    # Остальные методы остаются без изменений
     def _icon_preview(self, obj, field_name, style="max-height: 50px;"):
         field = getattr(obj, field_name)
         if field and hasattr(field, 'url'):
@@ -115,7 +121,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
-# Этот код не менялся, но пусть будет для полноты
+# Этот код не меняется
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
