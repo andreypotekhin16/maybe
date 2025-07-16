@@ -1,7 +1,7 @@
 import { setupHeader } from './global/header.js';
 import { setupDynamicBackground } from './global/background.js';
 import { setupSimpleCarousel } from './sections/carousel.js'; 
-import { initVoronoiGallery } from './sections/gallery.js';
+import { initBubbleGallery } from './sections/gallery.js'; // Используем правильное имя
 
 document.addEventListener('DOMContentLoaded', function() {
     setupHeader();
@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setupSimpleCarousel();
     }
     
-    if (document.querySelector('.voronoi-gallery-container')) {
-        initVoronoiGallery();
+    // Вызываем нашу функцию для пузырей
+    if (document.querySelector('.bubble-container')) {
+        initBubbleGallery();
     }
 });

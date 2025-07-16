@@ -10,13 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- Стили для Swiper (карусель) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     
+    <!-- Наши основные стили -->
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v={% now 'U' %}">
-    
-    <!-- ПОДКЛЮЧАЕМ БИБЛИОТЕКИ ДЛЯ ГАЛЕРЕИ -->
-    <script src="https://cdn.jsdelivr.net/npm/d3-delaunay@6"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pds.js@1.1.0/pds.min.js"></script>
     
     {% if company_profile.favicon %}
         <link rel="icon" href="{{ company_profile.favicon.url }}">
@@ -88,8 +86,10 @@
         </footer>
     {% endblock footer %}
     
+    <!-- Скрипт Swiper.js (для карусели) -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+    <!-- Наш главный JS файл -->
     <script src="{% static 'main/js/main.js' %}?v={% now 'U' %}" type="module"></script>
     
     {% block extra_scripts %}{% endblock %}

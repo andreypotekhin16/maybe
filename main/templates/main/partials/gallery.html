@@ -7,14 +7,21 @@
             <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
         {% endif %}
         
-        <!-- Холст для мозаики -->
-        <div class="voronoi-gallery-container">
-            <!-- Скрытый блок с источниками данных для JS -->
-            <div class="gallery-sources" style="display: none;">
-                {% for item in gallery_items %}
-                    <div class="gallery-item" data-src="{% if item.image %}{{ item.image.url }}{% elif item.video %}{{ item.video.url }}{% endif %}" data-type="{% if item.video %}video{% else %}image{% endif %}"></div>
-                {% endfor %}
-            </div>
+        <!-- Контейнер для пузырей -->
+        <div class="gallery-grid bubble-container">
+            {% for item in gallery_items %}
+                <div class="gallery-card">
+                    <div class="gallery-media-circle">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="Элемент галереи">
+                        {% elif item.video %}
+                            <video src="{{ item.video.url }}" loop muted autoplay playsinline></video>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p style="text-align: center; width: 100%;">Элементы для галереи пока не добавлены.</p>
+            {% endfor %}
         </div>
         
         {% if company_profile.gallery_button_link %}

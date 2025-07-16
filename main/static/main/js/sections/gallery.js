@@ -1,67 +1,63 @@
 // main/static/main/js/sections/gallery.js
 
-export function initVoronoiGallery() {
-    const container = document.querySelector('.voronoi-gallery-container');
-    const sourcesEl = container?.querySelector('.gallery-sources');
-    
-    if (!container || !sourcesEl || typeof d3 === 'undefined' || typeof PDS === 'undefined') {
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+export function initBubbleGallery() {
+    const container = document.querySelector('.bubble-container');
+    if (!container) return;
+
+    const bubbles = container.querySelectorAll('.gallery-card');
+    if (bubbles.length === 0) {
+        container.style.minHeight = 'auto';
         return;
     }
 
-    const items = Array.from(sourcesEl.querySelectorAll('.gallery-item'));
-    if (items.length === 0) return;
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const placedBubbles = [];
+    const maxAttempts = 100;
 
-    const minRadius = Math.max(70, 450 - items.length * 12);
-    const pds = new PDS({
-        dim: [width, height],
-        minRadius: minRadius,
-        maxRadius: minRadius * 2,
-    });
-    
-    const points = pds.exec();
-    
-    // Добавляем точки по краям для лучшего заполнения
-    const edgePointsCount = 20;
-    for(let i=0; i < edgePointsCount; i++) {
-        points.push([Math.random() * width, (i % 2 === 0) ? 1 : height - 1]);
-        points.push([(i % 2 === 0) ? 1 : width - 1, Math.random() * height]);
-    }
+    // НАСТРАИВАЕМ РАЗМЕР И ПЕРЕКРЫТИЕ
+    const BASE_SIZE = 400; // Базовый размер
+    const OVERLAP_FACTOR = 0.9; // 1.0 - касаются, 0.8 - сильно перекрываются
 
+    bubbles.forEach((bubble) => {
+        let size = BASE_SIZE * getRandom(0.5, 1.1); // Случайный размер
+        let radius = size / 2;
+        let isPlaced = false;
 
-    const delaunay = d3.Delaunay.from(points);
-    const voronoi = delaunay.voronoi([0, 0, width, height]);
+        for (let i = 0; i < maxAttempts; i++) {
+            let x = getRandom(0, containerWidth - size);
+            let y = getRandom(0, containerHeight - size);
+            let isColliding = false;
 
-    container.innerHTML = ''; 
+            for (const placed of placedBubbles) {
+                const dx = (x + radius) - (placed.x + placed.radius);
+                const dy = (y + radius) - (placed.y + placed.radius);
+                const distance = Math.sqrt(dx * dx + dy * dy);
 
-    points.forEach((point, i) => {
-        const polygonPoints = voronoi.cellPolygon(i);
-        if (!polygonPoints) return;
+                if (distance < (radius + placed.radius) * OVERLAP_FACTOR) {
+                    isColliding = true;
+                    break;
+                }
+            }
 
-        const sourceItem = items[i % items.length];
-        const dataSource = sourceItem.dataset.src;
-        const dataType = sourceItem.dataset.type;
-
-        const cell = document.createElement('div');
-        cell.className = 'voronoi-cell';
-        
-        const clipPathString = polygonPoints.map(p => `${p[0]}px ${p[1]}px`).join(', ');
-        cell.style.clipPath = `polygon(${clipPathString})`;
-
-        if (dataType === 'video') {
-            const video = document.createElement('video');
-            video.src = dataSource;
-            video.loop = true;
-            video.muted = true;
-            video.autoplay = true;
-            video.playsInline = true;
-            cell.appendChild(video);
-        } else {
-            cell.style.backgroundImage = `url(${dataSource})`;
+            if (!isColliding) {
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${x}px`;
+                bubble.style.top = `${y}px`;
+                bubble.style.position = 'absolute';
+                bubble.style.zIndex = Math.floor(getRandom(1, 10));
+                
+                placedBubbles.push({ x, y, radius });
+                isPlaced = true;
+                break;
+            }
         }
-        
-        container.appendChild(cell);
+        // Если за 100 попыток место не нашлось, пузырь просто не будет показан
     });
 }
