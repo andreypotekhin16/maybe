@@ -6,8 +6,8 @@ from .models import (
     BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
+# Этот миксин не меняется
 class ImagePreviewAdminMixin:
-    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
         if field and hasattr(field, 'url'):
@@ -16,6 +16,7 @@ class ImagePreviewAdminMixin:
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
 
+# Все остальные инлайны тоже не меняются
 class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     model = OrbibolInfo
     can_delete = False
@@ -66,12 +67,13 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-# Возвращаем стандартный инлайн для галереи
+# --- ВОЗВРАЩАЕМ ПРОСТОЙ И НАДЕЖНЫЙ ИНЛАЙН ДЛЯ ГАЛЕРЕИ ---
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
     fields = ('image', 'video', 'order')
-    extra = 10 
+    extra = 5 # Даем 5 пустых слотов для начала
     ordering = ('order',)
+
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
@@ -87,6 +89,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
     
+    # Возвращаем GalleryItemInline в список инлайнов
     inlines = [
         SectionInline, 
         CarouselSlideInline,
@@ -114,6 +117,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
+# Админка для BackgroundSettings остается без изменений
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
