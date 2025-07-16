@@ -6,7 +6,9 @@ from .models import (
     BackgroundSettings, BackgroundObject, Section, CarouselSlide
 )
 
+# Этот миксин и все инлайны, КРОМЕ галереи, остаются как есть.
 class ImagePreviewAdminMixin:
+    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
         if field and hasattr(field, 'url'):
@@ -65,13 +67,15 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
+# Возвращаем галерею как обычный инлайн
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
     fields = ('image', 'video', 'order')
-    extra = 10 
+    extra = 10
     ordering = ('order',)
     verbose_name = "Элемент галереи"
     verbose_name_plural = "Элементы галереи"
+
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
@@ -133,4 +137,3 @@ class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     pattern_preview.short_description = 'Предпросмотр паттерна'
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
-
