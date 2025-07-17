@@ -36,14 +36,30 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
 
 class SectionInline(admin.TabularInline):
     model = Section
-    extra = 0
-    can_delete = False
+    extra = 0  # Не показывать пустые формы для добавления
+
+    # Поля, которые будут отображаться в строке инлайна
     fields = ('get_section_type_display', 'title', 'show_title', 'order', 'is_active')
+    
+    # Делаем поле с типом секции нередактируемым, так как оно системное
     readonly_fields = ('get_section_type_display',)
+    
+    # Включаем сортировку по полю 'order' по умолчанию
     ordering = ('order',)
-    def get_section_type_display(self, obj): return obj.get_section_type_display()
-    get_section_type_display.short_description = 'Название секции'
-    def has_add_permission(self, request, obj=None): return False
+    
+    # Запрещаем удаление, так как набор секций должен быть постоянным
+    can_delete = False
+
+    def get_section_type_display(self, obj):
+        # Метод для отображения понятного названия секции
+        return obj.get_section_type_display()
+    
+    # Устанавливаем заголовок для колонки в админке для большей ясности
+    get_section_type_display.short_description = 'Тип секции (неизменяемый)'
+
+    # Запрещаем добавлять новые секции вручную, т.к. они создаются автоматически
+    def has_add_permission(self, request, obj=None):
+        return False
 
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
