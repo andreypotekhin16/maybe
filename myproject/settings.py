@@ -1,4 +1,3 @@
-# START OF FILE: myproject/settings.py
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -9,8 +8,6 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-
-# myproject/settings.py
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -46,7 +43,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-             
                 'main.context_processors.nav_sections', 
             ],
         },
@@ -75,16 +71,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-
 STATICFILES_DIRS = []
-
 
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-  
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
@@ -96,17 +88,8 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
 LOG_DIR = BASE_DIR / 'logs'
 LOG_DIR.mkdir(exist_ok=True)
-
-
-FILE_UPLOAD_HANDLERS = [
-    "django.core.files.uploadhandler.MemoryFileUploadHandler",
-]
-
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
