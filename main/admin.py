@@ -35,28 +35,31 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
 
 
-# === ИСПРАВЛЕННЫЙ БЛОК ДЛЯ СЕКЦИЙ ===
+# === НОВЫЙ ИСПРАВЛЕННЫЙ БЛОК ДЛЯ СЕКЦИЙ ===
 class SectionInline(admin.TabularInline):
     model = Section
     extra = 0  # Не показывать пустые формы
 
-    # Используем названия полей из модели. 
-    # Для 'section_type' Django сам покажет читаемое название, т.к. оно read-only.
-    fields = ('section_type', 'title', 'show_title', 'order', 'is_active')
-    
-    # Делаем поле 'section_type' нередактируемым.
-    readonly_fields = ('section_type',)
-    
+    # 1. Создаем специальный метод, чтобы просто ПОКАЗАТЬ название секции
+    def section_name_display(self, obj):
+        return obj.get_section_type_display()
+    section_name_display.short_description = 'Название секции' # Задаем имя для колонки
+
+    # 2. Список полей для отображения в админке.
+    # Первым идет наш метод, а за ним - поля, которые МОЖНО редактировать.
+    fields = ('section_name_display', 'title', 'show_title', 'order', 'is_active')
+
+    # 3. В нередактируемые поля добавляем ТОЛЬКО наш метод.
+    readonly_fields = ('section_name_display',)
+
     ordering = ('order',)
-    
-    # Запрещаем добавление и удаление секций через админку, 
-    # т.к. они должны быть созданы программно один раз.
+
     def has_add_permission(self, request, obj=None):
         return False
 
     def has_delete_permission(self, request, obj=None):
         return False
-# === КОНЕЦ ИСПРАВЛЕННОГО БЛОКА ===
+# === КОНЕЦ БЛОКА ===
 
 
 class CarouselSlideInline(admin.TabularInline):
