@@ -20,12 +20,17 @@ class CompanyProfile(models.Model):
     youtube_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль YouTube")
     market_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка \"Еще больше товаров\" в Маркете")
     
-    # НОВОЕ ПОЛЕ ДЛЯ ССЫЛКИ ГАЛЕРЕИ
     gallery_button_link = models.URLField(
         max_length=250, 
         blank=True, 
         null=True, 
         verbose_name="Ссылка для кнопки 'Узнать подробнее' в галерее"
+    )
+    gallery_button_text = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Узнать подробнее",
+        verbose_name="Текст для кнопки в галерее"
     )
     
     vk_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка VK (SVG/PNG)", blank=True, null=True)
@@ -123,7 +128,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-# ---- ИЗМЕНЕННАЯ МОДЕЛЬ GALLERYITEM ----
 class GalleryItem(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='gallery_items')
     image = models.FileField(upload_to='gallery/', verbose_name="Изображение", blank=True, null=True, help_text="Загрузите, если это фото.")

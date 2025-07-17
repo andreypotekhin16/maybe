@@ -66,16 +66,11 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-
-# --- ИЗМЕНЕНИЯ ЗДЕСЬ ---
-
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
     fields = ('image', 'video', 'order')
-    # Снова ставим 10 слотов для удобства
     extra = 10 
     ordering = ('order',)
-
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
@@ -85,7 +80,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
             'description': 'Настройки для секций "Маркет" и "Галерея".', 
-            'fields': ('market_link', 'gallery_description', 'gallery_button_link')
+            'fields': ('market_link', 'gallery_description', 'gallery_button_link', 'gallery_button_text')
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
@@ -118,23 +113,22 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
-# --- ВТОРОЕ ИЗМЕНЕНИЕ ---
-# Мы полностью удаляем отдельную регистрацию для GalleryItem.
-# Она больше не нужна и вызывает ошибку.
-# @admin.register(GalleryItem) ... <-- УДАЛЕНО
+class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
+    model = BackgroundObject
+    extra = 1
+    readonly_fields = ('image_preview',)
+    fields = ('name', 'image', 'image_preview', 'width', 'initial_top', 'initial_left', 'opacity', 'z_index', 'animation_duration', 'animation_delay', 'parallax_target_id', 'parallax_speed', 'order')
+    ordering = ('order',)
+    def image_preview(self, obj): return self.get_preview(obj, 'image', max_height=75)
+    image_preview.short_description = 'Предпросмотр'
 
-# Админка для BackgroundSettings остается без изменений
 @admin.register(BackgroundSettings)
 class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
     list_display = ('name', 'pattern_preview')
     readonly_fields = ('pattern_preview',)
     fields = ('name', 'background_pattern', 'pattern_preview', 'pattern_size', 'pattern_opacity', 'background_color')
-    inlines = []
+    inlines = [BackgroundObjectInline]
     def pattern_preview(self, obj): return self.get_preview(obj, 'background_pattern', is_background=True)
     pattern_preview.short_description = 'Предпросмотр паттерна'
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
-
-@admin.register(BackgroundObject)
-class BackgroundObjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'settings')
