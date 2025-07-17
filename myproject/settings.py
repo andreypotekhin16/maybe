@@ -73,6 +73,8 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = []
 
+# --- ИСПРАВЛЕННЫЙ БЛОК ---
+# Теперь у нас только ОДНА настройка для хранилищ.
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -81,6 +83,8 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# СТРОКА STATICFILES_STORAGE УДАЛЕНА, ТАК КАК ОНА КОНФЛИКТОВАЛА С БЛОКОМ STORAGES
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
