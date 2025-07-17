@@ -1,8 +1,5 @@
-# main/models.py
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
-# --- Основные модели контента ---
 
 class CompanyProfile(models.Model):
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")
@@ -19,7 +16,6 @@ class CompanyProfile(models.Model):
     telegram_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль Telegram")
     youtube_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль YouTube")
     market_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка \"Еще больше товаров\" в Маркете")
-    
     gallery_button_link = models.URLField(
         max_length=250, 
         blank=True, 
@@ -32,7 +28,30 @@ class CompanyProfile(models.Model):
         default="Узнать подробнее",
         verbose_name="Текст для кнопки в галерее"
     )
+
+    FONT_CHOICES = [
+        ('SUNDAY', 'Sunday (кастомный, для заголовков)'),
+        ('FortuneC', 'FortuneC (кастомный, для текста)'),
+        ('Montserrat', 'Montserrat (современный, гротеск)'),
+        ('Roboto', 'Roboto (классический, без засечек)'),
+        ('Playfair Display', 'Playfair Display (элегантный, с засечками)'),
+        ('Lobster', 'Lobster (рукописный, акцентный)'),
+    ]
+
+    header_font = models.CharField(
+        max_length=100,
+        choices=FONT_CHOICES,
+        default='SUNDAY',
+        verbose_name="Шрифт для заголовков (H1, H2 и т.д.)"
+    )
     
+    body_font = models.CharField(
+        max_length=100,
+        choices=FONT_CHOICES,
+        default='FortuneC',
+        verbose_name="Шрифт для основного текста (параграфы)"
+    )
+
     vk_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка VK (SVG/PNG)", blank=True, null=True)
     youtube_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка YouTube (SVG/PNG)", blank=True, null=True)
     telegram_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка Telegram (SVG/PNG)", blank=True, null=True)

@@ -1,4 +1,3 @@
-# main/admin.py
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import (
@@ -7,7 +6,6 @@ from .models import (
 )
 
 class ImagePreviewAdminMixin:
-    """Миксин для добавления предпросмотра изображений в админ-панели Django."""
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
         if field and hasattr(field, 'url'):
@@ -77,6 +75,9 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
+        ('Настройки шрифтов', {
+            'fields': ('header_font', 'body_font')
+        }),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
             'description': 'Настройки для секций "Маркет" и "Галерея".', 

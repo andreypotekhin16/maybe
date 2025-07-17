@@ -6,14 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}{% endblock %}</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    {% if company_profile %}
+        {% with header_f=company_profile.header_font body_f=company_profile.body_font %}
+        {% if header_f != 'SUNDAY' and header_f != 'FortuneC' and body_f != 'SUNDAY' and body_f != 'FortuneC' and header_f != body_f %}
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family={{ header_f|urlencode }}:wght@400;700;900&family={{ body_f|urlencode }}:wght@400;700&display=swap" rel="stylesheet">
+        {% elif header_f != 'SUNDAY' and header_f != 'FortuneC' %}
+             <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family={{ header_f|urlencode }}:wght@400;700;900&display=swap" rel="stylesheet">
+        {% elif body_f != 'SUNDAY' and body_f != 'FortuneC' %}
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family={{ body_f|urlencode }}:wght@400;700&display=swap" rel="stylesheet">
+        {% endif %}
+        {% endwith %}
+    {% endif %}
+
+    <style>
+      :root {
+        --font-headers: '{{ company_profile.header_font|default:"SUNDAY" }}', sans-serif;
+        --font-body: '{{ company_profile.body_font|default:"FortuneC" }}', sans-serif;
+      }
+    </style>
     
-    <!-- Стили для Swiper (карусель) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    
-    <!-- Наши основные стили -->
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v={% now 'U' %}">
     
     {% if company_profile.favicon %}
@@ -86,10 +104,8 @@
         </footer>
     {% endblock footer %}
     
-    <!-- Скрипт Swiper.js (для карусели) -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- Наш главный JS файл -->
     <script src="{% static 'main/js/main.js' %}?v={% now 'U' %}" type="module"></script>
     
     {% block extra_scripts %}{% endblock %}
