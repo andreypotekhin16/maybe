@@ -1,7 +1,7 @@
-# myproject/storages.py
-from cloudinary_storage.storage import CloudinaryStorage
 
-class RawMediaCloudinaryStorage(CloudinaryStorage):
+from cloudinary_storage.storage import MediaCloudinaryStorage
+
+class RawMediaCloudinaryStorage(MediaCloudinaryStorage):
     """
     Кастомное хранилище для "сырых" файлов (raw files),
     таких как шрифты, в Cloudinary.
