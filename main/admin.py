@@ -34,32 +34,30 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
 
+
+# === ИСПРАВЛЕННЫЙ БЛОК ДЛЯ СЕКЦИЙ ===
 class SectionInline(admin.TabularInline):
     model = Section
-    extra = 0  # Не показывать пустые формы для добавления
+    extra = 0  # Не показывать пустые формы
 
-    # Поля, которые будут отображаться в строке инлайна
-    fields = ('get_section_type_display', 'title', 'show_title', 'order', 'is_active')
+    # Используем названия полей из модели. 
+    # Для 'section_type' Django сам покажет читаемое название, т.к. оно read-only.
+    fields = ('section_type', 'title', 'show_title', 'order', 'is_active')
     
-    # Делаем поле с типом секции нередактируемым, так как оно системное
-    readonly_fields = ('get_section_type_display',)
+    # Делаем поле 'section_type' нередактируемым.
+    readonly_fields = ('section_type',)
     
-    # Включаем сортировку по полю 'order' по умолчанию
     ordering = ('order',)
     
-    # Запрещаем удаление, так как набор секций должен быть постоянным
-    can_delete = False
-
-    def get_section_type_display(self, obj):
-        # Метод для отображения понятного названия секции
-        return obj.get_section_type_display()
-    
-    # Устанавливаем заголовок для колонки в админке для большей ясности
-    get_section_type_display.short_description = 'Тип секции (неизменяемый)'
-
-    # Запрещаем добавлять новые секции вручную, т.к. они создаются автоматически
+    # Запрещаем добавление и удаление секций через админку, 
+    # т.к. они должны быть созданы программно один раз.
     def has_add_permission(self, request, obj=None):
         return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+# === КОНЕЦ ИСПРАВЛЕННОГО БЛОКА ===
+
 
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
@@ -96,7 +94,6 @@ class CompanyProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         try:
             custom_fonts = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
-            # Получаем текущие списки и добавляем к ним новые
             base_choices = list(self.fields['header_font'].choices)
             self.fields['header_font'].choices = base_choices + custom_fonts
             self.fields['body_font'].choices = base_choices + custom_fonts
