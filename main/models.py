@@ -7,7 +7,6 @@ from myproject.storages import RawMediaCloudinaryStorage
 font_storage = RawMediaCloudinaryStorage()
 
 class CompanyProfile(models.Model):
-    # ... (весь код модели CompanyProfile остается без изменений)
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")
     logo_image = models.FileField(upload_to='site_assets/', verbose_name="Логотип сайта (SVG/PNG)", blank=True, null=True)
     logo_image_light = models.FileField(upload_to='site_assets/', verbose_name="Логотип (светлый)", blank=True, null=True, help_text="Светлая версия логотипа для темных фонов (SVG/PNG)")
@@ -84,8 +83,8 @@ class CustomFont(models.Model):
     def __str__(self):
         return self.name
 
+
 class CarouselSlide(models.Model):
-    # ... (весь код модели CarouselSlide остается без изменений)
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
     name = models.CharField(max_length=200, verbose_name='Название/Заголовок слайда (виден всегда)')
     date_text = models.CharField(max_length=100, blank=True, verbose_name="Дата/Подзаголовок (виден всегда)")
@@ -102,6 +101,7 @@ class CarouselSlide(models.Model):
     def __str__(self):
         return self.name
 
+    
 class Section(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='sections')
     SECTION_CHOICES = [
@@ -115,9 +115,8 @@ class Section(models.Model):
         ('contacts', 'Контакты'),
     ]
     
-    # === ИЗМЕНЕНИЕ ЗДЕСЬ ===
-    # Убираем unique=True
-    section_type = models.CharField(max_length=50, choices=SECTION_CHOICES, verbose_name="Тип секции")
+    # Возвращаем unique=True, как было изначально. Это важно.
+    section_type = models.CharField(max_length=50, choices=SECTION_CHOICES, unique=True, verbose_name="Тип секции")
     
     title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок секции", help_text="Оставьте пустым, чтобы использовать заголовок по умолчанию.")
     show_title = models.BooleanField(default=True, verbose_name="Показывать заголовок")
@@ -128,16 +127,13 @@ class Section(models.Model):
         verbose_name = "Секция на главной странице"
         verbose_name_plural = "Секции на главной странице"
         ordering = ['order']
-        # === И ДОБАВЛЕНИЕ ЗДЕСЬ ===
-        # Указываем, что пара (профиль + тип секции) должна быть уникальной
-        unique_together = ('company_profile', 'section_type')
+        # unique_together убираем, он больше не нужен.
 
     def __str__(self):
         return self.get_section_type_display()
 
 
 class Feature(models.Model):
-    # ... (весь код модели Feature остается без изменений)
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='features')
     title = models.CharField(max_length=100, verbose_name="Заголовок преимущества")
     description = models.TextField(verbose_name="Описание преимущества")
@@ -150,8 +146,8 @@ class Feature(models.Model):
     def __str__(self):
         return self.title
 
+
 class GameType(models.Model):
-    # ... (весь код модели GameType остается без изменений)
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='game_types')
     name = models.CharField(max_length=100, verbose_name="Название типа игры")
     description = models.TextField(verbose_name="Краткое описание типа игры")
@@ -164,8 +160,8 @@ class GameType(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
-    # ... (весь код модели Product остается без изменений)
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=200, verbose_name="Название товара")
     price = models.PositiveIntegerField(verbose_name="Цена")
@@ -180,8 +176,8 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class GalleryItem(models.Model):
-    # ... (весь код модели GalleryItem остается без изменений)
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='gallery_items')
     image = models.FileField(upload_to='gallery/', verbose_name="Изображение", blank=True, null=True, help_text="Загрузите, если это фото.")
     video = models.FileField(upload_to='gallery/', verbose_name="Видео (mp4, webm)", blank=True, null=True, help_text="Загрузите, если это видео.")
@@ -199,8 +195,8 @@ class GalleryItem(models.Model):
             return f"Видео: {self.video.name}"
         return f"Элемент галереи #{self.pk}"
 
+
 class OrbibolInfo(models.Model):
-    # ... (весь код модели OrbibolInfo остается без изменений)
     company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name='orbibol_info')
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     plot_title = models.CharField(max_length=100, default="Сюжетный орбибол", verbose_name="Заголовок блока 'Сюжетный'")
@@ -216,8 +212,8 @@ class OrbibolInfo(models.Model):
     def __str__(self):
         return "Информация для секции Орбибол"
 
+
 class BackgroundSettings(models.Model):
-    # ... (весь код модели BackgroundSettings остается без изменений)
     name = models.CharField(max_length=100, default="Основные настройки фона", verbose_name="Название набора настроек")
     background_pattern = models.FileField(upload_to='backgrounds/', blank=True, null=True, verbose_name="Паттерн фона (повторяющееся изображение)", help_text="Это изображение будет повторяться на фоне.")
     pattern_size = models.CharField(max_length=50, default="200px", verbose_name="Размер паттерна", help_text="CSS значение, например: '200px', '50%', 'cover', 'contain'.")
@@ -229,8 +225,8 @@ class BackgroundSettings(models.Model):
     def __str__(self):
         return self.name
 
+
 class BackgroundObject(models.Model):
-    # ... (весь код модели BackgroundObject остается без изменений)
     settings = models.ForeignKey(BackgroundSettings, on_delete=models.CASCADE, related_name='background_objects', verbose_name="Набор настроек")
     name = models.CharField(max_length=100, verbose_name="Название объекта")
     image = models.FileField(upload_to='backgrounds/objects/', verbose_name="Изображение объекта")
