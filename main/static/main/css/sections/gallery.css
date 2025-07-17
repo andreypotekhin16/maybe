@@ -1,51 +1,40 @@
-/* main/static/main/css/sections/gallery.css */
-
 .gallery-section .gallery-title {
     text-align: center;
 }
+
 .gallery-section .gallery-main-description {
     text-align: center;
     max-width: 65ch;
     margin: 0 auto 3rem auto;
+    font-size: 1.25rem;
+    line-height: 1.7;
 }
 
 .bubble-container {
     position: relative;
     width: 100%;
-    min-height: 80vh; 
     padding: 1rem;
     box-sizing: border-box;
     margin-bottom: 3rem;
+    transition: height 0.5s ease-in-out;
 }
-
-/* === ИЗМЕНЕНИЯ ЗДЕСЬ === */
 
 .gallery-card {
     position: absolute;
     border-radius: 50%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    cursor: default; /* 1. Убираем курсор-указатель */
-    
-    /* 2. Начальное состояние для анимации появления */
-    transform: scale(0); /* Изначально пузырь "схлопнут" */
+    cursor: default;
+    transform: scale(0);
     opacity: 0;
-    
-    /* 3. Задаем плавный переход для всех свойств */
     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
                 opacity 0.6s ease, 
                 left 0.8s ease, 
                 top 0.8s ease;
 }
 
-/* Класс, который JS будет добавлять для "включения" пузыря */
 .gallery-card.is-visible {
-    transform: scale(1); /* Возвращаем нормальный размер */
+    transform: scale(1);
     opacity: 1;
 }
-
-/* 4. Убираем все :hover эффекты */
-/* .gallery-card:hover { ... } <-- БЛОК УДАЛЕН */
-
 
 .gallery-media-circle {
     width: 100%;
@@ -61,7 +50,5 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.85; /* Оставляем легкую прозрачность для красоты */
+    opacity: 0.85;
 }
-
-/* .gallery-card:hover .gallery-media-circle img ... <-- БЛОК УДАЛЕН */

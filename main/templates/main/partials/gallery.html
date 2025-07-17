@@ -7,8 +7,7 @@
             <p class="gallery-main-description">{{ company_profile.gallery_description }}</p>
         {% endif %}
         
-        <!-- Холст для пузырей -->
-        <div class="gallery-grid bubble-container">
+        <div class="gallery-grid bubble-container" data-bubble-count="{{ gallery_items|length }}">
             {% for item in gallery_items %}
                 <div class="gallery-card">
                     <div class="gallery-media-circle">
