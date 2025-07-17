@@ -31,7 +31,7 @@
     opacity: 1;
 }
 .section-about-us .slogan {
-    font-family: var(--font-sunday); 
+    font-family: var(--font-headers); 
     font-size: var(--fs-main-slogan); 
     color: var(--color-green-accent); 
     font-weight: normal; 
