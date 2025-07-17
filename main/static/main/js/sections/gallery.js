@@ -9,29 +9,50 @@ export function initBubbleGallery() {
     if (!container) return;
 
     const bubbles = container.querySelectorAll('.gallery-card');
-    if (bubbles.length === 0) {
+    const bubbleCount = bubbles.length;
+
+    if (bubbleCount === 0) {
+        container.style.height = 'auto';
         container.style.minHeight = 'auto';
         return;
     }
 
     const containerWidth = container.clientWidth;
-    const placementAreaHeight = containerWidth / 2;
+    const containerHeight = containerWidth / 2; // Высота в 2 раза меньше ширины
+    
+    // --- НОВАЯ ЛОГИКА: ВЫЧИСЛЕНИЕ РАЗМЕРА ---
+    
+    // 1. Считаем общую площадь холста
+    const totalArea = containerWidth * containerHeight;
+    // 2. Считаем "идеальную" площадь для одного пузыря
+    const areaPerBubble = totalArea / bubbleCount;
+    // 3. Вычисляем диаметр из этой площади (формула площади круга: S = π * (d/2)^2)
+    let calculatedSize = Math.sqrt(areaPerBubble / Math.PI) * 2;
+    
+    // 4. Добавляем корректирующий коэффициент, чтобы пузыри были побольше
+    calculatedSize *= 1.8;
+
+    // 5. Ограничиваем размер, чтобы пузыри не были слишком мелкими или огромными
+    const MIN_SIZE = 150; // Минимальный размер пузыря
+    const MAX_SIZE = 550; // Максимальный размер
+    const BASE_SIZE = Math.max(MIN_SIZE, Math.min(calculatedSize, MAX_SIZE));
+
+    console.log(`Количество пузырей: ${bubbleCount}, вычисленный базовый размер: ${BASE_SIZE.toFixed(2)}px`);
+
+    // --- КОНЕЦ НОВОЙ ЛОГИКИ ---
 
     const placedBubbles = [];
     const maxAttempts = 100;
-    const BASE_SIZE = 500;
-    
-    // --- ИЗМЕНЕНИЕ 1: Увеличиваем коэффициент, чтобы пузыри были плотнее ---
-    const OVERLAP_FACTOR = 0.85; // Было 0.95. Чем меньше, тем больше перекрытие.
+    const OVERLAP_FACTOR = 0.85;
 
     bubbles.forEach((bubble, index) => {
-        let size = BASE_SIZE * getRandom(0.5, 1.1);
+        let size = BASE_SIZE * getRandom(0.7, 1.2); // Слегка меняем диапазон случайности
         let radius = size / 2;
         let isPlaced = false;
 
         for (let i = 0; i < maxAttempts; i++) {
             let x = getRandom(0, containerWidth - size);
-            let y = getRandom(0, placementAreaHeight - size);
+            let y = getRandom(0, containerHeight - size);
             let isColliding = false;
 
             for (const placed of placedBubbles) {
@@ -46,7 +67,6 @@ export function initBubbleGallery() {
             }
 
             if (!isColliding) {
-                // --- ИЗМЕНЕНИЕ 2: Сначала задаем позицию, но пузырь еще невидимый ---
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
                 bubble.style.left = `${x}px`;
@@ -63,14 +83,12 @@ export function initBubbleGallery() {
         if (!isPlaced) {
             bubble.style.display = 'none';
         } else {
-            // --- ИЗМЕНЕНИЕ 3: Добавляем класс is-visible с задержкой ---
-            // Пузыри будут появляться один за другим с интервалом 100 мс
             setTimeout(() => {
                 bubble.classList.add('is-visible');
             }, index * 100);
         }
     });
 
-    container.style.height = `${placementAreaHeight}px`;
+    container.style.height = `${containerHeight}px`;
     container.style.minHeight = 'auto';
 }
