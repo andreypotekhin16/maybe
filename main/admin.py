@@ -1,9 +1,14 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
+from django import forms
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject, Section, CarouselSlide
+    BackgroundSettings, BackgroundObject, Section, CarouselSlide, CustomFont
 )
+
+@admin.register(CustomFont)
+class CustomFontAdmin(admin.ModelAdmin):
+    list_display = ('name', 'font_file_otf', 'font_file_ttf', 'font_file_woff', 'font_file_woff2')
 
 class ImagePreviewAdminMixin:
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
@@ -70,14 +75,29 @@ class GalleryItemInline(admin.TabularInline):
     extra = 10 
     ordering = ('order',)
 
+class CompanyProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        try:
+            custom_fonts = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
+            # Получаем текущие списки и добавляем к ним новые
+            base_choices = list(self.fields['header_font'].choices)
+            self.fields['header_font'].choices = base_choices + custom_fonts
+            self.fields['body_font'].choices = base_choices + custom_fonts
+        except Exception:
+            pass
+
+    class Meta:
+        model = CompanyProfile
+        fields = '__all__'
+
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
+    form = CompanyProfileForm
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
-        ('Настройки шрифтов', {
-            'fields': ('header_font', 'body_font')
-        }),
+        ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
             'description': 'Настройки для секций "Маркет" и "Галерея".', 

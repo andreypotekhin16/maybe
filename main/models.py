@@ -17,9 +17,9 @@ class CompanyProfile(models.Model):
     youtube_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль YouTube")
     market_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка \"Еще больше товаров\" в Маркете")
     gallery_button_link = models.URLField(
-        max_length=250, 
-        blank=True, 
-        null=True, 
+        max_length=250,
+        blank=True,
+        null=True,
         verbose_name="Ссылка для кнопки 'Узнать подробнее' в галерее"
     )
     gallery_button_text = models.CharField(
@@ -30,12 +30,12 @@ class CompanyProfile(models.Model):
     )
 
     FONT_CHOICES = [
-        ('SUNDAY', 'Sunday (кастомный, для заголовков)'),
-        ('FortuneC', 'FortuneC (кастомный, для текста)'),
-        ('Montserrat', 'Montserrat (современный, гротеск)'),
-        ('Roboto', 'Roboto (классический, без засечек)'),
-        ('Playfair Display', 'Playfair Display (элегантный, с засечками)'),
-        ('Lobster', 'Lobster (рукописный, акцентный)'),
+        ('SUNDAY', 'Sunday (встроенный)'),
+        ('FortuneC', 'FortuneC (встроенный)'),
+        ('Montserrat', 'Montserrat (Google)'),
+        ('Roboto', 'Roboto (Google)'),
+        ('Playfair Display', 'Playfair Display (Google)'),
+        ('Lobster', 'Lobster (Google)'),
     ]
 
     header_font = models.CharField(
@@ -62,6 +62,20 @@ class CompanyProfile(models.Model):
         verbose_name_plural = "1. Главные настройки сайта"
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
+
+class CustomFont(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Название шрифта (для CSS, напр. 'MyCoolFont')")
+    font_file_otf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name="Файл шрифта .otf")
+    font_file_ttf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name="Файл шрифта .ttf")
+    font_file_woff = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name="Файл шрифта .woff")
+    font_file_woff2 = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name="Файл шрифта .woff2")
+
+    class Meta:
+        verbose_name = "Кастомный шрифт"
+        verbose_name_plural = "Кастомные шрифты"
+
+    def __str__(self):
+        return self.name
 
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
@@ -166,11 +180,7 @@ class GalleryItem(models.Model):
         return f"Элемент галереи #{self.pk}"
 
 class OrbibolInfo(models.Model):
-    company_profile = models.OneToOneField(
-        CompanyProfile, 
-        on_delete=models.CASCADE, 
-        related_name='orbibol_info'
-    )
+    company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name='orbibol_info')
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
     plot_title = models.CharField(max_length=100, default="Сюжетный орбибол", verbose_name="Заголовок блока 'Сюжетный'")
     plot_description = models.TextField(verbose_name="Описание для 'Сюжетный орбибол'")

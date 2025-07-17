@@ -1,13 +1,10 @@
-# main/context_processors.py
-
-from .models import Section
+from .models import Section, CustomFont
 
 def nav_sections(request):
-    """
-    Добавляет список активных секций для навигации в контекст всех шаблонов.
-    """
-    # Запрашиваем только активные секции и сразу сортируем их по полю 'order'
     sections_for_nav = Section.objects.filter(is_active=True).order_by('order')
+    custom_fonts = CustomFont.objects.all()
     
-    # Возвращаем словарь, который будет добавлен в контекст
-    return {'nav_sections': sections_for_nav}
+    return {
+        'nav_sections': sections_for_nav,
+        'custom_fonts': custom_fonts,
+    }

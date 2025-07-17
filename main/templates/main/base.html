@@ -29,6 +29,26 @@
         --font-headers: '{{ company_profile.header_font|default:"SUNDAY" }}', sans-serif;
         --font-body: '{{ company_profile.body_font|default:"FortuneC" }}', sans-serif;
       }
+      
+      {% for font in custom_fonts %}
+        @font-face {
+            font-family: '{{ font.name }}';
+            src: 
+                {% if font.font_file_woff2 %}
+                    url('{{ font.font_file_woff2.url }}') format('woff2'),
+                {% endif %}
+                {% if font.font_file_woff %}
+                    url('{{ font.font_file_woff.url }}') format('woff'),
+                {% endif %}
+                {% if font.font_file_ttf %}
+                    url('{{ font.font_file_ttf.url }}') format('truetype'),
+                {% endif %}
+                {% if font.font_file_otf %}
+                    url('{{ font.font_file_otf.url }}') format('opentype'),
+                {% endif %}
+                ;
+        }
+      {% endfor %}
     </style>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -62,50 +82,45 @@
         {% endif %}
     </div>
 
-    {% block header %}
-        <header id="site-header">
-            <div class="container header-container">
-                <a href="/" class="logo">
-                    {% if company_profile and company_profile.logo_image %}
-                        <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
-                    {% endif %}
-                </a>
-                <div class="header-center-text">May be</div>
-                <nav class="main-nav">
-                    <ul>
-                        {% for section in nav_sections %}
-                            {% if section.section_type %}
-                                <li>
-                                    <a href="/#{{ section.section_type }}-section">
-                                        {% if section.title %}
-                                            {{ section.title }}
-                                        {% else %}
-                                            {{ section.get_section_type_display }}
-                                        {% endif %}
-                                    </a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </nav>
-            </div>
-        </header>
-    {% endblock header %}
+    <header id="site-header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                {% if company_profile and company_profile.logo_image %}
+                    <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
+                {% endif %}
+            </a>
+            <div class="header-center-text">May be</div>
+            <nav class="main-nav">
+                <ul>
+                    {% for section in nav_sections %}
+                        {% if section.section_type %}
+                            <li>
+                                <a href="/#{{ section.section_type }}-section">
+                                    {% if section.title %}
+                                        {{ section.title }}
+                                    {% else %}
+                                        {{ section.get_section_type_display }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </header>
 
     <main id="main-content">
         {% block content %}{% endblock %}
     </main>
     
-    {% block footer %}
-        <footer id="site-footer-bottom">
-            <div class="container">
-                <p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
-            </div>
-        </footer>
-    {% endblock footer %}
+    <footer id="site-footer-bottom">
+        <div class="container">
+            <p>© {% now "Y" %} {% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe{% endif %}. Все права защищены.</p>
+        </div>
+    </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
     <script src="{% static 'main/js/main.js' %}?v={% now 'U' %}" type="module"></script>
     
     {% block extra_scripts %}{% endblock %}
