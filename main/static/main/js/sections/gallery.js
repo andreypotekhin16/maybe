@@ -10,22 +10,22 @@ export function initBubbleGallery() {
 
     const bubbles = container.querySelectorAll('.gallery-card');
     if (bubbles.length === 0) {
-        container.style.height = 'auto'; // Если нет картинок, убираем высоту
         container.style.minHeight = 'auto';
         return;
     }
 
     const containerWidth = container.clientWidth;
-    // Создаем область для размещения, равную квадрату по ширине контейнера
-    const placementAreaHeight = containerWidth; 
+    const placementAreaHeight = containerWidth / 2;
 
     const placedBubbles = [];
     const maxAttempts = 100;
-    const BASE_SIZE = 300; // Базовый размер пузыря
-    const OVERLAP_FACTOR = 0.95; // Коэффициент перекрытия (1.0 = касание)
+    const BASE_SIZE = 500;
+    
+    // --- ИЗМЕНЕНИЕ 1: Увеличиваем коэффициент, чтобы пузыри были плотнее ---
+    const OVERLAP_FACTOR = 0.85; // Было 0.95. Чем меньше, тем больше перекрытие.
 
-    bubbles.forEach((bubble) => {
-        let size = BASE_SIZE * getRandom(0.6, 1.2);
+    bubbles.forEach((bubble, index) => {
+        let size = BASE_SIZE * getRandom(0.5, 1.1);
         let radius = size / 2;
         let isPlaced = false;
 
@@ -46,6 +46,7 @@ export function initBubbleGallery() {
             }
 
             if (!isColliding) {
+                // --- ИЗМЕНЕНИЕ 2: Сначала задаем позицию, но пузырь еще невидимый ---
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
                 bubble.style.left = `${x}px`;
@@ -58,12 +59,18 @@ export function initBubbleGallery() {
                 break;
             }
         }
+        
         if (!isPlaced) {
-            bubble.style.display = 'none'; // Скрываем пузырь, если место не нашлось
+            bubble.style.display = 'none';
+        } else {
+            // --- ИЗМЕНЕНИЕ 3: Добавляем класс is-visible с задержкой ---
+            // Пузыри будут появляться один за другим с интервалом 100 мс
+            setTimeout(() => {
+                bubble.classList.add('is-visible');
+            }, index * 100);
         }
     });
 
-    // В конце принудительно устанавливаем высоту контейнера
     container.style.height = `${placementAreaHeight}px`;
-    container.style.minHeight = 'auto'; // Убираем стартовый min-height
+    container.style.minHeight = 'auto';
 }
