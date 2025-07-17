@@ -9,7 +9,7 @@ export function initBubbleGallery() {
     if (!container) return;
 
     const bubbleCount = parseInt(container.dataset.bubbleCount || '0', 10);
-    const bubbles = Array.from(container.querySelectorAll('.gallery-card')); // Превращаем в массив для сортировки
+    const bubbles = Array.from(container.querySelectorAll('.gallery-card'));
 
     if (bubbleCount === 0) {
         container.style.height = 'auto';
@@ -23,72 +23,84 @@ export function initBubbleGallery() {
     container.style.height = `${calculatedHeight}px`;
 
     const placedBubbles = [];
-    const maxAttempts = 100;
+    const maxPlacementAttempts = 50;
     const BASE_SIZE = 350;
     const OVERLAP_FACTOR = 0.9;
-    
-    // --- НОВЫЙ АЛГОРИТМ: СМЕЩЕНИЕ ПРИОРИТЕТА ВВЕРХ ---
-    
-    // 1. Сначала сортируем пузыри: самые большие будут размещаться первыми.
-    // Это поможет заполнить пространство более эффективно.
+
+    // Сортируем пузыри, чтобы сначала размещать самые большие
     const sortedBubbles = bubbles.map(bubble => {
-        const randomScale = getRandom(0.7, 1.2);
-        const size = BASE_SIZE * randomScale;
-        return { element: bubble, size: size };
-    }).sort((a, b) => b.size - a.size);
+        return { element: bubble, initialSize: BASE_SIZE * getRandom(0.7, 1.2) };
+    }).sort((a, b) => b.initialSize - a.initialSize);
 
 
     sortedBubbles.forEach((bubbleData, index) => {
-        let size = bubbleData.size;
+        let size = bubbleData.initialSize;
         let bubble = bubbleData.element;
         let isPlaced = false;
 
-        // 2. Определяем максимальную высоту для генерации Y.
-        // Первые 30% пузырей пытаются разместиться в верхней половине.
-        // Остальные - по всей высоте.
-        const placementYMax = (index / bubbleCount < 0.3) 
-            ? (calculatedHeight / 2) 
-            : calculatedHeight;
-            
-        let currentAttempt = 0;
-        while (!isPlaced && currentAttempt < maxAttempts) {
-            let x = getRandom(0, containerWidth - size);
-            let y = getRandom(0, placementYMax - size); // Используем новую максимальную высоту
+        // --- УМНЫЙ АЛГОРИТМ С ГАРАНТИЕЙ РАЗМЕЩЕНИЯ ---
+        while (!isPlaced) {
             let radius = size / 2;
-            let isColliding = false;
+            let foundSpotThisCycle = false;
             
-            for (const placed of placedBubbles) {
-                const dx = (x + radius) - (placed.x + placed.radius);
-                const dy = (y + radius) - (placed.y + placed.radius);
-                const distance = Math.sqrt(dx * dx + dy * dy);
+            // Определяем приоритетную зону по высоте
+            const placementYMax = (index / bubbleCount < 0.4) 
+                ? (calculatedHeight / 2) 
+                : calculatedHeight;
 
-                if (distance < (radius + placed.radius) * OVERLAP_FACTOR) {
-                    isColliding = true;
+            for (let i = 0; i < maxPlacementAttempts; i++) {
+                let x = getRandom(0, containerWidth - size);
+                let y = getRandom(0, placementYMax - size);
+                let isColliding = false;
+
+                for (const placed of placedBubbles) {
+                    const dx = (x + radius) - (placed.x + placed.radius);
+                    const dy = (y + radius) - (placed.y + placed.radius);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < (radius + placed.radius) * OVERLAP_FACTOR) {
+                        isColliding = true;
+                        break;
+                    }
+                }
+
+                if (!isColliding) {
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    bubble.style.left = `${x}px`;
+                    bubble.style.top = `${y}px`;
+                    bubble.style.position = 'absolute';
+                    bubble.style.zIndex = Math.floor(getRandom(1, 10));
+                    
+                    placedBubbles.push({ x, y, radius });
+                    isPlaced = true;
+                    foundSpotThisCycle = true;
                     break;
                 }
             }
 
-            if (!isColliding) {
+            if (foundSpotThisCycle) {
+                break; // Выходим из цикла while, пузырь размещен
+            }
+
+            // Если место не нашлось, уменьшаем размер и идем на новый круг
+            size *= 0.9; 
+            if (size < 50) { // Защита от бесконечного цикла
+                // Если пузырь стал слишком маленьким, просто размещаем его где-нибудь
+                let x = getRandom(0, containerWidth - size);
+                let y = getRandom(0, calculatedHeight - size);
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
                 bubble.style.left = `${x}px`;
                 bubble.style.top = `${y}px`;
                 bubble.style.position = 'absolute';
-                bubble.style.zIndex = Math.floor(getRandom(1, 10));
-                
-                placedBubbles.push({ x, y, radius });
                 isPlaced = true;
-                break;
+                placedBubbles.push({ x, y, radius: size/2 });
             }
-            currentAttempt++;
         }
         
-        // Если место так и не нашлось, ничего не делаем (пузырь останется скрытым)
-        // Это лучше, чем ломать композицию.
-        if (isPlaced) {
-             setTimeout(() => {
-                bubble.classList.add('is-visible');
-            }, Math.random() * 500);
-        }
+        setTimeout(() => {
+            bubble.classList.add('is-visible');
+        }, Math.random() * 500 + 100); // Небольшая задержка перед появлением
     });
 }
