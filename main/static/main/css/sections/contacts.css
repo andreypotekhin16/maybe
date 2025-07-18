@@ -20,3 +20,10 @@
 .social-icons-footer a:hover img {
     opacity: 1;
 }
+
+@media (max-width: 768px) {
+    .section-contacts p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+}

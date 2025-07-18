@@ -24,10 +24,12 @@ export function initBubbleGallery() {
 
     const placedBubbles = [];
     const maxPlacementAttempts = 50;
-    const BASE_SIZE = 350;
+    
+    const isMobile = window.innerWidth < 768;
+    const BASE_SIZE = isMobile ? 220 : 350;
+    
     const OVERLAP_FACTOR = 0.9;
 
-    // Сортируем пузыри, чтобы сначала размещать самые большие
     const sortedBubbles = bubbles.map(bubble => {
         return { element: bubble, initialSize: BASE_SIZE * getRandom(0.7, 1.2) };
     }).sort((a, b) => b.initialSize - a.initialSize);
@@ -38,12 +40,10 @@ export function initBubbleGallery() {
         let bubble = bubbleData.element;
         let isPlaced = false;
 
-        // --- УМНЫЙ АЛГОРИТМ С ГАРАНТИЕЙ РАЗМЕЩЕНИЯ ---
         while (!isPlaced) {
             let radius = size / 2;
             let foundSpotThisCycle = false;
             
-            // Определяем приоритетную зону по высоте
             const placementYMax = (index / bubbleCount < 0.4) 
                 ? (calculatedHeight / 2) 
                 : calculatedHeight;
@@ -80,13 +80,11 @@ export function initBubbleGallery() {
             }
 
             if (foundSpotThisCycle) {
-                break; // Выходим из цикла while, пузырь размещен
+                break;
             }
 
-            // Если место не нашлось, уменьшаем размер и идем на новый круг
             size *= 0.9; 
-            if (size < 50) { // Защита от бесконечного цикла
-                // Если пузырь стал слишком маленьким, просто размещаем его где-нибудь
+            if (size < 50) {
                 let x = getRandom(0, containerWidth - size);
                 let y = getRandom(0, calculatedHeight - size);
                 bubble.style.width = `${size}px`;
@@ -101,6 +99,6 @@ export function initBubbleGallery() {
         
         setTimeout(() => {
             bubble.classList.add('is-visible');
-        }, Math.random() * 500 + 100); // Небольшая задержка перед появлением
+        }, Math.random() * 500 + 100);
     });
 }

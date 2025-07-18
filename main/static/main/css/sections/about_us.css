@@ -40,7 +40,7 @@
     line-height: 1.2;
 }
 .section-about-us .about-us-text { 
-    font-family: var(--font-body); /* ИЗМЕНЕНО */
+    font-family: var(--font-body);
     font-size: var(--fs-about-text); 
     font-weight: normal; 
     color: var(--color-white); 
@@ -50,8 +50,20 @@
 }
 .section-about-us .about-us-text p { margin-bottom: 1em; }
 .section-about-us .about-us-text p:last-child { margin-bottom: 0; }
+
 @media (max-width: 768px) {
+    .section-about-us {
+        align-items: center;
+        text-align: center;
+    }
     .about-us-content {
         padding: 0 15px; 
+    }
+    .about-us-social-icons {
+        justify-content: center;
+        gap: 2rem;
+    }
+    .section-about-us .about-us-text {
+        text-align: center;
     }
 }
