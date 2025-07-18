@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- === ИСПРАВЛЕННЫЙ SEO БЛОК === -->
+    <!-- SEO -->
     {% if seo_settings %}
         <title>{{ seo_settings.meta_title|default:company_profile.site_name }}</title>
         <meta name="description" content="{{ seo_settings.meta_description }}">
@@ -19,7 +19,6 @@
     {% else %}
         <title>{{ company_profile.site_name|default:"Maybe - Игры и События" }}</title>
     {% endif %}
-    <!-- === КОНЕЦ БЛОКА === -->
     
     {% if company_profile.favicon %}<link rel="icon" href="{{ company_profile.favicon.url }}">{% endif %}
 
@@ -86,18 +85,34 @@
                     <img src="{{ company_profile.logo_image.url }}" alt="Логотип Maybe">
                 {% endif %}
             </a>
-            <div class="header-center-text">May be</div>
+            
             <nav class="main-nav">
                 <ul>
-                    {% for section in nav_sections %}
-                        {% if section.is_active %}
-                            <li><a href="/#{{ section.section_type }}-section">{% if section.title %}{{ section.title }}{% else %}{{ section.get_section_type_display }}{% endif %}</a></li>
-                        {% endif %}
-                    {% endfor %}
+                    {% for section in nav_sections %}{% if section.is_active %}
+                        <li><a href="/#{{ section.section_type }}-section">{{ section.title|default:section.get_section_type_display }}</a></li>
+                    {% endif %}{% endfor %}
                 </ul>
             </nav>
+
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Открыть меню">
+                {% if company_profile.nav_toggle_icon %}
+                    <img src="{{ company_profile.nav_toggle_icon.url }}" alt="Меню">
+                {% else %}
+                    <span></span><span></span><span></span>
+                {% endif %}
+            </button>
         </div>
     </header>
+
+    <div id="mobile-nav-panel" class="mobile-nav-panel">
+        <nav>
+            <ul>
+                {% for section in nav_sections %}{% if section.is_active %}
+                    <li><a href="/#{{ section.section_type }}-section">{{ section.title|default:section.get_section_type_display }}</a></li>
+                {% endif %}{% endfor %}
+            </ul>
+        </nav>
+    </div>
 
     <main id="main-content">
         {% block content %}{% endblock %}
