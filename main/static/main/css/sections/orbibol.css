@@ -1,6 +1,5 @@
 /* main/static/main/css/sections/orbibol.css */
 
-/* Увеличиваем максимальную ширину контейнера, чтобы было больше места */
 #orbibol-section .container {
     max-width: 1200px; 
 }
@@ -12,7 +11,7 @@
 .orbibol-general-info { 
     text-align: center;
     max-width: 75ch;
-    margin: 0 auto 5rem auto; /* Увеличен нижний отступ */
+    margin: 0 auto 5rem auto;
     font-size: 1.25rem;
     line-height: 1.7;
 }
@@ -20,50 +19,45 @@
 .orbibol-content-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 5rem; /* Увеличен отступ между элементами */
+    gap: 5rem;
     margin-bottom: 5rem; 
 }
 
-/* Основной контейнер для пары "иконка + текст" */
 .orbibol-item {
     display: flex;
     align-items: center;
-    gap: 4rem; /* Увеличен отступ между иконкой и текстом */
+    gap: 4rem;
     text-align: left;
 }
 
-/* Обертка для иконки. Сильно увеличена. */
 .orbibol-icon-wrapper {
     flex-shrink: 0;
-    width: 300px; /* <-- ИЗМЕНЕНО (было 200px) */
-    height: 300px; /* <-- ИЗМЕНЕНО (было 200px) */
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(var(--color-green-accent-rgb), 0.05);
-    border: 2px solid rgba(var(--color-green-accent-rgb), 0.2);
+    border: 3px solid var(--color-green-accent); /* ИЗМЕНЕНО (стало ярче) */
 }
 
-/* Сама иконка внутри. Также увеличена. */
 .orbibol-icon-wrapper img {
-    max-width: 210px; /* <-- ИЗМЕНЕНО (было 140px) */
-    max-height: 210px; /* <-- ИЗМЕНЕНО (было 140px) */
+    max-width: 210px;
+    max-height: 210px;
     object-fit: contain;
 }
 
-/* Добавляем flex-grow, чтобы текстовый блок занимал все оставшееся место */
 .orbibol-text-content {
     flex-grow: 1;
 }
 
-/* Стилизация текстовой части */
 .orbibol-text-content h3 {
     font-family: var(--font-headers);
     font-size: var(--fs-subsection-title);
     color: var(--color-green-accent);
     text-transform: uppercase;
-    margin-bottom: 1.5rem; /* <-- ИЗМЕНЕНО (увеличен отступ) */
+    margin-bottom: 1.5rem;
 }
 
 .orbibol-text-content p {
@@ -71,7 +65,6 @@
     line-height: 1.6;
 }
 
-/* Стили для ссылки "Узнать подробнее" */
 .orbibol-details-link {
     display: inline-block;
     color: var(--color-green-accent);
@@ -87,7 +80,6 @@
     color: var(--color-white);
 }
 
-/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .orbibol-item {
         flex-direction: column;
@@ -95,7 +87,6 @@
         gap: 2rem;
     }
     
-    /* На мобильных иконка будет чуть меньше, чтобы выглядеть аккуратнее */
     .orbibol-icon-wrapper {
         width: 220px;
         height: 220px;

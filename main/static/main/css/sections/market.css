@@ -23,6 +23,7 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 1.5rem auto;
+    border: 3px solid var(--color-green-accent); /* ДОБАВЛЕНО */
 }
 .product-image-wrapper img {
     width: 100%;
