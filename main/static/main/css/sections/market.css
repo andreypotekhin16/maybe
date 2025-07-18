@@ -23,21 +23,23 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 1.5rem auto;
-    border: 3px solid var(--color-green-accent); /* ДОБАВЛЕНО */
+    border: 3px solid var(--color-green-accent);
 }
 .product-image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
+/* ИЗМЕНЕНИЯ ЗДЕСЬ */
 .product-title {
-    font-family: var(--font-fortunec);
+    font-family: var(--font-body); /* Было: var(--font-fortunec) */
     font-weight: bold;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 .product-price {
-    font-family: var(--font-sunday);
+    font-family: var(--font-headers); /* Было: var(--font-sunday) */
     font-size: 3.3125rem;
     color: var(--color-green-accent);
     margin-bottom: 1rem;
@@ -51,7 +53,7 @@
 .market-more-link {
     display: block;
     text-align: center;
-    font-family: var(--font-sunday);
+    font-family: var(--font-headers); /* Было: var(--font-sunday) */
     font-size: 1.25rem;
     color: var(--color-green-accent);
     text-decoration: none;

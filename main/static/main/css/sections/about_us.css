@@ -40,7 +40,7 @@
     line-height: 1.2;
 }
 .section-about-us .about-us-text { 
-    font-family: var(--font-fortunec); 
+    font-family: var(--font-body); /* ИЗМЕНЕНО */
     font-size: var(--fs-about-text); 
     font-weight: normal; 
     color: var(--color-white); 

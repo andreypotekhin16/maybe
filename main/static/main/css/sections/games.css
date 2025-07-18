@@ -30,7 +30,7 @@
     display: flex; 
     justify-content: center; 
     align-items: center;
-    border: 3px solid var(--color-green-accent); /* ДОБАВЛЕНО */
+    border: 3px solid var(--color-green-accent);
 }
 
 .game-type-item .game-type-icon-wrapper img { 
@@ -39,15 +39,15 @@
     object-fit: contain;
 }
 
+/* ИЗМЕНЕНИЕ ЗДЕСЬ */
 .game-type-item .game-type-text-content h3 {
-    font-family: var(--font-sunday);
+    font-family: var(--font-headers); /* Было: var(--font-sunday) */
     font-size: var(--fs-subsection-title);
     font-weight: normal;
     color: var(--color-green-accent);
     margin-bottom: 0.75rem;
     text-transform: uppercase;
 }
-
 .game-type-item .game-type-text-content p {
     font-size: 1.1rem;
     line-height: 1.6;
