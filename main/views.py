@@ -53,6 +53,7 @@ def custom_handler404(request, exception):
     context = {
         'company_profile': CompanyProfile.objects.first(),
         'background_settings': BackgroundSettings.objects.prefetch_related('background_objects').first(),
+        'seo_settings': SEOSettings.objects.first(),
     }
     return render(request, "404.html", context, status=404)
 
@@ -60,5 +61,6 @@ def custom_handler500(request):
     context = {
         'company_profile': CompanyProfile.objects.first(),
         'background_settings': BackgroundSettings.objects.prefetch_related('background_objects').first(),
+        'seo_settings': SEOSettings.objects.first(),
     }
     return render(request, "500.html", context, status=500)

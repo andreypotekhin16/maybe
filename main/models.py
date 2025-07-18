@@ -81,9 +81,7 @@ class CompanyProfile(models.Model):
         is_new = self.pk is None
         super().save(*args, **kwargs)
         if is_new:
-            # Автоматическое создание связанных настроек SEO
             SEOSettings.objects.get_or_create(company_profile=self)
-            # Автоматическое создание секций
             ALL_SECTIONS = [
                 {'type': 'about_us', 'title': 'О нас', 'order': 0},
                 {'type': 'features', 'title': 'Что мы предлагаем', 'order': 1},
@@ -269,18 +267,12 @@ class BackgroundObject(models.Model):
 
 class SEOSettings(models.Model):
     company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name='seo_settings', verbose_name="Профиль компании")
-    
-    # Основные мета-теги
     meta_title = models.CharField(max_length=200, blank=True, verbose_name="Meta Title", help_text="Основной заголовок страницы для поисковых систем (до 60 символов).")
     meta_description = models.TextField(max_length=300, blank=True, verbose_name="Meta Description", help_text="Краткое описание страницы для поисковых систем (до 160 символов).")
     meta_keywords = models.CharField(max_length=255, blank=True, verbose_name="Meta Keywords", help_text="Ключевые слова через запятую. Этот тег почти не используется современными поисковиками, но может быть полезен.")
-
-    # Open Graph (для VK, Telegram, Facebook и т.д.)
     og_title = models.CharField(max_length=200, blank=True, verbose_name="Open Graph Title", help_text="Заголовок, который будет виден при репосте ссылки в соцсети.")
     og_description = models.TextField(max_length=300, blank=True, verbose_name="Open Graph Description", help_text="Описание для репоста в соцсети.")
     og_image = models.ImageField(upload_to='seo_images/', blank=True, null=True, verbose_name="Open Graph Image", help_text="Картинка для репоста (рекомендуемый размер 1200x630px).")
-    
-    # Структурированные данные JSON-LD (для продвинутого SEO)
     json_ld_schema = models.TextField(
         blank=True,
         verbose_name="Структурированные данные (JSON-LD)",
