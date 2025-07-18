@@ -49,11 +49,12 @@ def sitemap_xml_view(request):
     context = { 'url': request.build_absolute_uri('/') }
     return HttpResponse(render_to_string('sitemap.xml', context), content_type='application/xml')
 
+# === ИЗМЕНЕНИЯ ЗДЕСЬ ===
 def custom_handler404(request, exception):
     context = {
         'company_profile': CompanyProfile.objects.first(),
         'background_settings': BackgroundSettings.objects.prefetch_related('background_objects').first(),
-        'seo_settings': SEOSettings.objects.first(),
+        'seo_settings': SEOSettings.objects.first(), # <-- ДОБАВЛЕНО
     }
     return render(request, "404.html", context, status=404)
 
@@ -61,6 +62,6 @@ def custom_handler500(request):
     context = {
         'company_profile': CompanyProfile.objects.first(),
         'background_settings': BackgroundSettings.objects.prefetch_related('background_objects').first(),
-        'seo_settings': SEOSettings.objects.first(),
+        'seo_settings': SEOSettings.objects.first(), # <-- ДОБАВЛЕНО
     }
     return render(request, "500.html", context, status=500)
