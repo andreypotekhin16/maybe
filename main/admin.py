@@ -10,6 +10,7 @@ from .models import (
 class CustomFontAdmin(admin.ModelAdmin):
     list_display = ('name', 'font_file_otf', 'font_file_ttf', 'font_file_woff', 'font_file_woff2')
 
+
 class ImagePreviewAdminMixin:
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
@@ -18,6 +19,7 @@ class ImagePreviewAdminMixin:
                  return mark_safe(f'<div style="width:{max_height}px; height:{max_height}px; background-image:url({field.url}); background-size: cover; border: 1px solid #ddd;"></div>')
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
+
 
 class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     model = OrbibolInfo
@@ -35,13 +37,10 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
 
 
-# === ВОЗВРАЩАЕМ ИНЛАЙН-РЕДАКТОР СЕКЦИЙ ===
 class SectionInline(admin.TabularInline):
     model = Section
     extra = 0
-    # Делаем поле с типом секции нередактируемым. Это ключ к решению!
     readonly_fields = ('section_type',)
-    # Указываем поля в нужном порядке
     fields = ('section_type', 'title', 'show_title', 'order', 'is_active')
     ordering = ('order',)
     can_delete = False
@@ -56,11 +55,13 @@ class CarouselSlideInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'date_text', 'hover_description', 'image', 'vk_link', 'order')
 
+
 class FeatureInline(admin.TabularInline):
     model = Feature
     extra = 1
     ordering = ('order',)
     fields = ('title', 'description', 'icon', 'order')
+
 
 class GameTypeInline(admin.TabularInline):
     model = GameType
@@ -68,11 +69,13 @@ class GameTypeInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'description', 'icon', 'order')
 
+
 class ProductInline(admin.TabularInline):
     model = Product
     extra = 1
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
+
 
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
@@ -80,38 +83,54 @@ class GalleryItemInline(admin.TabularInline):
     extra = 10 
     ordering = ('order',)
 
+
+# === ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ФОРМЫ ===
 class CompanyProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        # Этот блок кода теперь будет работать правильно
         try:
-            custom_fonts = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
-            base_choices = list(self.fields['header_font'].choices)
-            self.fields['header_font'].choices = base_choices + custom_fonts
-            self.fields['body_font'].choices = base_choices + custom_fonts
+            # 1. Получаем статические варианты выбора из модели
+            static_choices = list(CompanyProfile.FONT_CHOICES)
+            
+            # 2. Получаем кастомные шрифты из базы данных
+            custom_font_choices = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
+            
+            # 3. Объединяем оба списка
+            all_choices = static_choices + custom_font_choices
+            
+            # 4. Обновляем поле 'choices' для обоих полей выбора
+            self.fields['header_font'].choices = all_choices
+            self.fields['body_font'].choices = all_choices
+            
         except Exception:
+            # Этот блок защищает от сбоев, если база данных недоступна (например, во время миграций)
             pass
 
     class Meta:
         model = CompanyProfile
         fields = '__all__'
 
+
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
+    # Указываем, что нужно использовать нашу кастомную форму
     form = CompanyProfileForm
+    
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
         ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
-            'description': 'Настройки для секций "Маркет" и "Галерея".',
+            'description': 'Настройки для секций "Маркет" и "Галерея".', 
             'fields': ('market_link', 'gallery_description', 'gallery_button_link', 'gallery_button_text')
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
     
-    # === ВОЗВРАЩАЕМ SectionInline СЮДА ===
     inlines = [
         SectionInline,
         CarouselSlideInline,
@@ -139,6 +158,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
+
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
@@ -147,6 +167,7 @@ class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     ordering = ('order',)
     def image_preview(self, obj): return self.get_preview(obj, 'image', max_height=75)
     image_preview.short_description = 'Предпросмотр'
+
 
 @admin.register(BackgroundSettings)
 class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):
