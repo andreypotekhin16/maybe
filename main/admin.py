@@ -6,41 +6,6 @@ from .models import (
     BackgroundSettings, BackgroundObject, Section, CarouselSlide, CustomFont
 )
 
-# --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ СБОРА ВСЕХ ШРИФТОВ ---
-def get_all_font_choices():
-    """
-    Собирает статические и кастомные шрифты в единый список для полей выбора.
-    """
-    # Статические варианты из модели
-    static_choices = list(CompanyProfile.FONT_CHOICES)
-    
-    # Оборачиваем в try...except на случай, если таблица еще не создана (например, при миграциях)
-    try:
-        # Кастомные шрифты из базы данных
-        custom_font_choices = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
-        return static_choices + custom_font_choices
-    except Exception:
-        return static_choices
-
-# --- ОБНОВЛЕННАЯ ФОРМА АДМИН-ПАНЕЛИ ---
-class CompanyProfileForm(forms.ModelForm):
-    # Явно определяем поля здесь. Это заставит Django использовать наш динамический список
-    # и для отображения, и для ВАЛИДАЦИИ.
-    header_font = forms.ChoiceField(label="Шрифт для заголовков (H1, H2 и т.д.)")
-    body_font = forms.ChoiceField(label="Шрифт для основного текста (параграфы)")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Получаем полный список шрифтов и назначаем его нашим полям
-        all_choices = get_all_font_choices()
-        self.fields['header_font'].choices = all_choices
-        self.fields['body_font'].choices = all_choices
-
-    class Meta:
-        model = CompanyProfile
-        fields = '__all__'
-
-
 @admin.register(CustomFont)
 class CustomFontAdmin(admin.ModelAdmin):
     list_display = ('name', 'font_file_otf', 'font_file_ttf', 'font_file_woff', 'font_file_woff2')
@@ -117,6 +82,33 @@ class GalleryItemInline(admin.TabularInline):
     fields = ('image', 'video', 'order')
     extra = 10 
     ordering = ('order',)
+
+
+# === ИСПРАВЛЕННАЯ ФОРМА АДМИН-ПАНЕЛИ ===
+class CompanyProfileForm(forms.ModelForm):
+    # Явно определяем поля здесь. Это заставит Django использовать наш динамический список
+    # и для отображения, и для ВАЛИДАЦИИ.
+    header_font = forms.ChoiceField(label="Шрифт для заголовков (H1, H2 и т.д.)")
+    body_font = forms.ChoiceField(label="Шрифт для основного текста (параграфы)")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Собираем все доступные шрифты
+        all_choices = list(CompanyProfile.FONT_CHOICES)
+        try:
+            custom_font_choices = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
+            all_choices.extend(custom_font_choices)
+        except Exception:
+            pass
+        
+        # Назначаем полный список вариантов нашим полям
+        self.fields['header_font'].choices = all_choices
+        self.fields['body_font'].choices = all_choices
+
+    class Meta:
+        model = CompanyProfile
+        fields = '__all__'
 
 
 @admin.register(CompanyProfile)

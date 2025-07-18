@@ -32,6 +32,7 @@ class CompanyProfile(models.Model):
         verbose_name="Текст для кнопки в галерее"
     )
 
+    # Этот статический список нам все еще нужен для формы
     FONT_CHOICES = [
         ('SUNDAY', 'Sunday (встроенный)'),
         ('FortuneC', 'FortuneC (встроенный)'),
@@ -41,16 +42,15 @@ class CompanyProfile(models.Model):
         ('Lobster', 'Lobster (Google)'),
     ]
 
+    # === ИЗМЕНЕНИЕ ЗДЕСЬ: Убираем `choices` из определения полей ===
     header_font = models.CharField(
         max_length=100,
-        choices=FONT_CHOICES,
         default='SUNDAY',
         verbose_name="Шрифт для заголовков (H1, H2 и т.д.)"
     )
     
     body_font = models.CharField(
         max_length=100,
-        choices=FONT_CHOICES,
         default='FortuneC',
         verbose_name="Шрифт для основного текста (параграфы)"
     )
@@ -68,11 +68,8 @@ class CompanyProfile(models.Model):
         return self.site_name if self.site_name else "Настройки сайта"
         
     def save(self, *args, **kwargs):
-        # Сначала сохраняем сам объект CompanyProfile
         is_new = self.pk is None
         super().save(*args, **kwargs)
-        
-        # Создаем секции только один раз - при создании профиля
         if is_new:
             ALL_SECTIONS = [
                 {'type': 'about_us', 'title': 'О нас', 'order': 0},
@@ -88,13 +85,10 @@ class CompanyProfile(models.Model):
                 Section.objects.get_or_create(
                     company_profile=self,
                     section_type=section_data['type'],
-                    defaults={
-                        'title': section_data['title'],
-                        'order': section_data['order'],
-                    }
+                    defaults={'title': section_data['title'], 'order': section_data['order']}
                 )
 
-
+# ... (остальные модели остаются без изменений) ...
 class CustomFont(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название шрифта (для CSS, напр. 'MyCoolFont')")
     font_file_otf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .otf', storage=font_storage)
@@ -127,7 +121,6 @@ class CarouselSlide(models.Model):
     def __str__(self):
         return self.name
     
-
 class Section(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='sections')
     SECTION_CHOICES = [
@@ -140,7 +133,6 @@ class Section(models.Model):
         ('gallery', 'Фото и видео галерея'),
         ('contacts', 'Контакты'),
     ]
-    # === ИЗМЕНЕНИЕ 1: Убираем unique=True ===
     section_type = models.CharField(max_length=50, choices=SECTION_CHOICES, verbose_name="Тип секции")
     title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок секции", help_text="Оставьте пустым, чтобы использовать заголовок по умолчанию.")
     show_title = models.BooleanField(default=True, verbose_name="Показывать заголовок")
@@ -151,12 +143,10 @@ class Section(models.Model):
         verbose_name = "Секция на главной странице"
         verbose_name_plural = "Секции на главной странице"
         ordering = ['order']
-        # === ИЗМЕНЕНИЕ 2: Указываем уникальность по двум полям ===
         unique_together = ('company_profile', 'section_type')
 
     def __str__(self):
         return self.get_section_type_display()
-
 
 class Feature(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='features')
@@ -171,7 +161,6 @@ class Feature(models.Model):
     def __str__(self):
         return self.title
 
-
 class GameType(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='game_types')
     name = models.CharField(max_length=100, verbose_name="Название типа игры")
@@ -184,7 +173,6 @@ class GameType(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
-
 
 class Product(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='products')
@@ -200,7 +188,6 @@ class Product(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
-
 
 class GalleryItem(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='gallery_items')
@@ -220,7 +207,6 @@ class GalleryItem(models.Model):
             return f"Видео: {self.video.name}"
         return f"Элемент галереи #{self.pk}"
 
-
 class OrbibolInfo(models.Model):
     company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name='orbibol_info')
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
@@ -237,7 +223,6 @@ class OrbibolInfo(models.Model):
     def __str__(self):
         return "Информация для секции Орбибол"
 
-
 class BackgroundSettings(models.Model):
     name = models.CharField(max_length=100, default="Основные настройки фона", verbose_name="Название набора настроек")
     background_pattern = models.FileField(upload_to='backgrounds/', blank=True, null=True, verbose_name="Паттерн фона (повторяющееся изображение)", help_text="Это изображение будет повторяться на фоне.")
@@ -249,7 +234,6 @@ class BackgroundSettings(models.Model):
         verbose_name_plural = "3. Настройки фона"
     def __str__(self):
         return self.name
-
 
 class BackgroundObject(models.Model):
     settings = models.ForeignKey(BackgroundSettings, on_delete=models.CASCADE, related_name='background_objects', verbose_name="Набор настроек")
