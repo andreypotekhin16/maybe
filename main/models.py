@@ -70,6 +70,8 @@ class CompanyProfile(models.Model):
     telegram_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка Telegram (SVG/PNG)", blank=True, null=True)
     nav_toggle_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка для раскрытия меню (в свернутом хедере)", blank=True, null=True)
     
+    mobile_menu_indicator_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка-индикатор для моб. меню (стрелка вниз)", blank=True, null=True)
+    
     class Meta:
         verbose_name = "1. Главные настройки сайта"
         verbose_name_plural = "1. Главные настройки сайта"

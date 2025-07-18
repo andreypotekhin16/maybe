@@ -129,18 +129,21 @@ class GalleryItemInline(admin.TabularInline):
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
     form = CompanyProfileForm
-    readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
+    readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview', 'mobile_menu_indicator_icon_preview')
     
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
         ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
-            'description': 'Здесь можно изменить ссылки и тексты для кнопок на сайте.',
+            'description': 'Здесь можно изменить ссылки и тексты для кнопок на сайте.', 
             'fields': ('orbibol_details_button_text', 'market_link', 'market_button_text', 'gallery_description', 'gallery_button_link', 'gallery_button_text')
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
-        ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
+        ('Технические иконки', {'classes': ('collapse',),'fields': (
+            ('nav_toggle_icon', 'nav_toggle_icon_preview'),
+            ('mobile_menu_indicator_icon', 'mobile_menu_indicator_icon_preview')
+        )})
     )
     
     inlines = [
@@ -166,6 +169,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def youtube_icon_preview(self, obj): return self._icon_preview(obj, 'youtube_icon')
     def telegram_icon_preview(self, obj): return self._icon_preview(obj, 'telegram_icon')
     def nav_toggle_icon_preview(self, obj): return self._icon_preview(obj, 'nav_toggle_icon')
+    def mobile_menu_indicator_icon_preview(self, obj): return self._icon_preview(obj, 'mobile_menu_indicator_icon')
     
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False

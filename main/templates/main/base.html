@@ -96,6 +96,12 @@
                 </ul>
             </nav>
 
+            <div class="mobile-menu-indicator">
+                {% if company_profile.mobile_menu_indicator_icon %}
+                    <img src="{{ company_profile.mobile_menu_indicator_icon.url }}" alt="Раскрыть меню">
+                {% endif %}
+            </div>
+            
             <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Открыть меню">
                 {% if company_profile.nav_toggle_icon %}
                     <img src="{{ company_profile.nav_toggle_icon.url }}" alt="Меню">
