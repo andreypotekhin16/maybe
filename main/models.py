@@ -69,7 +69,6 @@ class CompanyProfile(models.Model):
     youtube_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка YouTube (SVG/PNG)", blank=True, null=True)
     telegram_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка Telegram (SVG/PNG)", blank=True, null=True)
     nav_toggle_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка для раскрытия меню (в свернутом хедере)", blank=True, null=True)
-    
     mobile_menu_indicator_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка-индикатор для моб. меню (стрелка вниз)", blank=True, null=True)
     
     class Meta:
@@ -193,10 +192,13 @@ class Product(models.Model):
     image = models.FileField(upload_to='product_images/', verbose_name="Изображение товара (SVG/PNG)")
     link = models.URLField(max_length=200, blank=True, null=True, verbose_name="Ссылка на страницу товара")
     order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Порядок отображения")
+    button_text = models.CharField(max_length=100, default="Заказать игру", verbose_name="Текст кнопки")
+
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ['order']
+        
     def __str__(self):
         return self.name
 

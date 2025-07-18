@@ -118,7 +118,7 @@ class ProductInline(admin.TabularInline):
     model = Product
     extra = 1
     ordering = ('order',)
-    fields = ('name', 'price', 'description', 'image', 'link', 'order')
+    fields = ('name', 'price', 'description', 'image', 'link', 'button_text', 'order')
 
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
