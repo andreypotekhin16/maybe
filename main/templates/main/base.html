@@ -5,16 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO -->
-    <title>{% if seo_settings.meta_title %}{{ seo_settings.meta_title }}{% else %}{{ company_profile.site_name|default:"Maybe - Игры и События" }}{% endif %}</title>
-    {% if seo_settings.meta_description %}<meta name="description" content="{{ seo_settings.meta_description }}">{% endif %}
-    {% if seo_settings.meta_keywords %}<meta name="keywords" content="{{ seo_settings.meta_keywords }}">{% endif %}
-    <meta property="og:title" content="{{ seo_settings.og_title|default:seo_settings.meta_title }}">
-    <meta property="og:description" content="{{ seo_settings.og_description|default:seo_settings.meta_description }}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    {% if seo_settings.og_image %}<meta property="og:image" content="{{ seo_settings.og_image.url }}">{% endif %}
-    {% if seo_settings.json_ld_schema %}<script type="application/ld+json">{{ seo_settings.json_ld_schema|safe }}</script>{% endif %}
+    <!-- === ИСПРАВЛЕННЫЙ SEO БЛОК === -->
+    {% if seo_settings %}
+        <title>{{ seo_settings.meta_title|default:company_profile.site_name }}</title>
+        <meta name="description" content="{{ seo_settings.meta_description }}">
+        <meta name="keywords" content="{{ seo_settings.meta_keywords }}">
+        <meta property="og:title" content="{{ seo_settings.og_title|default:seo_settings.meta_title }}">
+        <meta property="og:description" content="{{ seo_settings.og_description|default:seo_settings.meta_description }}">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        {% if seo_settings.og_image %}<meta property="og:image" content="{{ seo_settings.og_image.url }}">{% endif %}
+        {% if seo_settings.json_ld_schema %}<script type="application/ld+json">{{ seo_settings.json_ld_schema|safe }}</script>{% endif %}
+    {% else %}
+        <title>{{ company_profile.site_name|default:"Maybe - Игры и События" }}</title>
+    {% endif %}
+    <!-- === КОНЕЦ БЛОКА === -->
     
     {% if company_profile.favicon %}<link rel="icon" href="{{ company_profile.favicon.url }}">{% endif %}
 
