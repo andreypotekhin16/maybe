@@ -8,7 +8,12 @@
                 <a href="{{ product.link|default:'#' }}" class="product-card" target="_blank" rel="noopener noreferrer">
                     <div class="product-image-wrapper">
                         {% if product.image %}
-                            <img src="{{ product.image.url|slice:'0:45' }}w_500,f_auto,q_auto/{{ product.image.url|slice:'46:' }}" alt="{{ product.name }}">
+                            {# === ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ОПТИМИЗАЦИИ ИЗОБРАЖЕНИЙ === #}
+                            {% with 'image/upload/' as find_str %}
+                                {% with 'image/upload/w_500,f_auto,q_auto/' as replace_str %}
+                                    <img src="{{ product.image.url|replace:find_str,replace_str }}" alt="{{ product.name }}">
+                                {% endwith %}
+                            {% endwith %}
                         {% endif %}
                     </div>
                     <h3 class="product-title">{{ product.name }}</h3>
