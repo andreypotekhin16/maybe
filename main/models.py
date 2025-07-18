@@ -31,8 +31,22 @@ class CompanyProfile(models.Model):
         default="Узнать подробнее",
         verbose_name="Текст для кнопки в галерее"
     )
+    
+    # === НОВЫЕ ПОЛЯ ===
+    orbibol_details_button_text = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Узнать подробнее",
+        verbose_name="Текст для кнопки 'Узнать подробнее' (Орбибол)"
+    )
+    market_button_text = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Еще больше товаров в нашем маркете",
+        verbose_name="Текст для ссылки 'Еще больше товаров' (Маркет)"
+    )
+    # === КОНЕЦ НОВЫХ ПОЛЕЙ ===
 
-    # Этот статический список нам все еще нужен для формы
     FONT_CHOICES = [
         ('SUNDAY', 'Sunday (встроенный)'),
         ('FortuneC', 'FortuneC (встроенный)'),
@@ -42,7 +56,6 @@ class CompanyProfile(models.Model):
         ('Lobster', 'Lobster (Google)'),
     ]
 
-    # === ИЗМЕНЕНИЕ ЗДЕСЬ: Убираем `choices` из определения полей ===
     header_font = models.CharField(
         max_length=100,
         default='SUNDAY',
@@ -88,7 +101,6 @@ class CompanyProfile(models.Model):
                     defaults={'title': section_data['title'], 'order': section_data['order']}
                 )
 
-# ... (остальные модели остаются без изменений) ...
 class CustomFont(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название шрифта (для CSS, напр. 'MyCoolFont')")
     font_file_otf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .otf', storage=font_storage)
@@ -102,7 +114,6 @@ class CustomFont(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')

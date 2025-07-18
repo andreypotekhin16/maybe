@@ -18,7 +18,9 @@
                 {% endfor %}
             </div>
             {% if company_profile.market_link %}
-                <a href="{{ company_profile.market_link }}" class="market-more-link" target="_blank" rel="noopener noreferrer">Еще больше товаров в нашем маркете</a>
+                <a href="{{ company_profile.market_link }}" class="market-more-link" target="_blank" rel="noopener noreferrer">
+                    {{ company_profile.market_button_text|default:"Еще больше товаров в нашем маркете" }}
+                </a>
             {% endif %}
         </div>
     </section>

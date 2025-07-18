@@ -6,10 +6,31 @@ from .models import (
     BackgroundSettings, BackgroundObject, Section, CarouselSlide, CustomFont
 )
 
+def get_all_font_choices():
+    static_choices = list(CompanyProfile.FONT_CHOICES)
+    try:
+        custom_font_choices = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
+        return static_choices + custom_font_choices
+    except Exception:
+        return static_choices
+
+class CompanyProfileForm(forms.ModelForm):
+    header_font = forms.ChoiceField(label="Шрифт для заголовков (H1, H2 и т.д.)")
+    body_font = forms.ChoiceField(label="Шрифт для основного текста (параграфы)")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        all_choices = get_all_font_choices()
+        self.fields['header_font'].choices = all_choices
+        self.fields['body_font'].choices = all_choices
+
+    class Meta:
+        model = CompanyProfile
+        fields = '__all__'
+
 @admin.register(CustomFont)
 class CustomFontAdmin(admin.ModelAdmin):
     list_display = ('name', 'font_file_otf', 'font_file_ttf', 'font_file_woff', 'font_file_woff2')
-
 
 class ImagePreviewAdminMixin:
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
@@ -19,7 +40,6 @@ class ImagePreviewAdminMixin:
                  return mark_safe(f'<div style="width:{max_height}px; height:{max_height}px; background-image:url({field.url}); background-size: cover; border: 1px solid #ddd;"></div>')
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
-
 
 class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     model = OrbibolInfo
@@ -36,7 +56,6 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
 
-
 class SectionInline(admin.TabularInline):
     model = Section
     extra = 0
@@ -48,13 +67,11 @@ class SectionInline(admin.TabularInline):
     def has_add_permission(self, request, obj=None):
         return False
 
-
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
     extra = 1
     ordering = ('order',)
     fields = ('name', 'date_text', 'hover_description', 'image', 'vk_link', 'order')
-
 
 class FeatureInline(admin.TabularInline):
     model = Feature
@@ -62,13 +79,11 @@ class FeatureInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('title', 'description', 'icon', 'order')
 
-
 class GameTypeInline(admin.TabularInline):
     model = GameType
     extra = 1
     ordering = ('order',)
     fields = ('name', 'description', 'icon', 'order')
-
 
 class ProductInline(admin.TabularInline):
     model = Product
@@ -76,54 +91,31 @@ class ProductInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
 
-
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
     fields = ('image', 'video', 'order')
     extra = 10 
     ordering = ('order',)
 
-
-# === ИСПРАВЛЕННАЯ ФОРМА АДМИН-ПАНЕЛИ ===
-class CompanyProfileForm(forms.ModelForm):
-    # Явно определяем поля здесь. Это заставит Django использовать наш динамический список
-    # и для отображения, и для ВАЛИДАЦИИ.
-    header_font = forms.ChoiceField(label="Шрифт для заголовков (H1, H2 и т.д.)")
-    body_font = forms.ChoiceField(label="Шрифт для основного текста (параграфы)")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-        # Собираем все доступные шрифты
-        all_choices = list(CompanyProfile.FONT_CHOICES)
-        try:
-            custom_font_choices = [(font.name, f"{font.name} (кастомный)") for font in CustomFont.objects.all()]
-            all_choices.extend(custom_font_choices)
-        except Exception:
-            pass
-        
-        # Назначаем полный список вариантов нашим полям
-        self.fields['header_font'].choices = all_choices
-        self.fields['body_font'].choices = all_choices
-
-    class Meta:
-        model = CompanyProfile
-        fields = '__all__'
-
-
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
-    # Указываем, что нужно использовать нашу кастомную форму
     form = CompanyProfileForm
-    
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
+    
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
         ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
-            'description': 'Настройки для секций "Маркет" и "Галерея".', 
-            'fields': ('market_link', 'gallery_description', 'gallery_button_link', 'gallery_button_text')
+            'description': 'Здесь можно изменить ссылки и тексты для кнопок на сайте.', 
+            'fields': (
+                'orbibol_details_button_text', 
+                'market_link', 
+                'market_button_text',
+                'gallery_description', 
+                'gallery_button_link', 
+                'gallery_button_text'
+            )
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
@@ -156,7 +148,6 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
-
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
@@ -165,7 +156,6 @@ class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     ordering = ('order',)
     def image_preview(self, obj): return self.get_preview(obj, 'image', max_height=75)
     image_preview.short_description = 'Предпросмотр'
-
 
 @admin.register(BackgroundSettings)
 class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):

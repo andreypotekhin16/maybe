@@ -37,7 +37,9 @@
             
             {% if orbibol_info.details_link %}
                 <div class="text-center">
-                    <a href="{{ orbibol_info.details_link }}" target="_blank" rel="noopener noreferrer" class="orbibol-details-link">Узнать подробнее</a>
+                    <a href="{{ orbibol_info.details_link }}" target="_blank" rel="noopener noreferrer" class="orbibol-details-link">
+                        {{ company_profile.orbibol_details_button_text|default:"Узнать подробнее" }}
+                    </a>
                 </div>
             {% endif %}
         {% endif %}
