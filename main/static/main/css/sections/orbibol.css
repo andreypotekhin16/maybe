@@ -12,7 +12,7 @@
 .orbibol-general-info { 
     text-align: center;
     max-width: 75ch;
-    margin: 0 auto 4rem auto; /* Увеличен нижний отступ */
+    margin: 0 auto 5rem auto; /* Увеличен нижний отступ */
     font-size: 1.25rem;
     line-height: 1.7;
 }
@@ -20,45 +20,50 @@
 .orbibol-content-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 4rem; /* Увеличен отступ между элементами */
-    margin-bottom: 4rem; 
+    gap: 5rem; /* Увеличен отступ между элементами */
+    margin-bottom: 5rem; 
 }
 
 /* Основной контейнер для пары "иконка + текст" */
 .orbibol-item {
     display: flex;
     align-items: center;
-    gap: 3rem; /* Увеличен отступ между иконкой и текстом */
+    gap: 4rem; /* Увеличен отступ между иконкой и текстом */
     text-align: left;
 }
 
 /* Обертка для иконки. Сильно увеличена. */
 .orbibol-icon-wrapper {
     flex-shrink: 0;
-    width: 200px; /* <-- Увеличено со 100px */
-    height: 200px; /* <-- Увеличено со 100px */
+    width: 300px; /* <-- ИЗМЕНЕНО (было 200px) */
+    height: 300px; /* <-- ИЗМЕНЕНО (было 200px) */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(var(--color-green-accent-rgb), 0.05); /* Легкий фон */
-    border: 2px solid rgba(var(--color-green-accent-rgb), 0.2); /* Легкая рамка */
+    background-color: rgba(var(--color-green-accent-rgb), 0.05);
+    border: 2px solid rgba(var(--color-green-accent-rgb), 0.2);
 }
 
-/* Сама иконка внутри. Увеличена почти в 3 раза. */
+/* Сама иконка внутри. Также увеличена. */
 .orbibol-icon-wrapper img {
-    max-width: 140px; /* <-- Увеличено с 50px */
-    max-height: 140px; /* <-- Увеличено с 50px */
+    max-width: 210px; /* <-- ИЗМЕНЕНО (было 140px) */
+    max-height: 210px; /* <-- ИЗМЕНЕНО (было 140px) */
     object-fit: contain;
+}
+
+/* Добавляем flex-grow, чтобы текстовый блок занимал все оставшееся место */
+.orbibol-text-content {
+    flex-grow: 1;
 }
 
 /* Стилизация текстовой части */
 .orbibol-text-content h3 {
-    font-family: var(--font-headers); /* Используем шрифт для заголовков */
+    font-family: var(--font-headers);
     font-size: var(--fs-subsection-title);
-    color: var(--color-green-accent); /* Делаем заголовок акцентным */
+    color: var(--color-green-accent);
     text-transform: uppercase;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* <-- ИЗМЕНЕНО (увеличен отступ) */
 }
 
 .orbibol-text-content p {
@@ -87,6 +92,16 @@
     .orbibol-item {
         flex-direction: column;
         text-align: center;
-        gap: 1.5rem;
+        gap: 2rem;
+    }
+    
+    /* На мобильных иконка будет чуть меньше, чтобы выглядеть аккуратнее */
+    .orbibol-icon-wrapper {
+        width: 220px;
+        height: 220px;
+    }
+    .orbibol-icon-wrapper img {
+        max-width: 150px;
+        max-height: 150px;
     }
 }
