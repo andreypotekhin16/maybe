@@ -34,6 +34,22 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
 
+
+# === ВОЗВРАЩАЕМ ИНЛАЙН-РЕДАКТОР СЕКЦИЙ ===
+class SectionInline(admin.TabularInline):
+    model = Section
+    extra = 0
+    # Делаем поле с типом секции нередактируемым. Это ключ к решению!
+    readonly_fields = ('section_type',)
+    # Указываем поля в нужном порядке
+    fields = ('section_type', 'title', 'show_title', 'order', 'is_active')
+    ordering = ('order',)
+    can_delete = False
+    
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
     extra = 1
@@ -88,15 +104,16 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
-            'description': 'Настройки для секций "Маркет" и "Галерея". Порядок секций на сайте задается автоматически.', 
+            'description': 'Настройки для секций "Маркет" и "Галерея".',
             'fields': ('market_link', 'gallery_description', 'gallery_button_link', 'gallery_button_text')
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
     
-    # === УДАЛЯЕМ SectionInline ОТСЮДА ===
+    # === ВОЗВРАЩАЕМ SectionInline СЮДА ===
     inlines = [
+        SectionInline,
         CarouselSlideInline,
         OrbibolInfoInline,
         FeatureInline,

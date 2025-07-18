@@ -68,31 +68,32 @@ class CompanyProfile(models.Model):
         return self.site_name if self.site_name else "Настройки сайта"
         
     def save(self, *args, **kwargs):
-        # Сохраняем сам объект CompanyProfile
+        # Сначала сохраняем сам объект CompanyProfile
+        is_new = self.pk is None
         super().save(*args, **kwargs)
         
-        # Список всех секций с их порядком и заголовками по умолчанию
-        ALL_SECTIONS = [
-            {'type': 'about_us', 'title': 'О нас', 'order': 0},
-            {'type': 'features', 'title': 'Что мы предлагаем', 'order': 1},
-            {'type': 'carousel', 'title': 'Запись на игры', 'order': 2},
-            {'type': 'orbibol', 'title': 'Орбибол', 'order': 3},
-            {'type': 'games', 'title': 'Игры', 'order': 4},
-            {'type': 'market', 'title': 'Маркет', 'order': 5},
-            {'type': 'gallery', 'title': 'Фото и видео галерея', 'order': 6},
-            {'type': 'contacts', 'title': 'Контакты', 'order': 7},
-        ]
-        
-        # Создаем недостающие секции
-        for section_data in ALL_SECTIONS:
-            Section.objects.get_or_create(
-                company_profile=self,
-                section_type=section_data['type'],
-                defaults={
-                    'title': section_data['title'],
-                    'order': section_data['order'],
-                }
-            )
+        # Создаем секции только один раз - при создании профиля
+        if is_new:
+            ALL_SECTIONS = [
+                {'type': 'about_us', 'title': 'О нас', 'order': 0},
+                {'type': 'features', 'title': 'Что мы предлагаем', 'order': 1},
+                {'type': 'carousel', 'title': 'Запись на игры', 'order': 2},
+                {'type': 'orbibol', 'title': 'Орбибол', 'order': 3},
+                {'type': 'games', 'title': 'Игры', 'order': 4},
+                {'type': 'market', 'title': 'Маркет', 'order': 5},
+                {'type': 'gallery', 'title': 'Фото и видео галерея', 'order': 6},
+                {'type': 'contacts', 'title': 'Контакты', 'order': 7},
+            ]
+            for section_data in ALL_SECTIONS:
+                Section.objects.get_or_create(
+                    company_profile=self,
+                    section_type=section_data['type'],
+                    defaults={
+                        'title': section_data['title'],
+                        'order': section_data['order'],
+                    }
+                )
+
 
 class CustomFont(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название шрифта (для CSS, напр. 'MyCoolFont')")
@@ -107,6 +108,7 @@ class CustomFont(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
@@ -125,6 +127,7 @@ class CarouselSlide(models.Model):
     def __str__(self):
         return self.name
     
+
 class Section(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='sections')
     SECTION_CHOICES = [
@@ -137,10 +140,9 @@ class Section(models.Model):
         ('gallery', 'Фото и видео галерея'),
         ('contacts', 'Контакты'),
     ]
-    # УБИРАЕМ unique=True
+    # === ИЗМЕНЕНИЕ 1: Убираем unique=True ===
     section_type = models.CharField(max_length=50, choices=SECTION_CHOICES, verbose_name="Тип секции")
-    # ЭТИ ПОЛЯ БОЛЬШЕ НЕ РЕДАКТИРУЮТСЯ ПОЛЬЗОВАТЕЛЕМ, А ЗАДАЮТСЯ АВТОМАТИЧЕСКИ
-    title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок секции")
+    title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок секции", help_text="Оставьте пустым, чтобы использовать заголовок по умолчанию.")
     show_title = models.BooleanField(default=True, verbose_name="Показывать заголовок")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок отображения")
     is_active = models.BooleanField(default=True, verbose_name="Секция включена")
@@ -149,11 +151,12 @@ class Section(models.Model):
         verbose_name = "Секция на главной странице"
         verbose_name_plural = "Секции на главной странице"
         ordering = ['order']
-        # Уникальность теперь по паре полей
+        # === ИЗМЕНЕНИЕ 2: Указываем уникальность по двум полям ===
         unique_together = ('company_profile', 'section_type')
 
     def __str__(self):
         return self.get_section_type_display()
+
 
 class Feature(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='features')
@@ -168,6 +171,7 @@ class Feature(models.Model):
     def __str__(self):
         return self.title
 
+
 class GameType(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='game_types')
     name = models.CharField(max_length=100, verbose_name="Название типа игры")
@@ -180,6 +184,7 @@ class GameType(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='products')
@@ -195,6 +200,7 @@ class Product(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
+
 
 class GalleryItem(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='gallery_items')
@@ -214,6 +220,7 @@ class GalleryItem(models.Model):
             return f"Видео: {self.video.name}"
         return f"Элемент галереи #{self.pk}"
 
+
 class OrbibolInfo(models.Model):
     company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name='orbibol_info')
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
@@ -230,6 +237,7 @@ class OrbibolInfo(models.Model):
     def __str__(self):
         return "Информация для секции Орбибол"
 
+
 class BackgroundSettings(models.Model):
     name = models.CharField(max_length=100, default="Основные настройки фона", verbose_name="Название набора настроек")
     background_pattern = models.FileField(upload_to='backgrounds/', blank=True, null=True, verbose_name="Паттерн фона (повторяющееся изображение)", help_text="Это изображение будет повторяться на фоне.")
@@ -241,6 +249,7 @@ class BackgroundSettings(models.Model):
         verbose_name_plural = "3. Настройки фона"
     def __str__(self):
         return self.name
+
 
 class BackgroundObject(models.Model):
     settings = models.ForeignKey(BackgroundSettings, on_delete=models.CASCADE, related_name='background_objects', verbose_name="Набор настроек")
