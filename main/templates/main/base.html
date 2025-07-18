@@ -95,7 +95,17 @@
                     {% endif %}{% endfor %}
                 </ul>
             </nav>
+
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Открыть меню">
+                {% if company_profile.nav_toggle_icon %}
+                    <img src="{{ company_profile.nav_toggle_icon.url }}" alt="Меню">
+                {% else %}
+                    <span></span><span></span><span></span>
+                {% endif %}
+            </button>
         </div>
+        
+        <div id="mobile-nav-dropdown" class="mobile-nav-dropdown"></div>
     </header>
 
     <main id="main-content">

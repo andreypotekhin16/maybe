@@ -147,9 +147,7 @@ ul {
     width: 100%;
     z-index: 1000;
     background-color: transparent;
-    transition: padding var(--header-transition-duration) ease-in-out, 
-                background-color var(--header-transition-duration) ease-in-out,
-                height var(--header-transition-duration) ease-in-out;
+    transition: padding 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
 
 #site-header.header-active {
@@ -161,7 +159,6 @@ ul {
     align-items: center;
     justify-content: space-between;
     position: relative;
-    flex-wrap: wrap;
 }
 
 #site-header .logo img { 
@@ -209,11 +206,11 @@ ul {
 #site-header.header-collapsed .logo img {
     height: var(--logo-height-normal);
 }
-#site-header.header-collapsed:not(.mobile-menu-open) .main-nav ul {
+#site-header.header-collapsed .main-nav ul {
     opacity: 0;
     pointer-events: none;
 }
-#site-header.header-collapsed:not(.mobile-menu-open) .header-center-text {
+#site-header.header-collapsed .header-center-text {
     opacity: 1;
     pointer-events: all;
 }
@@ -298,64 +295,56 @@ main section {
     text-align: center;
 }
 
+.mobile-nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1002;
+    padding: 10px;
+}
+.mobile-nav-toggle img { height: 30px; width: 30px; }
+.mobile-nav-toggle span { display: block; width: 30px; height: 3px; background-color: var(--color-white); margin: 6px 0; transition: all 0.3s ease-in-out; }
+
+.mobile-nav-dropdown {
+    display: none;
+    width: 100%;
+    background-color: var(--color-black-bg);
+    border-top: 1px solid rgba(var(--color-green-accent-rgb), 0.3);
+    padding: 10px 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+.mobile-nav-dropdown ul { flex-direction: column; align-items: center; gap: 0; width: 100%; }
+.mobile-nav-dropdown li { width: 100%; text-align: center; }
+.mobile-nav-dropdown a { display: block; padding: 15px 0; font-size: 1.5rem; }
+
+body.mobile-menu-open .mobile-nav-toggle span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
+body.mobile-menu-open .mobile-nav-toggle span:nth-child(2) { opacity: 0; }
+body.mobile-menu-open .mobile-nav-toggle span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+
 
 @media (max-width: 992px) {
-    #site-header {
-        cursor: pointer;
+    .main-nav { display: none; }
+    .mobile-nav-toggle { display: block; }
+    .header-center-text { display: none; }
+
+    #site-header.header-collapsed { padding: var(--header-padding-hover) 0; }
+    #site-header.header-collapsed .logo img { height: var(--logo-height-hover); }
+
+    #site-header.mobile-menu-open {
+        background-color: var(--color-black-bg);
     }
-    .header-container {
-        justify-content: center;
-    }
-    .logo {
-        flex-grow: 1;
-    }
-    .header-center-text {
-        opacity: 1;
-        pointer-events: all;
-    }
-    .main-nav {
-        width: 100%;
-        overflow: hidden;
-        max-height: 0;
-        padding: 0;
-        transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-    }
-    .main-nav ul {
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-        gap: 0;
-        width: 100%;
-    }
-    .main-nav li {
-        width: 100%;
-        text-align: center;
-    }
-    .main-nav a {
-        padding: 15px 0;
+    #site-header.mobile-menu-open .mobile-nav-dropdown {
         display: block;
-        width: 100%;
-        font-size: 1.5rem;
-    }
-    #site-header.mobile-menu-open .main-nav {
-        max-height: 500px;
-        padding: 20px 0 10px 0;
-    }
-    #site-header.mobile-menu-open.header-collapsed {
-        padding: var(--header-padding-hover) 0;
-    }
-    #site-header.mobile-menu-open.header-collapsed .logo img {
-        height: var(--logo-height-hover);
+        max-height: 500px; /* Достаточная высота для всех ссылок */
     }
 }
 
 @media (max-width: 768px) {
-    .error-code {
-        font-size: 8rem;
-    }
-    .error-title {
-        font-size: 2.2rem;
-    }
+    .error-code { font-size: 8rem; }
+    .error-title { font-size: 2.2rem; }
     :root {
         --fs-main-slogan: 2.5rem;
         --fs-about-text: 1.5rem;
