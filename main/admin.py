@@ -3,7 +3,8 @@ from django.utils.html import mark_safe
 from django import forms
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, BackgroundObject, Section, CarouselSlide, CustomFont
+    BackgroundSettings, BackgroundObject, Section, CarouselSlide, CustomFont,
+    SEOSettings
 )
 
 def get_all_font_choices():
@@ -32,6 +33,36 @@ class CompanyProfileForm(forms.ModelForm):
 class CustomFontAdmin(admin.ModelAdmin):
     list_display = ('name', 'font_file_otf', 'font_file_ttf', 'font_file_woff', 'font_file_woff2')
 
+
+@admin.register(SEOSettings)
+class SEOSettingsAdmin(admin.ModelAdmin):
+    list_display = ('company_profile', 'meta_title', 'meta_description')
+    fieldsets = (
+        (None, {
+            'fields': ('company_profile',),
+            'description': 'Здесь собраны все глобальные настройки для поисковой оптимизации сайта.'
+        }),
+        ('Основные Meta-теги', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords'),
+        }),
+        ('Open Graph (для репостов в соцсети)', {
+            'classes': ('collapse',),
+            'fields': ('og_title', 'og_description', 'og_image'),
+        }),
+        ('Структурированные данные (JSON-LD)', {
+            'classes': ('collapse',),
+            'description': 'Этот блок для SEO-специалиста. Позволяет поисковым роботам лучше понимать контент вашего сайта.',
+            'fields': ('json_ld_schema',),
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return self.model.objects.count() == 0
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 class ImagePreviewAdminMixin:
     def get_preview(self, obj, field_name, max_height=100, is_background=False):
         field = getattr(obj, field_name, None)
@@ -40,6 +71,7 @@ class ImagePreviewAdminMixin:
                  return mark_safe(f'<div style="width:{max_height}px; height:{max_height}px; background-image:url({field.url}); background-size: cover; border: 1px solid #ddd;"></div>')
             return mark_safe(f'<img src="{field.url}" style="max-height: {max_height}px; max-width: {max_height*2}px;" />')
         return "Нет изображения"
+
 
 class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     model = OrbibolInfo
@@ -56,16 +88,6 @@ class OrbibolInfoInline(ImagePreviewAdminMixin, admin.StackedInline):
     def tactical_icon_preview(self, obj): return self.get_preview(obj, 'tactical_icon', max_height=75)
     tactical_icon_preview.short_description = 'Предпросмотр иконки (Тактический)'
 
-class SectionInline(admin.TabularInline):
-    model = Section
-    extra = 0
-    readonly_fields = ('section_type',)
-    fields = ('section_type', 'title', 'show_title', 'order', 'is_active')
-    ordering = ('order',)
-    can_delete = False
-    
-    def has_add_permission(self, request, obj=None):
-        return False
 
 class CarouselSlideInline(admin.TabularInline):
     model = CarouselSlide
@@ -73,11 +95,13 @@ class CarouselSlideInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'date_text', 'hover_description', 'image', 'vk_link', 'order')
 
+
 class FeatureInline(admin.TabularInline):
     model = Feature
     extra = 1
     ordering = ('order',)
     fields = ('title', 'description', 'icon', 'order')
+
 
 class GameTypeInline(admin.TabularInline):
     model = GameType
@@ -85,11 +109,13 @@ class GameTypeInline(admin.TabularInline):
     ordering = ('order',)
     fields = ('name', 'description', 'icon', 'order')
 
+
 class ProductInline(admin.TabularInline):
     model = Product
     extra = 1
     ordering = ('order',)
     fields = ('name', 'price', 'description', 'image', 'link', 'order')
+
 
 class GalleryItemInline(admin.TabularInline):
     model = GalleryItem
@@ -97,32 +123,24 @@ class GalleryItemInline(admin.TabularInline):
     extra = 10 
     ordering = ('order',)
 
+
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
     form = CompanyProfileForm
     readonly_fields = ('logo_image_preview','logo_image_light_preview','favicon_preview','vk_icon_preview','youtube_icon_preview','telegram_icon_preview','nav_toggle_icon_preview')
-    
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
         ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
-            'description': 'Здесь можно изменить ссылки и тексты для кнопок на сайте.', 
-            'fields': (
-                'orbibol_details_button_text', 
-                'market_link', 
-                'market_button_text',
-                'gallery_description', 
-                'gallery_button_link', 
-                'gallery_button_text'
-            )
+            'description': 'Настройки для секций "Маркет" и "Галерея".',
+            'fields': ('orbibol_details_button_text', 'market_link', 'market_button_text', 'gallery_description', 'gallery_button_link', 'gallery_button_text')
         }),
         ('Контакты и Соцсети', {'classes': ('collapse',), 'fields': ('contact_email', 'contact_phone', 'contact_address', 'vk_profile_link', 'telegram_profile_link', 'youtube_profile_link', ('vk_icon', 'vk_icon_preview'), ('youtube_icon', 'youtube_icon_preview'), ('telegram_icon', 'telegram_icon_preview'))}),
         ('Технические иконки', {'classes': ('collapse',),'fields': (('nav_toggle_icon', 'nav_toggle_icon_preview'),)})
     )
     
     inlines = [
-        SectionInline,
         CarouselSlideInline,
         OrbibolInfoInline,
         FeatureInline,
@@ -148,6 +166,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     def has_add_permission(self, request): return self.model.objects.count() == 0
     def has_delete_permission(self, request, obj=None): return False
 
+
 class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     model = BackgroundObject
     extra = 1
@@ -156,6 +175,7 @@ class BackgroundObjectInline(ImagePreviewAdminMixin, admin.TabularInline):
     ordering = ('order',)
     def image_preview(self, obj): return self.get_preview(obj, 'image', max_height=75)
     image_preview.short_description = 'Предпросмотр'
+
 
 @admin.register(BackgroundSettings)
 class BackgroundSettingsAdmin(ImagePreviewAdminMixin, admin.ModelAdmin):

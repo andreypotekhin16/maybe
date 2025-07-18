@@ -1,11 +1,15 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from .models import (
     CompanyProfile, OrbibolInfo, Feature, GameType, Product, GalleryItem,
-    BackgroundSettings, Section, CarouselSlide
+    BackgroundSettings, Section, CarouselSlide, SEOSettings
 )
 
 def home_page_view(request):
     company_profile = CompanyProfile.objects.first()
+    seo_settings = SEOSettings.objects.first()
+
     if company_profile:
         orbibol_info = getattr(company_profile, 'orbibol_info', None)
         features = company_profile.features.all()
@@ -17,10 +21,11 @@ def home_page_view(request):
         orbibol_info, features, game_types, products, gallery_items, carousel_slides = None, [], [], [], [], []
 
     background_settings = BackgroundSettings.objects.prefetch_related('background_objects').first()
-    sections = Section.objects.filter(is_active=True).all()
+    sections = Section.objects.filter(is_active=True).order_by('order')
 
     context = {
         'company_profile': company_profile,
+        'seo_settings': seo_settings,
         'orbibol_info': orbibol_info,
         'features': features,
         'game_types': game_types,
@@ -31,6 +36,18 @@ def home_page_view(request):
         'carousel_slides': carousel_slides,
     }
     return render(request, 'main/home_page.html', context)
+
+def robots_txt_view(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /admin/",
+        f"Sitemap: {request.build_absolute_uri('/sitemap.xml')}"
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+def sitemap_xml_view(request):
+    context = { 'url': request.build_absolute_uri('/') }
+    return HttpResponse(render_to_string('sitemap.xml', context), content_type='application/xml')
 
 def custom_handler404(request, exception):
     context = {

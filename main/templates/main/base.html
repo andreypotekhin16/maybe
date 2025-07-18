@@ -4,49 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% if company_profile.site_name %}{{ company_profile.site_name }}{% else %}Maybe - Игры и События{% endif %}{% endblock %}</title>
+
+    <!-- SEO -->
+    <title>{% if seo_settings.meta_title %}{{ seo_settings.meta_title }}{% else %}{{ company_profile.site_name|default:"Maybe - Игры и События" }}{% endif %}</title>
+    {% if seo_settings.meta_description %}<meta name="description" content="{{ seo_settings.meta_description }}">{% endif %}
+    {% if seo_settings.meta_keywords %}<meta name="keywords" content="{{ seo_settings.meta_keywords }}">{% endif %}
+    <meta property="og:title" content="{{ seo_settings.og_title|default:seo_settings.meta_title }}">
+    <meta property="og:description" content="{{ seo_settings.og_description|default:seo_settings.meta_description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    {% if seo_settings.og_image %}<meta property="og:image" content="{{ seo_settings.og_image.url }}">{% endif %}
+    {% if seo_settings.json_ld_schema %}<script type="application/ld+json">{{ seo_settings.json_ld_schema|safe }}</script>{% endif %}
     
+    {% if company_profile.favicon %}<link rel="icon" href="{{ company_profile.favicon.url }}">{% endif %}
+
+    <!-- Fonts & Styles -->
     {% if company_profile %}
         {% with header_f=company_profile.header_font body_f=company_profile.body_font %}
         {% if header_f != 'SUNDAY' and header_f != 'FortuneC' and body_f != 'SUNDAY' and body_f != 'FortuneC' and header_f != body_f %}
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family={{ header_f|urlencode }}:wght@400;700;900&family={{ body_f|urlencode }}:wght@400;700&display=swap" rel="stylesheet">
+            <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family={{ header_f|urlencode }}:wght@400;700;900&family={{ body_f|urlencode }}:wght@400;700&display=swap" rel="stylesheet">
         {% elif header_f != 'SUNDAY' and header_f != 'FortuneC' %}
-             <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family={{ header_f|urlencode }}:wght@400;700;900&display=swap" rel="stylesheet">
+            <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family={{ header_f|urlencode }}:wght@400;700;900&display=swap" rel="stylesheet">
         {% elif body_f != 'SUNDAY' and body_f != 'FortuneC' %}
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family={{ body_f|urlencode }}:wght@400;700&display=swap" rel="stylesheet">
+            <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family={{ body_f|urlencode }}:wght@400;700&display=swap" rel="stylesheet">
         {% endif %}
         {% endwith %}
     {% endif %}
-
     <style>
       :root {
         --font-headers: '{{ company_profile.header_font|default:"SUNDAY" }}', sans-serif;
         --font-body: '{{ company_profile.body_font|default:"FortuneC" }}', sans-serif;
       }
-      
       {% for font in custom_fonts %}
         @font-face {
             font-family: '{{ font.name }}';
-            src: 
-                {% if font.font_file_woff2 %}
-                    url('{{ font.font_file_woff2.url }}') format('woff2'),
-                {% endif %}
-                {% if font.font_file_woff %}
-                    url('{{ font.font_file_woff.url }}') format('woff'),
-                {% endif %}
-                {% if font.font_file_ttf %}
-                    url('{{ font.font_file_ttf.url }}') format('truetype'),
-                {% endif %}
-                {% if font.font_file_otf %}
-                    url('{{ font.font_file_otf.url }}') format('opentype'),
-                {% endif %}
-                ;
+            src: {% if font.font_file_woff2 %}url('{{ font.font_file_woff2.url }}') format('woff2'),{% endif %}
+                 {% if font.font_file_woff %}url('{{ font.font_file_woff.url }}') format('woff'),{% endif %}
+                 {% if font.font_file_ttf %}url('{{ font.font_file_ttf.url }}') format('truetype'),{% endif %}
+                 {% if font.font_file_otf %}url('{{ font.font_file_otf.url }}') format('opentype'),{% endif %}
+                 ;
         }
       {% endfor %}
     </style>
@@ -54,10 +50,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v={% now 'U' %}">
     
-    {% if company_profile.favicon %}
-        <link rel="icon" href="{{ company_profile.favicon.url }}">
-    {% endif %}
-
     {% block extra_head %}{% endblock %}
 </head>
 <body {% if background_settings %}data-background-enabled="true" data-pattern-url="{% if background_settings.background_pattern %}{{ background_settings.background_pattern.url }}{% endif %}" data-pattern-size="{{ background_settings.pattern_size|default:'200px' }}" data-pattern-opacity="{{ background_settings.pattern_opacity|stringformat:'.2f'|cut:',' }}" data-bg-color="{{ background_settings.background_color|default:'#010101' }}"{% endif %}>
@@ -93,16 +85,8 @@
             <nav class="main-nav">
                 <ul>
                     {% for section in nav_sections %}
-                        {% if section.section_type %}
-                            <li>
-                                <a href="/#{{ section.section_type }}-section">
-                                    {% if section.title %}
-                                        {{ section.title }}
-                                    {% else %}
-                                        {{ section.get_section_type_display }}
-                                    {% endif %}
-                                </a>
-                            </li>
+                        {% if section.is_active %}
+                            <li><a href="/#{{ section.section_type }}-section">{% if section.title %}{{ section.title }}{% else %}{{ section.get_section_type_display }}{% endif %}</a></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
