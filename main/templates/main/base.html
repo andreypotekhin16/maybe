@@ -106,15 +106,7 @@
         </div>
     </header>
 
-    <div id="mobile-nav-panel" class="mobile-nav-panel">
-        <nav>
-            <ul>
-                {% for section in nav_sections %}{% if section.is_active %}
-                    <li><a href="/#{{ section.section_type }}-section">{{ section.title|default:section.get_section_type_display }}</a></li>
-                {% endif %}{% endfor %}
-            </ul>
-        </nav>
-    </div>
+    <div id="mobile-nav-panel" class="mobile-nav-panel"></div>
 
     <main id="main-content">
         {% block content %}{% endblock %}

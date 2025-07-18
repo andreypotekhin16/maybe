@@ -6,8 +6,11 @@ import { initBubbleGallery } from './sections/gallery.js';
 function setupMobileNav() {
     const toggleButton = document.getElementById('mobile-nav-toggle');
     const mobilePanel = document.getElementById('mobile-nav-panel');
+    const desktopNav = document.querySelector('.main-nav');
     
-    if (!toggleButton || !mobilePanel) return;
+    if (!toggleButton || !mobilePanel || !desktopNav) return;
+
+    mobilePanel.innerHTML = desktopNav.innerHTML;
 
     toggleButton.addEventListener('click', () => {
         document.body.classList.toggle('mobile-nav-open');
