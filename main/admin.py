@@ -1,5 +1,3 @@
-# main/admin.py
-
 from django.contrib import admin
 from django.utils.html import mark_safe
 from django import forms
@@ -13,7 +11,7 @@ class CustomFontAdmin(admin.ModelAdmin):
     list_display = ('name', 'font_file_otf', 'font_file_ttf', 'font_file_woff', 'font_file_woff2')
 
 
-# === НОВАЯ ОТДЕЛЬНАЯ АДМИН-ПАНЕЛЬ ДЛЯ СЕКЦИЙ ===
+# === ОТДЕЛЬНАЯ АДМИН-ПАНЕЛЬ ДЛЯ РЕДАКТИРОВАНИЯ СЕКЦИЙ ===
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     # Поля, которые будут отображаться в списке

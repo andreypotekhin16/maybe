@@ -1,9 +1,8 @@
-# main/models.py
-
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from myproject.storages import RawMediaCloudinaryStorage
 
+# Создаем один экземпляр хранилища для переиспользования
 font_storage = RawMediaCloudinaryStorage()
 
 class CompanyProfile(models.Model):
@@ -68,7 +67,6 @@ class CompanyProfile(models.Model):
     def __str__(self):
         return self.site_name if self.site_name else "Настройки сайта"
 
-
 class CustomFont(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название шрифта (для CSS, напр. 'MyCoolFont')")
     font_file_otf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .otf', storage=font_storage)
@@ -82,7 +80,6 @@ class CustomFont(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class CarouselSlide(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='carousel_slides')
@@ -100,7 +97,6 @@ class CarouselSlide(models.Model):
 
     def __str__(self):
         return self.name
-
     
 class Section(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='sections')
@@ -114,10 +110,7 @@ class Section(models.Model):
         ('gallery', 'Фото и видео галерея'),
         ('contacts', 'Контакты'),
     ]
-    
-    # Возвращаем unique=True, как было изначально. Это важно.
     section_type = models.CharField(max_length=50, choices=SECTION_CHOICES, unique=True, verbose_name="Тип секции")
-    
     title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок секции", help_text="Оставьте пустым, чтобы использовать заголовок по умолчанию.")
     show_title = models.BooleanField(default=True, verbose_name="Показывать заголовок")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок отображения")
@@ -127,11 +120,9 @@ class Section(models.Model):
         verbose_name = "Секция на главной странице"
         verbose_name_plural = "Секции на главной странице"
         ordering = ['order']
-        # unique_together убираем, он больше не нужен.
 
     def __str__(self):
         return self.get_section_type_display()
-
 
 class Feature(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='features')
@@ -146,7 +137,6 @@ class Feature(models.Model):
     def __str__(self):
         return self.title
 
-
 class GameType(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='game_types')
     name = models.CharField(max_length=100, verbose_name="Название типа игры")
@@ -159,7 +149,6 @@ class GameType(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
-
 
 class Product(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='products')
@@ -175,7 +164,6 @@ class Product(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.name
-
 
 class GalleryItem(models.Model):
     company_profile = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='gallery_items')
@@ -195,7 +183,6 @@ class GalleryItem(models.Model):
             return f"Видео: {self.video.name}"
         return f"Элемент галереи #{self.pk}"
 
-
 class OrbibolInfo(models.Model):
     company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name='orbibol_info')
     general_info = models.TextField(verbose_name="Общая информация (первый абзац под заголовком 'Орбибол')")
@@ -212,7 +199,6 @@ class OrbibolInfo(models.Model):
     def __str__(self):
         return "Информация для секции Орбибол"
 
-
 class BackgroundSettings(models.Model):
     name = models.CharField(max_length=100, default="Основные настройки фона", verbose_name="Название набора настроек")
     background_pattern = models.FileField(upload_to='backgrounds/', blank=True, null=True, verbose_name="Паттерн фона (повторяющееся изображение)", help_text="Это изображение будет повторяться на фоне.")
@@ -224,7 +210,6 @@ class BackgroundSettings(models.Model):
         verbose_name_plural = "3. Настройки фона"
     def __str__(self):
         return self.name
-
 
 class BackgroundObject(models.Model):
     settings = models.ForeignKey(BackgroundSettings, on_delete=models.CASCADE, related_name='background_objects', verbose_name="Набор настроек")
