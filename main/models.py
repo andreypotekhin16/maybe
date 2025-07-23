@@ -11,6 +11,13 @@ class CompanyProfile(models.Model):
     favicon = models.FileField(upload_to='site_assets/', verbose_name="Фавикон", blank=True, null=True, help_text="Иконка для вкладки браузера (файл .ico, .png или .svg)")
     motto = models.CharField(max_length=255, blank=True, verbose_name="Девиз компании")
     about_us_text = models.TextField(blank=True, verbose_name="Текст 'О нас'")
+    
+    section_vertical_padding = models.PositiveIntegerField(
+        default=5, 
+        verbose_name="Вертикальный отступ секций (верх/низ)",
+        help_text="Укажите число. Значение будет использовано в 'rem' (например, 5 = 5rem). 1rem ~ 16px."
+    )
+    
     gallery_description = models.TextField(verbose_name='Описание для секции "Фото и видео галерея"', blank=True, null=True)
     contact_email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Контактный Email")
     contact_phone = models.CharField(max_length=50, blank=True, null=True, verbose_name="Контактный Телефон")
@@ -19,30 +26,10 @@ class CompanyProfile(models.Model):
     telegram_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль Telegram")
     youtube_profile_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка на профиль YouTube")
     market_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка \"Еще больше товаров\" в Маркете")
-    gallery_button_link = models.URLField(
-        max_length=250,
-        blank=True,
-        null=True,
-        verbose_name="Ссылка для кнопки 'Узнать подробнее' в галерее"
-    )
-    gallery_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-        default="Узнать подробнее",
-        verbose_name="Текст для кнопки в галерее"
-    )
-    orbibol_details_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-        default="Узнать подробнее",
-        verbose_name="Текст для кнопки 'Узнать подробнее' (Орбибол)"
-    )
-    market_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-        default="Еще больше товаров в нашем маркете",
-        verbose_name="Текст для ссылки 'Еще больше товаров' (Маркет)"
-    )
+    gallery_button_link = models.URLField(max_length=250, blank=True, null=True, verbose_name="Ссылка для кнопки 'Узнать подробнее' в галерее")
+    gallery_button_text = models.CharField(max_length=100, blank=True, default="Узнать подробнее", verbose_name="Текст для кнопки в галерее")
+    orbibol_details_button_text = models.CharField(max_length=100, blank=True, default="Узнать подробнее", verbose_name="Текст для кнопки 'Узнать подробнее' (Орбибол)")
+    market_button_text = models.CharField(max_length=100, blank=True, default="Еще больше товаров в нашем маркете", verbose_name="Текст для ссылки 'Еще больше товаров' (Маркет)")
 
     FONT_CHOICES = [
         ('SUNDAY', 'Sunday (встроенный)'),
@@ -53,18 +40,8 @@ class CompanyProfile(models.Model):
         ('Lobster', 'Lobster (Google)'),
     ]
 
-    header_font = models.CharField(
-        max_length=100,
-        default='SUNDAY',
-        verbose_name="Шрифт для заголовков (H1, H2 и т.д.)"
-    )
-    
-    body_font = models.CharField(
-        max_length=100,
-        default='FortuneC',
-        verbose_name="Шрифт для основного текста (параграфы)"
-    )
-
+    header_font = models.CharField(max_length=100, default='SUNDAY', verbose_name="Шрифт для заголовков (H1, H2 и т.д.)")
+    body_font = models.CharField(max_length=100, default='FortuneC', verbose_name="Шрифт для основного текста (параграфы)")
     vk_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка VK (SVG/PNG)", blank=True, null=True)
     youtube_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка YouTube (SVG/PNG)", blank=True, null=True)
     telegram_icon = models.FileField(upload_to='site_assets/', verbose_name="Иконка Telegram (SVG/PNG)", blank=True, null=True)

@@ -34,11 +34,14 @@
         {% endif %}
         {% endwith %}
     {% endif %}
+    
     <style>
       :root {
         --font-headers: '{{ company_profile.header_font|default:"SUNDAY" }}', sans-serif;
         --font-body: '{{ company_profile.body_font|default:"FortuneC" }}', sans-serif;
+        --section-vertical-padding: {{ company_profile.section_vertical_padding|default:5 }}rem;
       }
+      
       {% for font in custom_fonts %}
         @font-face {
             font-family: '{{ font.name }}';

@@ -240,8 +240,8 @@ ul {
 }
 
 main section { 
-    padding-top: 5rem; 
-    padding-bottom: 5rem; 
+    padding-top: var(--section-vertical-padding); 
+    padding-bottom: var(--section-vertical-padding); 
     position: relative; 
     background-color: transparent; 
 }
@@ -300,7 +300,6 @@ main section {
 .mobile-menu-indicator {
     display: none;
 }
-
 
 @media (max-width: 992px) {
     #site-header { cursor: pointer; }
@@ -365,16 +364,14 @@ main section {
     .mobile-nav-dropdown a {
         display: block;
         padding: 12px 0;
-        font-size: 1.3rem; /* Уменьшаем шрифт в меню */
+        font-size: 1.3rem;
     }
 }
-
 
 @media (max-width: 768px) {
     .error-code { font-size: 8rem; }
     .error-title { font-size: 2.2rem; }
     :root {
-        /* Значительно уменьшаем все основные шрифты */
         --fs-main-slogan: 2.2rem;
         --fs-about-text: 1.4rem;
         --fs-section-title: 1.8rem;
@@ -383,8 +380,8 @@ main section {
         --fs-button: 1.1rem;
     }
     main section {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
+        padding-top: calc(var(--section-vertical-padding) * 0.7);
+        padding-bottom: calc(var(--section-vertical-padding) * 0.7);
     }
     h2 {
         margin-bottom: 3rem;

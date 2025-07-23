@@ -133,7 +133,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Основные настройки сайта', {'fields': ('site_name',('logo_image', 'logo_image_preview'),('logo_image_light', 'logo_image_light_preview'),('favicon', 'favicon_preview'),)}),
-        ('Настройки шрифтов', {'fields': ('header_font', 'body_font')}),
+        ('Настройки шрифтов и вида', {'fields': ('header_font', 'body_font', 'section_vertical_padding')}),
         ('Секция "О нас"', {'fields': ('motto', 'about_us_text')}),
         ('Настройки других секций', {
             'description': 'Здесь можно изменить ссылки и тексты для кнопок на сайте.', 
