@@ -301,9 +301,26 @@ main section {
     display: none;
 }
 
+
 @media (max-width: 992px) {
-    #site-header { cursor: pointer; }
+    #site-header {
+        cursor: pointer;
+        height: 70px;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+    }
     .main-nav { display: none; }
+    
+    .header-container {
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    #site-header .logo img {
+        height: 40px !important;
+    }
+
     .header-center-text { 
         opacity: 1;
         pointer-events: all;
@@ -311,37 +328,41 @@ main section {
         transform: none;
         margin: 0 auto;
     }
+    
     .mobile-menu-indicator {
         display: flex;
         align-items: center;
         justify-content: center;
         transition: transform 0.4s ease-in-out;
+        width: 40px;
+        height: 40px;
     }
     .mobile-menu-indicator img {
-        height: 24px;
-        width: auto;
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
     }
-    .header-container {
-        justify-content: space-between;
-    }
+    
     #site-header.header-collapsed {
-        padding: var(--header-padding-hover) 0;
+        padding: 0 !important;
     }
     #site-header.header-collapsed .logo img {
-        height: var(--logo-height-hover);
+        height: 40px !important;
     }
+    
     #site-header.mobile-menu-open {
         background-color: var(--color-black-bg);
-        padding-bottom: 0;
+        height: auto;
     }
     #site-header.mobile-menu-open .mobile-nav-dropdown {
         display: block;
-        max-height: 500px;
+        max-height: 100vh;
         padding: 10px 0;
     }
     #site-header.mobile-menu-open .mobile-menu-indicator {
         transform: rotate(180deg);
     }
+
     .mobile-nav-dropdown {
         width: 100%;
         background-color: var(--color-black-bg);
@@ -367,6 +388,7 @@ main section {
         font-size: 1.3rem;
     }
 }
+
 
 @media (max-width: 768px) {
     .error-code { font-size: 8rem; }
