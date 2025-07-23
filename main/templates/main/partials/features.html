@@ -8,7 +8,12 @@
                 <div class="feature-item">
                     <div class="feature-icon-wrapper">
                         {% if feature.icon %}
-                            <img src="{{ feature.icon.url|slice:'0:45' }}w_200,f_auto,q_auto/{{ feature.icon.url|slice:'46:' }}" alt="{{ feature.title }}">
+                            {# === ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ОПТИМИЗАЦИИ ИЗОБРАЖЕНИЙ === #}
+                            {% with 'image/upload/' as find_str %}
+                                {% with 'image/upload/w_200,f_auto,q_auto/' as replace_str %}
+                                    <img src="{{ feature.icon.url|slice:'0:45' }}{{ 'w_200,f_auto,q_auto/' }}{{ feature.icon.url|slice:'46:' }}" alt="{{ feature.title }}">
+                                {% endwith %}
+                            {% endwith %}
                         {% endif %}
                     </div>
                     <div class="feature-text-content">
