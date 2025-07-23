@@ -67,7 +67,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 main {
-    padding-top: 120px; /* ИЗМЕНЕНИЕ 1: Добавляем отступ для контента */
     transition: padding-top var(--header-transition-duration) ease-in-out;
     position: relative; 
     z-index: 1;
@@ -172,11 +171,11 @@ ul {
 }
 #site-header .main-nav ul { 
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* <-- ИЗМЕНЕНИЕ 1: Запрещаем перенос пунктов */
     justify-content: flex-start;
     gap: 0.5rem 3rem; 
     padding: 0;
-    transition: opacity var(--header-transition-duration) ease, gap 0.3s ease;
+    transition: opacity var(--header-transition-duration) ease, gap 0.3s ease; /* Добавили плавность для gap */
 }
 #site-header .main-nav a {
     font-family: var(--font-body); 
@@ -245,7 +244,6 @@ main section {
     padding-bottom: var(--section-vertical-padding); 
     position: relative; 
     background-color: transparent; 
-    scroll-margin-top: 90px; /* ИЗМЕНЕНИЕ 2: Решает проблему с прыжком к якорю */
 }
 
 #site-footer-bottom {
@@ -303,28 +301,29 @@ main section {
     display: none;
 }
 
+/* ======================================================= */
+/* === ИЗМЕНЕНИЕ 2: НОВЫЙ БЛОК ДЛЯ СРЕДНИХ ЭКРАНОВ === */
+/* ======================================================= */
 @media (max-width: 1200px) and (min-width: 993px) {
     #site-header .main-nav ul {
-        gap: 0.5rem 1.5rem; 
+        gap: 0.5rem 1.5rem; /* Уменьшаем горизонтальный отступ между пунктами меню */
     }
 }
 
 @media (max-width: 992px) {
-    main {
-        padding-top: 70px; /* ИЗМЕНЕНИЕ 3: Фиксированный отступ для мобильной шапки */
-    }
-
+    /* --- НАСТРОЙКИ ШАПКИ --- */
     #site-header {
-        position: fixed;
+        position: fixed; /* Убедимся, что шапка прилипает */
         top: 0;
         left: 0;
         width: 100%;
         z-index: 1000;
-        background-color: var(--color-black-bg) !important;
-        padding: 0 !important;
-        transition: min-height 0.4s ease-in-out;
+        background-color: var(--color-black-bg) !important; /* Фон всегда темный */
+        padding: 0 !important; /* Убираем все отступы, так как высота будет фиксированной */
+        transition: min-height 0.4s ease-in-out; /* Плавный переход для высоты */
     }
     
+    /* Убираем десктопные эффекты */
     #site-header.header-collapsed,
     #site-header.header-active {
         padding: 0 !important;
@@ -333,43 +332,46 @@ main section {
     .header-container {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-between; /* Главное свойство для расстановки элементов */
         width: 100%;
-        height: 70px;
-        padding: 0 15px;
+        height: 70px; /* Фиксированная высота шапки */
+        padding: 0 15px; /* Боковые отступы */
     }
 
+    /* 1. Логотип (слева) */
     #site-header .logo {
-        flex-shrink: 0;
+        flex-shrink: 0; /* Не сжиматься */
     }
     #site-header .logo img {
-        height: 40px !important;
-        transition: none;
+        height: 40px !important; /* Фиксированный размер лого */
+        transition: none; /* Убираем анимацию размера */
     }
 
+    /* 2. Центральный текст */
     .header-center-text {
-        display: block;
-        position: static;
-        transform: none;
+        display: block; /* Показываем текст */
+        position: static; /* Убираем абсолютное позиционирование */
+        transform: none; /* Убираем трансформацию */
         opacity: 1;
         pointer-events: all;
-        text-align: center;
-        flex-grow: 1;
-        padding: 0 10px;
+        text-align: center; /* Центрируем текст внутри его блока */
+        flex-grow: 1; /* Позволяем ему занять все свободное место в центре */
+        padding: 0 10px; /* Небольшие отступы, чтобы не прилипал к краям */
     }
 
+    /* 3. Кнопка-бургер (справа) */
     .mobile-nav-toggle {
-        display: flex;
+        display: flex; /* Используем flex для центрирования иконки */
         align-items: center;
         justify-content: center;
-        position: static;
-        transform: none;
+        position: static; /* Убираем абсолютное позиционирование */
+        transform: none; /* Убираем трансформацию */
         background: transparent;
         border: none;
         cursor: pointer;
         z-index: 1002;
         padding: 10px;
-        width: 50px;
+        width: 50px; /* Задаем фиксированную ширину */
         height: 50px;
     }
     .mobile-nav-toggle span { 
@@ -380,18 +382,18 @@ main section {
         margin: 6px 0; 
         transition: all 0.3s ease-in-out; 
     }
-    
+    /* Анимация бургера в крестик */
     body.mobile-menu-open .mobile-nav-toggle span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
     body.mobile-menu-open .mobile-nav-toggle span:nth-child(2) { opacity: 0; }
     body.mobile-menu-open .mobile-nav-toggle span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
 
-    
+    /* --- ВЫПАДАЮЩЕЕ МЕНЮ --- */
     .mobile-nav-dropdown {
-        display: block;
+        display: block; /* Показываем блок */
         width: 100%;
         background-color: var(--color-black-bg);
         border-top: 1px solid rgba(var(--color-green-accent-rgb), 0.3);
-        max-height: 0;
+        max-height: 0; /* Изначально скрыто */
         overflow: hidden;
         transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
         padding: 0;
@@ -409,10 +411,11 @@ main section {
 
     /* Когда меню открыто */
     #site-header.mobile-menu-open .mobile-nav-dropdown {
-        max-height: 80vh;
+        max-height: 80vh; /* Раскрываем меню (можно задать больше, если пунктов много) */
         padding: 10px 0;
     }
     
+    /* Скрываем десктопную навигацию */
     .main-nav { 
         display: none; 
     }

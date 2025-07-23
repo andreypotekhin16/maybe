@@ -89,16 +89,22 @@
             
             <div class="header-center-text">May be</div>
 
-            <!-- 
-            ЭТО ГЛАВНЫЙ БЛОК! 
-            Именно отсюда JavaScript будет копировать меню.
-            Он уже динамический и берет данные из `nav_sections`
-            -->
             <nav class="main-nav">
                 <ul>
-                    {% for section in nav_sections %}{% if section.is_active %}
-                        <li><a href="/#{{ section.section_type }}-section">{{ section.title|default:section.get_section_type_display }}</a></li>
-                    {% endif %}{% endfor %}
+                    {% for section in nav_sections %}
+                        {% if section.is_active %}
+                            <li>
+                                {# Вот наше условие-"костыль" #}
+                                {% if section.section_type == 'about_us' %}
+                                    {# Если это секция "О нас", ссылка ведет на главную, как логотип #}
+                                    <a href="/">{{ section.title|default:section.get_section_type_display }}</a>
+                                {% else %}
+                                    {# Для всех остальных секций ссылка ведет на якорь #}
+                                    <a href="/#{{ section.section_type }}-section">{{ section.title|default:section.get_section_type_display }}</a>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
             </nav>
 
@@ -111,10 +117,6 @@
             </button>
         </div>
         
-        <!-- 
-        ЭТОТ БЛОК ДОЛЖЕН БЫТЬ ПУСТЫМ! 
-        JavaScript сам вставит сюда скопированное меню.
-        -->
         <div id="mobile-nav-dropdown" class="mobile-nav-dropdown"></div>
     </header>
 
