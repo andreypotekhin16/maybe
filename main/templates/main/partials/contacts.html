@@ -4,7 +4,7 @@
                 <h2>{{ section.title|default:"Контакты" }}</h2>
             {% endif %}
             {% if company_profile %}
-                <p><strong>Адрес:</strong><br>{{ company_profile.contact_address|linebreaksbr }}</p>
+                <p><strong>Адрес:</strong><br><a href="https://yandex.ru/maps/?text={{ company_profile.contact_address|urlencode }}" target="_blank" rel="noopener noreferrer">{{ company_profile.contact_address|linebreaksbr }}</a></p>
                 <p><strong>Телефон:</strong><br><a href="tel:{{ company_profile.contact_phone }}">{{ company_profile.contact_phone }}</a></p>
                 <p><strong>Email:</strong><br><a href="mailto:{{ company_profile.contact_email }}">{{ company_profile.contact_email }}</a></p>
                 
