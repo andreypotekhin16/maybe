@@ -411,7 +411,7 @@ main section {
 
     /* Когда меню открыто */
     #site-header.mobile-menu-open .mobile-nav-dropdown {
-        max-height: 50vh; /* Раскрываем меню (можно задать больше, если пунктов много) */
+        max-height: 80vh; /* Раскрываем меню (можно задать больше, если пунктов много) */
         padding: 10px 0;
     }
     
