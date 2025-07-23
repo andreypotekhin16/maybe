@@ -407,28 +407,27 @@ main section {
 }
 
 @media (max-width: 768px) {
-    /* Уменьшаем базовый размер шрифта, чтобы все rem-единицы стали меньше */
     html {
-        font-size: 14px; /* Было 16px, это уменьшит всё примерно на 12.5% */
+        font-size: 13px; /* Было 14px */
     }
 
-    .error-code { font-size: 6rem; } /* Уменьшаем */
-    .error-title { font-size: 2rem; } /* Уменьшаем */
+    .error-code { font-size: 5rem; } 
+    .error-title { font-size: 1.8rem; } 
 
     :root {
-        --fs-main-slogan: 1.9rem;      /* Было 2.2rem */
-        --fs-about-text: 1.25rem;     /* Было 1.4rem */
-        --fs-section-title: 1.6rem;   /* Было 1.8rem */
-        --fs-subsection-title: 1.3rem;/* Было 1.5rem */
-        --fs-body: 1.0rem;            /* Было 1.1rem */
-        --fs-button: 1.0rem;          /* Было 1.1rem */
+        --fs-main-slogan: 1.8rem;
+        --fs-about-text: 1.2rem;
+        --fs-section-title: 1.5rem;
+        --fs-subsection-title: 1.2rem;
+        --fs-body: 0.95rem;
+        --fs-button: 0.95rem;
     }
 
     main section {
-        padding-top: calc(var(--section-vertical-padding) * 0.6); /* Можно еще немного уменьшить отступы */
-        padding-bottom: calc(var(--section-vertical-padding) * 0.6);
+        padding-top: calc(var(--section-vertical-padding) * 0.5);
+        padding-bottom: calc(var(--section-vertical-padding) * 0.5);
     }
     h2 {
-        margin-bottom: 2.5rem; /* Уменьшаем отступ под заголовками */
+        margin-bottom: 2rem;
     }
 }
