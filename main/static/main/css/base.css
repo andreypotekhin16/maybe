@@ -171,11 +171,11 @@ ul {
 }
 #site-header .main-nav ul { 
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between; /* <-- ИСПРАВЛЕНИЕ ЗДЕСЬ */
-    gap: 0.5rem 1.5rem; /* <-- Оставим уменьшенный gap, так лучше */
+    flex-wrap: wrap; /* <-- ВОЗВРАЩАЕМ КАК БЫЛО */
+    justify-content: flex-start;
+    gap: 0.5rem 3rem; 
     padding: 0;
-    transition: opacity var(--header-transition-duration) ease, gap 0.3s ease;
+    transition: opacity var(--header-transition-duration) ease;
 }
 #site-header .main-nav a {
     font-family: var(--font-body); 
@@ -299,12 +299,6 @@ main section {
 .mobile-nav-dropdown,
 .mobile-menu-indicator {
     display: none;
-}
-
-@media (max-width: 1200px) and (min-width: 993px) {
-    #site-header .main-nav ul {
-        gap: 0.5rem 1.5rem; 
-    }
 }
 
 @media (max-width: 992px) {
