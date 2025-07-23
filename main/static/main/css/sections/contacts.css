@@ -1,6 +1,18 @@
-.section-contacts p { margin-bottom: 0.75rem; }
-.section-contacts a { color: var(--color-green-accent); text-decoration: underline; }
-.section-contacts a:hover { text-decoration: none; }
+
+
+.section-contacts p { 
+    margin-bottom: 1.5rem; 
+}
+
+
+.section-contacts p a { 
+    color: var(--color-green-accent); 
+    text-decoration: underline; 
+}
+
+.section-contacts p a:hover { 
+    text-decoration: none; 
+}
 
 .social-icons-footer {
     display: flex;
@@ -8,6 +20,7 @@
     gap: 1.5rem;
     margin-top: 2rem;
 }
+
 .social-icons-footer a {
     text-decoration: none;
 }
