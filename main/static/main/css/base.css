@@ -67,7 +67,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 main {
-    padding-top: 120px; /* ВОЗВРАЩАЕМ ОТСТУП ДЛЯ КОНТЕНТА */
+    padding-top: 120px;
     position: relative; 
     z-index: 1;
     background-color: transparent; 
@@ -244,7 +244,7 @@ main section {
     padding-bottom: var(--section-vertical-padding); 
     position: relative; 
     background-color: transparent; 
-    scroll-margin-top: 90px; /* Для корректной работы якорных ссылок */
+    scroll-margin-top: 90px;
 }
 
 #site-footer-bottom {
@@ -304,7 +304,7 @@ main section {
 
 @media (max-width: 992px) {
     main {
-        padding-top: 70px; /* Отступ для мобильной шапки */
+        padding-top: 70px;
     }
 
     #site-header {
@@ -415,10 +415,10 @@ main section {
     .error-title { font-size: 1.8rem; } 
 
     :root {
-        --fs-main-slogan: 1.8rem;
+        --fs-main-slogan: 2.0rem;
         --fs-about-text: 1.2rem;
-        --fs-section-title: 1.5rem;
-        --fs-subsection-title: 1.2rem;
+        --fs-section-title: 1.9rem;
+        --fs-subsection-title: 1.7rem;
         --fs-body: 0.95rem;
         --fs-button: 0.95rem;
     }
