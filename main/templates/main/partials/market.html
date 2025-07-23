@@ -20,6 +20,7 @@
                         <p class="product-description">{{ product.description }}</p>
                         <div class="product-price">{{ product.price }} ₽</div>
                     </div>
+                   
                     <div class="product-button-wrapper">
                         <a href="{{ product.link|default:'#' }}" class="market-product-link" target="_blank" rel="noopener noreferrer">
                             {{ product.button_text|default:"Заказать игру" }}
@@ -30,10 +31,14 @@
                  <p>Товары не добавлены.</p>
             {% endfor %}
         </div>
+        
+       
+        {% comment %}
         {% if company_profile.market_link %}
             <a href="{{ company_profile.market_link }}" class="market-more-link" target="_blank" rel="noopener noreferrer">
                 {{ company_profile.market_button_text|default:"Еще больше товаров в нашем маркете" }}
             </a>
         {% endif %}
+        {% endcomment %}
     </div>
 </section>
