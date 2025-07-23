@@ -1,5 +1,7 @@
+
+
 .section-games h2 {
-    /* Пусто */
+    
 }
 
 .games-grid { 
@@ -51,9 +53,6 @@
 }
 
 @media (max-width: 576px) {
-    .games-grid {
-        grid-template-columns: 1fr;
-    }
     .game-type-item {
         flex-direction: column;
         text-align: center;

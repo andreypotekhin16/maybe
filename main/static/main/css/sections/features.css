@@ -55,9 +55,6 @@
 }
 
 @media (max-width: 576px) {
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
     .feature-item {
         flex-direction: column;
         text-align: center;
