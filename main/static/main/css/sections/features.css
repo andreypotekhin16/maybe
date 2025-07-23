@@ -4,8 +4,9 @@
 }
 
 .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
     gap: 3.5rem 5rem; 
 }
 
@@ -15,6 +16,7 @@
     align-items: center; 
     text-align: left; 
     gap: 2rem;
+    max-width: 500px;
 }
 
 .feature-icon-wrapper {
@@ -48,13 +50,6 @@
     line-height: 1.6;
 }
 
-@media (max-width: 992px) {
-    .features-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 колонки для планшетов и телефонов */
-        gap: 2.5rem 2rem;
-    }
-}
-
 @media (max-width: 576px) {
     .feature-item {
         flex-direction: column;
@@ -62,9 +57,5 @@
     }
     .section-features h2 {
         margin-bottom: 3rem;
-    }
-    /* Дополнительно: на самых маленьких экранах лучше 1 колонка */
-    .features-grid {
-        grid-template-columns: 1fr;
     }
 }
