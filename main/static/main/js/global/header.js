@@ -6,8 +6,9 @@ export function setupHeader() {
 
     if (!siteHeader || !toggleButton || !mobileDropdown || !desktopNav) return;
 
+   
     mobileDropdown.innerHTML = desktopNav.innerHTML;
-
+    
     const scrollThreshold = 100;
     const activeThreshold = 10;
     const isMobile = () => window.innerWidth <= 992;
