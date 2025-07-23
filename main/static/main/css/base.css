@@ -171,11 +171,11 @@ ul {
 }
 #site-header .main-nav ul { 
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: nowrap; /* <-- ИЗМЕНЕНИЕ 1: Запрещаем перенос пунктов */
     justify-content: flex-start;
     gap: 0.5rem 3rem; 
     padding: 0;
-    transition: opacity var(--header-transition-duration) ease;
+    transition: opacity var(--header-transition-duration) ease, gap 0.3s ease; /* Добавили плавность для gap */
 }
 #site-header .main-nav a {
     font-family: var(--font-body); 
@@ -301,9 +301,15 @@ main section {
     display: none;
 }
 
-/* =================================== */
-/* === СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ === */
-/* =================================== */
+/* ======================================================= */
+/* === ИЗМЕНЕНИЕ 2: НОВЫЙ БЛОК ДЛЯ СРЕДНИХ ЭКРАНОВ === */
+/* ======================================================= */
+@media (max-width: 1200px) and (min-width: 993px) {
+    #site-header .main-nav ul {
+        gap: 0.5rem 1.5rem; /* Уменьшаем горизонтальный отступ между пунктами меню */
+    }
+}
+
 @media (max-width: 992px) {
     /* --- НАСТРОЙКИ ШАПКИ --- */
     #site-header {
@@ -353,19 +359,19 @@ main section {
         padding: 0 10px; /* Небольшие отступы, чтобы не прилипал к краям */
     }
 
-    
+    /* 3. Кнопка-бургер (справа) */
     .mobile-nav-toggle {
-        display: flex; 
+        display: flex; /* Используем flex для центрирования иконки */
         align-items: center;
         justify-content: center;
-        position: static; 
-        transform: none; 
+        position: static; /* Убираем абсолютное позиционирование */
+        transform: none; /* Убираем трансформацию */
         background: transparent;
         border: none;
         cursor: pointer;
         z-index: 1002;
         padding: 10px;
-        width: 50px; 
+        width: 50px; /* Задаем фиксированную ширину */
         height: 50px;
     }
     .mobile-nav-toggle span { 
@@ -376,18 +382,18 @@ main section {
         margin: 6px 0; 
         transition: all 0.3s ease-in-out; 
     }
- 
+    /* Анимация бургера в крестик */
     body.mobile-menu-open .mobile-nav-toggle span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
     body.mobile-menu-open .mobile-nav-toggle span:nth-child(2) { opacity: 0; }
     body.mobile-menu-open .mobile-nav-toggle span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
 
-    
+    /* --- ВЫПАДАЮЩЕЕ МЕНЮ --- */
     .mobile-nav-dropdown {
-        display: block; 
+        display: block; /* Показываем блок */
         width: 100%;
         background-color: var(--color-black-bg);
         border-top: 1px solid rgba(var(--color-green-accent-rgb), 0.3);
-        max-height: 0; 
+        max-height: 0; /* Изначально скрыто */
         overflow: hidden;
         transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
         padding: 0;
@@ -403,13 +409,13 @@ main section {
     .mobile-nav-dropdown li { width: 100%; text-align: center; }
     .mobile-nav-dropdown a { display: block; padding: 12px 0; font-size: 1.3rem; }
 
-   
+    /* Когда меню открыто */
     #site-header.mobile-menu-open .mobile-nav-dropdown {
-        max-height: 50vh; 
+        max-height: 50vh; /* Раскрываем меню (можно задать больше, если пунктов много) */
         padding: 10px 0;
     }
     
-  
+    /* Скрываем десктопную навигацию */
     .main-nav { 
         display: none; 
     }
