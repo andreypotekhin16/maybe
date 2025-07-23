@@ -1,10 +1,10 @@
 export function setupHeader() {
     const siteHeader = document.getElementById('site-header');
-    const headerContainer = document.querySelector('.header-container'); // Кликабельная область
+    const toggleButton = document.getElementById('mobile-nav-toggle');
     const mobileDropdown = document.getElementById('mobile-nav-dropdown');
     const desktopNav = document.querySelector('.main-nav');
 
-    if (!siteHeader || !headerContainer || !mobileDropdown || !desktopNav) return;
+    if (!siteHeader || !toggleButton || !mobileDropdown || !desktopNav) return;
 
     mobileDropdown.innerHTML = desktopNav.innerHTML;
 
@@ -24,18 +24,15 @@ export function setupHeader() {
         siteHeader.classList.toggle('header-collapsed', isCollapsed && !siteHeader.classList.contains('mouse-over'));
     }
 
-    headerContainer.addEventListener('click', (event) => {
-        if (!isMobile()) return;
-        
-        if (event.target.closest('a.logo')) {
-            return; // Позволяем перейти по ссылке логотипа
-        }
-        
+    toggleButton.addEventListener('click', (event) => {
+        event.stopPropagation();
         siteHeader.classList.toggle('mobile-menu-open');
+        document.body.classList.toggle('mobile-menu-open');
     });
 
     const closeMobileMenu = () => {
         siteHeader.classList.remove('mobile-menu-open');
+        document.body.classList.remove('mobile-menu-open');
     };
 
     mobileDropdown.querySelectorAll('a').forEach(link => {

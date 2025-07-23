@@ -97,11 +97,13 @@
                 </ul>
             </nav>
 
-            <div class="mobile-menu-indicator">
-                {% if company_profile.mobile_menu_indicator_icon %}
-                    <img src="{{ company_profile.mobile_menu_indicator_icon.url }}" alt="Раскрыть меню">
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Открыть меню">
+                {% if company_profile.nav_toggle_icon %}
+                    <img src="{{ company_profile.nav_toggle_icon.url }}" alt="Меню">
+                {% else %}
+                    <span></span><span></span><span></span>
                 {% endif %}
-            </div>
+            </button>
         </div>
         
         <div id="mobile-nav-dropdown" class="mobile-nav-dropdown"></div>
