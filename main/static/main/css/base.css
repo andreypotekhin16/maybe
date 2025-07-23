@@ -67,6 +67,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 main {
+    padding-top: 120px; /* ИЗМЕНЕНИЕ 1: Добавляем отступ для контента */
     transition: padding-top var(--header-transition-duration) ease-in-out;
     position: relative; 
     z-index: 1;
@@ -244,6 +245,7 @@ main section {
     padding-bottom: var(--section-vertical-padding); 
     position: relative; 
     background-color: transparent; 
+    scroll-margin-top: 90px; /* ИЗМЕНЕНИЕ 2: Решает проблему с прыжком к якорю */
 }
 
 #site-footer-bottom {
@@ -302,6 +304,10 @@ main section {
 }
 
 @media (max-width: 992px) {
+    main {
+        padding-top: 70px; /* ИЗМЕНЕНИЕ 3: Фиксированный отступ для мобильной шапки */
+    }
+
     #site-header {
         position: fixed;
         top: 0;
@@ -408,7 +414,7 @@ main section {
 
 @media (max-width: 768px) {
     html {
-        font-size: 13px; /* Было 14px */
+        font-size: 13px;
     }
 
     .error-code { font-size: 5rem; } 
