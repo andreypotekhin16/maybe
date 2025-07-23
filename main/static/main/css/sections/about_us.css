@@ -53,17 +53,20 @@
 
 @media (max-width: 768px) {
     .section-about-us {
-        align-items: center;
-        text-align: center;
+        align-items: flex-start; /* ИЗМЕНЕНИЕ: выравниваем по левому краю */
+        text-align: left;      /* ИЗМЕНЕНИЕ: выравниваем текст по левому краю */
+        padding-top: 4rem;     /* ИЗМЕНЕНИЕ: Уменьшаем отступ сверху */
+        padding-bottom: 4rem;  /* ИЗМЕНЕНИЕ: Уменьшаем отступ снизу для баланса */
+        justify-content: flex-start; /* Добавляем, чтобы контент начинался сверху */
     }
     .about-us-content {
         padding: 0 15px; 
     }
     .about-us-social-icons {
-        justify-content: center;
-        gap: 2rem;
+        justify-content: flex-start; /* ИЗМЕНЕНИЕ: иконки тоже по левому краю */
+        gap: 1.5rem; /* Немного уменьшим отступ между иконками */
     }
     .section-about-us .about-us-text {
-        text-align: center;
+        text-align: left; /* ИЗМЕНЕНИЕ: и текст внутри блока тоже */
     }
 }
