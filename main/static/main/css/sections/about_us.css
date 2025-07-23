@@ -53,20 +53,21 @@
 
 @media (max-width: 768px) {
     .section-about-us {
-        align-items: flex-start; /* ИЗМЕНЕНИЕ: выравниваем по левому краю */
-        text-align: left;      /* ИЗМЕНЕНИЕ: выравниваем текст по левому краю */
-        padding-top: 4rem;     /* ИЗМЕНЕНИЕ: Уменьшаем отступ сверху */
-        padding-bottom: 4rem;  /* ИЗМЕНЕНИЕ: Уменьшаем отступ снизу для баланса */
-        justify-content: flex-start; /* Добавляем, чтобы контент начинался сверху */
+        min-height: auto; /* ИЗМЕНЕНИЕ: Убираем мин. высоту, чтобы секция не растягивалась */
+        align-items: flex-start;
+        text-align: left;
+        padding-top: 4rem; /* Оставляем уменьшенный отступ сверху, чтобы было близко к шапке */
+        padding-bottom: var(--section-vertical-padding); /* ИЗМЕНЕНИЕ: Теперь нижний отступ берется из админки! */
+        justify-content: flex-start;
     }
     .about-us-content {
-        padding: 0 15px; 
+        padding: 0; /* Убираем лишние боковые отступы, так как они есть у .container */
     }
     .about-us-social-icons {
-        justify-content: flex-start; /* ИЗМЕНЕНИЕ: иконки тоже по левому краю */
-        gap: 1.5rem; /* Немного уменьшим отступ между иконками */
+        justify-content: flex-start;
+        gap: 1.5rem;
     }
     .section-about-us .about-us-text {
-        text-align: left; /* ИЗМЕНЕНИЕ: и текст внутри блока тоже */
+        text-align: left;
     }
 }
