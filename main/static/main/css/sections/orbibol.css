@@ -3,7 +3,7 @@
 }
 
 #orbibol-section h2 {
-    color: var(--color-white);
+    /* Пусто */
 }
 
 .orbibol-general-info { 
@@ -61,11 +61,10 @@
     line-height: 1.6;
 }
 
-/* ИЗМЕНЕНИЕ ЗДЕСЬ */
 .orbibol-details-link {
     display: inline-block;
     color: var(--color-green-accent);
-    font-family: var(--font-headers); /* Было: var(--font-sunday) */
+    font-family: var(--font-headers);
     font-size: 1.25rem;
     text-transform: uppercase;
     text-decoration: none;

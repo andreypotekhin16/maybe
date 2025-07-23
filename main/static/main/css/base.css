@@ -67,7 +67,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 main {
-    padding-top: 120px; /* ИЗМЕНЕНИЕ 1: Добавляем отступ для контента */
     transition: padding-top var(--header-transition-duration) ease-in-out;
     position: relative; 
     z-index: 1;
@@ -84,6 +83,7 @@ h2 {
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 4rem;
+    color: var(--color-green-accent);
 }
 a {
     color: inherit;
@@ -245,7 +245,6 @@ main section {
     padding-bottom: var(--section-vertical-padding); 
     position: relative; 
     background-color: transparent; 
-    scroll-margin-top: 90px; /* ИЗМЕНЕНИЕ 2: Решает проблему с прыжком к якорю */
 }
 
 #site-footer-bottom {
@@ -304,10 +303,6 @@ main section {
 }
 
 @media (max-width: 992px) {
-    main {
-        padding-top: 70px; /* ИЗМЕНЕНИЕ 3: Фиксированный отступ для мобильной шапки */
-    }
-
     #site-header {
         position: fixed;
         top: 0;
@@ -401,7 +396,6 @@ main section {
     .mobile-nav-dropdown li { width: 100%; text-align: center; }
     .mobile-nav-dropdown a { display: block; padding: 12px 0; font-size: 1.3rem; }
 
-    /* Когда меню открыто */
     #site-header.mobile-menu-open .mobile-nav-dropdown {
         max-height: 80vh;
         padding: 10px 0;
