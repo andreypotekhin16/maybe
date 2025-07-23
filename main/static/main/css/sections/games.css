@@ -1,7 +1,7 @@
-
+/* main/static/main/css/sections/games.css */
 
 .section-games h2 {
-    
+    /* Пусто */
 }
 
 .games-grid { 
@@ -50,6 +50,19 @@
     font-size: 1.1rem;
     line-height: 1.6;
     color: var(--color-white);
+}
+
+@media (max-width: 992px) {
+    .games-grid {
+        gap: 2.5rem 1rem;
+    }
+    .game-type-item {
+        gap: 1rem;
+    }
+    .game-type-item .game-type-icon-wrapper {
+        width: 120px;
+        height: 120px;
+    }
 }
 
 @media (max-width: 576px) {
