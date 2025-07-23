@@ -304,62 +304,47 @@ main section {
 
 @media (max-width: 992px) {
     #site-header {
-        cursor: pointer;
-        padding: 0 !important;
         background-color: var(--color-black-bg) !important;
+        padding: 0 !important;
         min-height: 70px;
         display: flex;
         align-items: center;
-        transition: min-height 0.4s ease-in-out;
     }
-    .main-nav { display: none; }
-    
     .header-container {
-        justify-content: space-between;
-        width: 100%;
-        flex-wrap: wrap; /* Добавлено для правильного переноса */
+        flex-wrap: nowrap;
     }
-    
+    .main-nav, .header-center-text { 
+        display: none; 
+    }
+    #site-header .logo {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
     #site-header .logo img {
         height: 40px !important;
     }
-
-    .header-center-text { 
-        opacity: 1;
-        pointer-events: all;
-        position: static;
-        transform: none;
-        margin: 0 auto;
-        padding-left: 50px;
-        padding-right: 50px;
-        text-align: center;
+    .mobile-nav-toggle { 
+        display: block; 
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
     }
-    
     .mobile-menu-indicator {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.4s ease-in-out;
-        width: 40px;
-        height: 40px;
-    }
-    .mobile-menu-indicator img {
-        height: 100%;
-        width: 100%;
-        object-fit: contain;
+        display: none;
     }
     
-    #site-header.header-collapsed { padding: 0 !important; }
-    #site-header.header-collapsed .logo img { height: 40px !important; }
-    #site-header.header-collapsed .header-center-text { opacity: 1; }
-
     .mobile-nav-dropdown {
+        display: block;
         width: 100%;
         background-color: var(--color-black-bg);
         border-top: 1px solid rgba(var(--color-green-accent-rgb), 0.3);
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+        padding: 0;
     }
     .mobile-nav-dropdown ul {
         display: flex;
@@ -370,19 +355,13 @@ main section {
     }
     .mobile-nav-dropdown li { width: 100%; text-align: center; }
     .mobile-nav-dropdown a { display: block; padding: 12px 0; font-size: 1.3rem; }
-
-    #site-header.mobile-menu-open {
-        min-height: auto;
-    }
+    
     #site-header.mobile-menu-open .mobile-nav-dropdown {
-        display: block;
-        max-height: 500px;
+        max-height: 50vh; /* Высота, достаточная для меню */
         padding: 10px 0;
     }
-    #site-header.mobile-menu-open .mobile-menu-indicator {
-        transform: rotate(180deg);
-    }
 }
+
 
 @media (max-width: 768px) {
     .error-code { font-size: 8rem; }
