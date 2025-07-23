@@ -305,18 +305,24 @@ main section {
 @media (max-width: 992px) {
     #site-header {
         cursor: pointer;
-        height: 70px;
-        padding: 0 !important;
+        padding: 0 !important; /* Убираем все padding'и */
+        background-color: var(--color-black-bg) !important; /* Фон теперь всегда черный */
+        min-height: 70px; /* Минимальная высота */
         display: flex;
         align-items: center;
+        transition: min-height 0.4s ease-in-out; /* Анимируем высоту */
     }
-    .main-nav { display: none; }
     
     .header-container {
         justify-content: space-between;
         width: 100%;
+        flex-wrap: wrap;
     }
+
+    /* Скрываем десктопное меню, оно будет скопировано в выпадающий блок */
+    .main-nav { display: none; }
     
+    /* Уменьшаем логотип */
     #site-header .logo img {
         height: 40px !important;
     }
@@ -343,17 +349,19 @@ main section {
         object-fit: contain;
     }
     
-    #site-header.header-collapsed {
+    /* Убираем все анимации скролла, они больше не нужны */
+    #site-header.header-collapsed,
+    #site-header.header-active {
         padding: 0 !important;
     }
     #site-header.header-collapsed .logo img {
         height: 40px !important;
     }
-    
-    #site-header.mobile-menu-open {
-        background-color: var(--color-black-bg);
-        height: auto;
+    #site-header.header-collapsed .header-center-text {
+        opacity: 1;
     }
+
+    /* Стили для открытого меню */
     #site-header.mobile-menu-open .mobile-nav-dropdown {
         display: block;
         max-height: 100vh;
@@ -361,6 +369,10 @@ main section {
     }
     #site-header.mobile-menu-open .mobile-menu-indicator {
         transform: rotate(180deg);
+    }
+    #site-header.mobile-menu-open .header-center-text,
+    #site-header.mobile-menu-open .logo {
+        opacity: 0.5; /* Немного приглушаем верхнюю часть при открытии */
     }
 
     .mobile-nav-dropdown {
