@@ -15,7 +15,7 @@
                                 {% cloudinary_url product.image.name width=500 fetch_format="auto" quality="auto" as product_image_url %}
                                 <img src="{{ product_image_url }}" alt="{{ product.name }}">
                             {% endif %}
-                            <span class="product-image-title">{{ product.name }}</span>
+                            
                         </div>
                         <h3 class="product-title-bottom">{{ product.name }}</h3>
                         <div class="product-price">{{ product.price }} ₽</div>
