@@ -8,25 +8,23 @@
         {% endif %}
         <div class="market-grid">
             {% for product in products %}
-                <div class="product-card">
-                    <a href="{{ product.link|default:'#' }}" class="product-link-wrapper" target="_blank" rel="noopener noreferrer">
-                        <div class="product-image-wrapper">
-                            {% if product.image %}
-                                {% cloudinary_url product.image.name width=500 fetch_format="auto" quality="auto" as product_image_url %}
-                                <img src="{{ product_image_url }}" alt="{{ product.name }}">
-                            {% endif %}
-                            
-                        </div>
-                        <h3 class="product-title-bottom">{{ product.name }}</h3>
-                        <div class="product-price">{{ product.price }} ₽</div>
-                        <p class="product-description">{{ product.description }}</p>
-                    </a>
-                    <div class="product-button-wrapper">
-                        <a href="{{ product.link|default:'#' }}" class="btn" target="_blank" rel="noopener noreferrer">
-                            {{ product.button_text|default:"Заказать игру" }}
-                        </a>
+                <a href="{{ product.link|default:'#' }}" class="product-card" target="_blank" rel="noopener noreferrer">
+                    <div class="product-image-wrapper">
+                        {% if product.image %}
+                            {% with 'image/upload/' as find_str %}
+                                {% with 'image/upload/w_500,f_auto,q_auto/' as replace_str %}
+                                    <img src="{{ product.image.url|slice:'0:45' }}{{ 'w_500,f_auto,q_auto/' }}{{ product.image.url|slice:'46:' }}" alt="{{ product.name }}">
+                                {% endwith %}
+                            {% endwith %}
+                        {% endif %}
                     </div>
-                </div>
+                    <h3 class="product-title-bottom">{{ product.name }}</h3>
+                    <div class="product-price">{{ product.price }} ₽</div>
+                    <p class="product-description">{{ product.description }}</p>
+                    
+                   
+                    <span class="market-product-link">{{ product.button_text|default:"Заказать игру" }}</span>
+                </a>
             {% empty %}
                  <p>Товары не добавлены.</p>
             {% endfor %}
