@@ -67,7 +67,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 main {
-    transition: padding-top var(--header-transition-duration) ease-in-out;
+    padding-top: 120px; /* ВОЗВРАЩАЕМ ОТСТУП ДЛЯ КОНТЕНТА */
     position: relative; 
     z-index: 1;
     background-color: transparent; 
@@ -83,7 +83,6 @@ h2 {
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 4rem;
-    color: var(--color-white);
 }
 a {
     color: inherit;
@@ -245,6 +244,7 @@ main section {
     padding-bottom: var(--section-vertical-padding); 
     position: relative; 
     background-color: transparent; 
+    scroll-margin-top: 90px; /* Для корректной работы якорных ссылок */
 }
 
 #site-footer-bottom {
@@ -303,6 +303,10 @@ main section {
 }
 
 @media (max-width: 992px) {
+    main {
+        padding-top: 70px; /* Отступ для мобильной шапки */
+    }
+
     #site-header {
         position: fixed;
         top: 0;
@@ -311,7 +315,6 @@ main section {
         z-index: 1000;
         background-color: var(--color-black-bg) !important;
         padding: 0 !important;
-        transition: min-height 0.4s ease-in-out;
     }
     
     #site-header.header-collapsed,
@@ -328,9 +331,6 @@ main section {
         padding: 0 15px;
     }
 
-    #site-header .logo {
-        flex-shrink: 0;
-    }
     #site-header .logo img {
         height: 40px !important;
         transition: none;
