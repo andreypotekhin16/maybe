@@ -67,13 +67,14 @@
     font-family: var(--font-headers);
     font-size: 1.25rem;
     text-transform: uppercase;
-    text-decoration: none;
+    text-decoration: underline;
     letter-spacing: 0.05em;
     transition: color 0.3s ease;
 }
 
 .orbibol-details-link:hover {
     color: var(--color-white);
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {

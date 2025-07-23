@@ -55,19 +55,20 @@
 .product-button-wrapper {
     padding-top: 1rem;
 }
+
 .market-product-link {
     display: inline-block;
     color: var(--color-green-accent);
     font-family: var(--font-headers);
     font-size: 1.25rem;
     text-transform: uppercase;
-    text-decoration: none;
+    text-decoration: underline;
     letter-spacing: 0.05em;
-    transition: color 0.3s ease, transform 0.2s ease;
+    transition: color 0.3s ease;
 }
 .market-product-link:hover {
     color: var(--color-white);
-    transform: scale(1.05);
+    text-decoration: none;
 }
 .market-more-link {
     display: block;
@@ -75,13 +76,13 @@
     font-family: var(--font-headers);
     font-size: 1.25rem;
     color: var(--color-green-accent);
-    text-decoration: none;
+    text-decoration: underline;
     transition: color 0.3s ease;
     margin-top: 2rem; 
 }
 .market-more-link:hover {
     color: var(--color-white);
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {
