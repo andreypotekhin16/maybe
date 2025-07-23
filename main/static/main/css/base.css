@@ -305,24 +305,21 @@ main section {
 @media (max-width: 992px) {
     #site-header {
         cursor: pointer;
-        padding: 0 !important; /* Убираем все padding'и */
-        background-color: var(--color-black-bg) !important; /* Фон теперь всегда черный */
-        min-height: 70px; /* Минимальная высота */
+        padding: 0 !important;
+        background-color: var(--color-black-bg) !important;
+        min-height: 70px;
         display: flex;
         align-items: center;
-        transition: min-height 0.4s ease-in-out; /* Анимируем высоту */
+        transition: min-height 0.4s ease-in-out;
     }
+    .main-nav { display: none; }
     
     .header-container {
         justify-content: space-between;
         width: 100%;
-        flex-wrap: wrap;
+        flex-wrap: wrap; /* Добавлено для правильного переноса */
     }
-
-    /* Скрываем десктопное меню, оно будет скопировано в выпадающий блок */
-    .main-nav { display: none; }
     
-    /* Уменьшаем логотип */
     #site-header .logo img {
         height: 40px !important;
     }
@@ -333,6 +330,9 @@ main section {
         position: static;
         transform: none;
         margin: 0 auto;
+        padding-left: 50px;
+        padding-right: 50px;
+        text-align: center;
     }
     
     .mobile-menu-indicator {
@@ -349,31 +349,9 @@ main section {
         object-fit: contain;
     }
     
-    /* Убираем все анимации скролла, они больше не нужны */
-    #site-header.header-collapsed,
-    #site-header.header-active {
-        padding: 0 !important;
-    }
-    #site-header.header-collapsed .logo img {
-        height: 40px !important;
-    }
-    #site-header.header-collapsed .header-center-text {
-        opacity: 1;
-    }
-
-    /* Стили для открытого меню */
-    #site-header.mobile-menu-open .mobile-nav-dropdown {
-        display: block;
-        max-height: 100vh;
-        padding: 10px 0;
-    }
-    #site-header.mobile-menu-open .mobile-menu-indicator {
-        transform: rotate(180deg);
-    }
-    #site-header.mobile-menu-open .header-center-text,
-    #site-header.mobile-menu-open .logo {
-        opacity: 0.5; /* Немного приглушаем верхнюю часть при открытии */
-    }
+    #site-header.header-collapsed { padding: 0 !important; }
+    #site-header.header-collapsed .logo img { height: 40px !important; }
+    #site-header.header-collapsed .header-center-text { opacity: 1; }
 
     .mobile-nav-dropdown {
         width: 100%;
@@ -390,17 +368,21 @@ main section {
         gap: 0;
         width: 100%;
     }
-    .mobile-nav-dropdown li {
-        width: 100%;
-        text-align: center;
+    .mobile-nav-dropdown li { width: 100%; text-align: center; }
+    .mobile-nav-dropdown a { display: block; padding: 12px 0; font-size: 1.3rem; }
+
+    #site-header.mobile-menu-open {
+        min-height: auto;
     }
-    .mobile-nav-dropdown a {
+    #site-header.mobile-menu-open .mobile-nav-dropdown {
         display: block;
-        padding: 12px 0;
-        font-size: 1.3rem;
+        max-height: 500px;
+        padding: 10px 0;
+    }
+    #site-header.mobile-menu-open .mobile-menu-indicator {
+        transform: rotate(180deg);
     }
 }
-
 
 @media (max-width: 768px) {
     .error-code { font-size: 8rem; }

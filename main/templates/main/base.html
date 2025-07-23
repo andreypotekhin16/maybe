@@ -34,14 +34,12 @@
         {% endif %}
         {% endwith %}
     {% endif %}
-    
     <style>
       :root {
         --font-headers: '{{ company_profile.header_font|default:"SUNDAY" }}', sans-serif;
         --font-body: '{{ company_profile.body_font|default:"FortuneC" }}', sans-serif;
         --section-vertical-padding: {{ company_profile.section_vertical_padding|default:5 }}rem;
       }
-      
       {% for font in custom_fonts %}
         @font-face {
             font-family: '{{ font.name }}';
@@ -104,14 +102,6 @@
                     <img src="{{ company_profile.mobile_menu_indicator_icon.url }}" alt="Раскрыть меню">
                 {% endif %}
             </div>
-            
-            <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Открыть меню">
-                {% if company_profile.nav_toggle_icon %}
-                    <img src="{{ company_profile.nav_toggle_icon.url }}" alt="Меню">
-                {% else %}
-                    <span></span><span></span><span></span>
-                {% endif %}
-            </button>
         </div>
         
         <div id="mobile-nav-dropdown" class="mobile-nav-dropdown"></div>
@@ -132,4 +122,4 @@
     
     {% block extra_scripts %}{% endblock %}
 </body>
-</html> 
+</html>
