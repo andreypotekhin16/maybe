@@ -1,5 +1,3 @@
-/* main/static/main/css/sections/games.css */
-
 .section-games h2 {
     color: var(--color-white); 
 }
@@ -23,25 +21,26 @@
 
 .game-type-item .game-type-icon-wrapper {
     flex-shrink: 0;
-    width: 160px; 
-    height: 160px; 
+    width: 160px;
+    height: 160px;
     background-color: transparent;
-    border-radius: 50%; 
-    display: flex; 
-    justify-content: center; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
     align-items: center;
     border: 3px solid var(--color-green-accent);
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-.game-type-item .game-type-icon-wrapper img { 
-    max-height: 120px; 
-    max-width: 120px;
+.game-type-item .game-type-icon-wrapper img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
-/* ИЗМЕНЕНИЕ ЗДЕСЬ */
 .game-type-item .game-type-text-content h3 {
-    font-family: var(--font-headers); /* Было: var(--font-sunday) */
+    font-family: var(--font-headers);
     font-size: var(--fs-subsection-title);
     font-weight: normal;
     color: var(--color-green-accent);
