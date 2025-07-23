@@ -6,14 +6,14 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem; /* === ИЗМЕНЕНО: было 4rem === */
 }
 .product-card {
     text-align: center;
     color: var(--color-white);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Распределяет пространство */
+    justify-content: space-between;
 }
 .product-content {
     /* Этот блок содержит все, кроме кнопки */
@@ -54,7 +54,7 @@
     margin: 0 auto 1rem auto;
 }
 .product-button-wrapper {
-    padding-top: 1rem; /* Небольшой отступ сверху */
+    padding-top: 1rem;
 }
 .market-product-link {
     display: inline-block;
@@ -78,6 +78,7 @@
     color: var(--color-green-accent);
     text-decoration: none;
     transition: color 0.3s ease;
+    margin-top: 2rem; 
 }
 .market-more-link:hover {
     color: var(--color-white);
