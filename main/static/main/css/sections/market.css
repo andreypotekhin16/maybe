@@ -11,13 +11,12 @@
 .product-card {
     text-align: center;
     color: var(--color-white);
-    text-decoration: none;
-    transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
+    justify-content: space-between; /* Распределяет пространство */
 }
-.product-card:hover {
-    transform: translateY(-5px);
+.product-content {
+    /* Этот блок содержит все, кроме кнопки */
 }
 .product-image-wrapper {
     width: 250px;
@@ -52,11 +51,11 @@
     font-size: 1.1rem;
     line-height: 1.5;
     max-width: 35ch;
-    margin: 0 auto 2rem auto;
-    flex-grow: 1; 
+    margin: 0 auto 1rem auto;
 }
-
-
+.product-button-wrapper {
+    padding-top: 1rem; /* Небольшой отступ сверху */
+}
 .market-product-link {
     display: inline-block;
     color: var(--color-green-accent);
@@ -65,14 +64,12 @@
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: 0.05em;
-    transition: color 0.3s ease;
-    margin-top: auto; 
+    transition: color 0.3s ease, transform 0.2s ease;
 }
 .market-product-link:hover {
     color: var(--color-white);
+    transform: scale(1.05);
 }
-
-
 .market-more-link {
     display: block;
     text-align: center;
