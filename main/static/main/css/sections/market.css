@@ -39,7 +39,6 @@
     font-weight: bold;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    color: var(--color-green-accent);
 }
 .product-price {
     font-family: var(--font-headers);
