@@ -54,37 +54,23 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 2.5rem 1.5rem;
     }
-    
+
     .feature-item {
-        display: grid; /* ИЗМЕНЕНИЕ: Включаем Grid внутри элемента */
-        grid-template-columns: auto 1fr; /* 2 колонки: иконка (auto), текст (всё остальное) */
-        grid-template-rows: auto 1fr; /* 2 ряда */
-        align-items: center;
-        gap: 0.5rem 1rem; /* Уменьшаем отступы */
-        text-align: left;
+        display: flex;
+        flex-direction: column; /* ИЗМЕНЕНИЕ: Вертикальная структура */
+        align-items: center; /* Центрируем всё */
+        text-align: center; /* Центрируем текст */
+        gap: 1rem;
     }
 
     .feature-icon-wrapper {
-        grid-row: 1 / 3; /* Иконка занимает 2 ряда по высоте */
-        width: 80px;
-        height: 80px;
-    }
-
-    .feature-text-content {
-        grid-column: 2 / 3; /* Весь текстовый блок во второй колонке */
-        display: contents; /* "Растворяем" этот контейнер, чтобы управлять его детьми */
+        width: 100px; /* Устанавливаем размер иконки */
+        height: 100px;
     }
 
     .feature-text-content h3 {
-        grid-row: 1 / 2; /* Заголовок - 1-й ряд */
         font-size: 1.2rem;
-        margin-bottom: 0; /* Убираем лишний отступ */
-        align-self: end; /* Прижимаем к низу ячейки */
-    }
-
-    .feature-text-content p {
-        grid-row: 2 / 3; /* Описание - 2-й ряд */
-        align-self: start; /* Прижимаем к верху ячейки */
+        margin-bottom: 0.5rem;
     }
 }
 
