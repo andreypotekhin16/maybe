@@ -56,25 +56,43 @@
 /* --- ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .games-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 колонки */
-        gap: 2.5rem 1.5rem; /* Уменьшаем отступы */
-        justify-items: initial; /* Сбрасываем центрирование ячеек */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem 1.5rem;
     }
+    
     .game-type-item {
-        gap: 1rem;
+        display: grid; /* Включаем Grid */
+        grid-template-columns: auto 1fr; /* 2 колонки */
+        grid-template-rows: auto 1fr; /* 2 ряда */
+        align-items: center;
+        gap: 0.5rem 1rem;
+        text-align: left;
     }
+
     .game-type-item .game-type-icon-wrapper {
-        width: 80px; /* УМЕНЬШАЕМ ИКОНКУ */
+        grid-row: 1 / 3; /* Иконка занимает 2 ряда */
+        width: 80px;
         height: 80px;
     }
+
+    .game-type-item .game-type-text-content {
+        grid-column: 2 / 3;
+        display: contents; /* "Растворяем" контейнер */
+    }
+
     .game-type-item .game-type-text-content h3 {
-        font-size: 1.2rem; /* УМЕНЬШАЕМ ЗАГОЛОВОК */
+        grid-row: 1 / 2; /* Заголовок в 1-й ряд */
+        font-size: 1.2rem;
+        margin-bottom: 0;
+        align-self: end;
+    }
+
+    .game-type-item .game-type-text-content p {
+        grid-row: 2 / 3; /* Описание во 2-й ряд */
+        align-self: start;
     }
 }
 
 @media (max-width: 576px) {
-    .game-type-item {
-        /* оставляем flex-direction: row */
-        text-align: left;
-    }
+    /* Пусто, так как двухколоночная структура подходит и для телефонов */
 }

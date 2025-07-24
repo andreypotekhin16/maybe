@@ -51,27 +51,44 @@
 /* --- ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .features-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 колонки */
-        gap: 2.5rem 1.5rem; /* Уменьшаем отступы */
-        justify-items: initial; /* Сбрасываем центрирование ячеек, чтобы текст был ровным */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem 1.5rem;
     }
+    
     .feature-item {
-        gap: 1rem;
+        display: grid; /* ИЗМЕНЕНИЕ: Включаем Grid внутри элемента */
+        grid-template-columns: auto 1fr; /* 2 колонки: иконка (auto), текст (всё остальное) */
+        grid-template-rows: auto 1fr; /* 2 ряда */
+        align-items: center;
+        gap: 0.5rem 1rem; /* Уменьшаем отступы */
+        text-align: left;
     }
+
     .feature-icon-wrapper {
-        width: 80px; /* УМЕНЬШАЕМ ИКОНКУ */
+        grid-row: 1 / 3; /* Иконка занимает 2 ряда по высоте */
+        width: 80px;
         height: 80px;
     }
+
+    .feature-text-content {
+        grid-column: 2 / 3; /* Весь текстовый блок во второй колонке */
+        display: contents; /* "Растворяем" этот контейнер, чтобы управлять его детьми */
+    }
+
     .feature-text-content h3 {
-        font-size: 1.2rem; /* УМЕНЬШАЕМ ЗАГОЛОВОК */
+        grid-row: 1 / 2; /* Заголовок - 1-й ряд */
+        font-size: 1.2rem;
+        margin-bottom: 0; /* Убираем лишний отступ */
+        align-self: end; /* Прижимаем к низу ячейки */
+    }
+
+    .feature-text-content p {
+        grid-row: 2 / 3; /* Описание - 2-й ряд */
+        align-self: start; /* Прижимаем к верху ячейки */
     }
 }
 
 @media (max-width: 576px) {
-    .feature-item {
-        /* оставляем flex-direction: row для вида "иконка + текст" */
-        text-align: left;
-    }
     .section-features h2 {
         margin-bottom: 3rem;
     }
