@@ -53,6 +53,7 @@
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 3rem 1.5rem;
+        padding: 0 10px;
     }
 
     .feature-item {
