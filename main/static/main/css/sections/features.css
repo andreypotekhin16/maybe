@@ -76,13 +76,14 @@
     .feature-text-content h3 {
         grid-column: 2;
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .feature-text-content p {
         grid-column: 1 / -1;
         margin-top: 1rem;
         text-align: left;
+        font-size: 0.9rem;
     }
 }
 
