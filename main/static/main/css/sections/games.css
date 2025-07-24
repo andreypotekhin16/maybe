@@ -82,6 +82,7 @@
         grid-column: 2;
         margin: 0;
         font-size: 1.1rem;
+        overflow-wrap: break-word;
     }
 
     .game-type-item .game-type-text-content p {
@@ -89,6 +90,7 @@
         margin-top: 1rem;
         text-align: left;
         font-size: 0.9rem;
+        overflow-wrap: break-word;
     }
 }
 
