@@ -65,6 +65,7 @@
         grid-template-columns: auto 1fr;
         gap: 0 1rem;
         align-items: start;
+        min-width: 0; /* <-- ВАЖНОЕ ДОПОЛНЕНИЕ */
     }
 
     .game-type-item .game-type-icon-wrapper {
@@ -83,6 +84,7 @@
         margin: 0;
         font-size: 1.1rem;
         overflow-wrap: break-word;
+        min-width: 0; /* <-- ВАЖНОЕ ДОПОЛНЕНИЕ */
     }
 
     .game-type-item .game-type-text-content p {
@@ -91,6 +93,7 @@
         text-align: left;
         font-size: 0.9rem;
         overflow-wrap: break-word;
+        min-width: 0; /* <-- ВАЖНОЕ ДОПОЛНЕНИЕ */
     }
 }
 
