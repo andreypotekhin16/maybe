@@ -57,25 +57,37 @@
 @media (max-width: 992px) {
     .games-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem 1.5rem;
+        gap: 3rem 1.5rem; /* Немного увеличим вертикальный отступ */
     }
     
     .game-type-item {
-        display: flex;
-        flex-direction: column; /* ИЗМЕНЕНИЕ: Вертикальная структура */
-        align-items: center; /* Центрируем всё */
-        text-align: center; /* Центрируем текст */
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 1rem;
+        align-items: center;
     }
 
     .game-type-item .game-type-icon-wrapper {
-        width: 100px; /* Устанавливаем размер иконки */
-        height: 100px;
+        width: 60px;
+        height: 60px;
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .game-type-item .game-type-text-content {
+        display: contents;
     }
 
     .game-type-item .game-type-text-content h3 {
+        grid-column: 2;
+        margin: 0;
         font-size: 1.2rem;
-        margin-bottom: 0.5rem;
+    }
+
+    .game-type-item .game-type-text-content p {
+        grid-column: 1 / -1;
+        margin-top: 1rem;
+        text-align: left;
     }
 }
 

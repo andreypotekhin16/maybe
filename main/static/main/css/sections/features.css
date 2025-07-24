@@ -52,25 +52,37 @@
 @media (max-width: 992px) {
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem 1.5rem;
+        gap: 3rem 1.5rem; /* Немного увеличим вертикальный отступ */
     }
 
     .feature-item {
-        display: flex;
-        flex-direction: column; /* ИЗМЕНЕНИЕ: Вертикальная структура */
-        align-items: center; /* Центрируем всё */
-        text-align: center; /* Центрируем текст */
-        gap: 1rem;
+        display: grid; /* Включаем Grid */
+        grid-template-columns: auto 1fr; /* Колонка для иконки, колонка для текста */
+        gap: 0 1rem; /* Отступ только между колонками */
+        align-items: center;
     }
 
     .feature-icon-wrapper {
-        width: 100px; /* Устанавливаем размер иконки */
-        height: 100px;
+        width: 60px; /* Уменьшаем иконку */
+        height: 60px;
+        grid-row: 1; /* Явно указываем, что иконка в первом ряду */
+        grid-column: 1;
+    }
+    
+    .feature-text-content {
+        display: contents; /* "Растворяем" контейнер, чтобы управлять h3 и p напрямую */
     }
 
     .feature-text-content h3 {
+        grid-column: 2; /* Заголовок во второй колонке */
+        margin: 0;
         font-size: 1.2rem;
-        margin-bottom: 0.5rem;
+    }
+
+    .feature-text-content p {
+        grid-column: 1 / -1; /* Описание занимает ВСЕ колонки */
+        margin-top: 1rem; /* Отступ сверху от блока "иконка+заголовок" */
+        text-align: left;
     }
 }
 
