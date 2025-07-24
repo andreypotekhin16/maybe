@@ -48,16 +48,29 @@
     line-height: 1.5;
 }
 
+/* --- ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .features-grid {
-        grid-template-columns: repeat(2, auto);
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+        gap: 2.5rem 1.5rem; /* Уменьшаем отступы */
+        justify-items: initial; /* Сбрасываем центрирование ячеек, чтобы текст был ровным */
+    }
+    .feature-item {
+        gap: 1rem;
+    }
+    .feature-icon-wrapper {
+        width: 80px; /* УМЕНЬШАЕМ ИКОНКУ */
+        height: 80px;
+    }
+    .feature-text-content h3 {
+        font-size: 1.2rem; /* УМЕНЬШАЕМ ЗАГОЛОВОК */
     }
 }
 
 @media (max-width: 576px) {
     .feature-item {
-        flex-direction: column;
-        text-align: center;
+        /* оставляем flex-direction: row для вида "иконка + текст" */
+        text-align: left;
     }
     .section-features h2 {
         margin-bottom: 3rem;

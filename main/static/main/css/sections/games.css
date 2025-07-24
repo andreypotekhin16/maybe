@@ -53,22 +53,28 @@
     color: var(--color-white);
 }
 
+/* --- ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .games-grid {
-        gap: 2.5rem 1rem;
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+        gap: 2.5rem 1.5rem; /* Уменьшаем отступы */
+        justify-items: initial; /* Сбрасываем центрирование ячеек */
     }
     .game-type-item {
         gap: 1rem;
     }
     .game-type-item .game-type-icon-wrapper {
-        width: 120px;
-        height: 120px;
+        width: 80px; /* УМЕНЬШАЕМ ИКОНКУ */
+        height: 80px;
+    }
+    .game-type-item .game-type-text-content h3 {
+        font-size: 1.2rem; /* УМЕНЬШАЕМ ЗАГОЛОВОК */
     }
 }
 
 @media (max-width: 576px) {
     .game-type-item {
-        flex-direction: column;
-        text-align: center;
+        /* оставляем flex-direction: row */
+        text-align: left;
     }
 }
