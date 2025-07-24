@@ -46,9 +46,10 @@
     margin-bottom: 0.75rem;
     text-transform: uppercase;
 }
+
 .game-type-item .game-type-text-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--color-white);
 }
 
