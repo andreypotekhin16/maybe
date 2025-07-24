@@ -411,14 +411,19 @@ main section {
         font-size: 13px;
     }
 
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
     .error-code { font-size: 5rem; } 
     .error-title { font-size: 1.8rem; } 
 
     :root {
-        --fs-main-slogan: 2.0rem;
+        --fs-main-slogan: 1.8rem;
         --fs-about-text: 1.2rem;
-        --fs-section-title: 1.9rem;
-        --fs-subsection-title: 1.7rem;
+        --fs-section-title: 1.5rem;
+        --fs-subsection-title: 1.2rem;
         --fs-body: 0.95rem;
         --fs-button: 0.95rem;
     }
