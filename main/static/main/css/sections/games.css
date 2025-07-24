@@ -64,8 +64,8 @@
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 0 1rem;
-        align-items: start;
-        min-width: 0; /* <-- ВАЖНОЕ ДОПОЛНЕНИЕ */
+        align-items: center; /* Возвращаем center */
+        min-width: 0;
     }
 
     .game-type-item .game-type-icon-wrapper {
@@ -82,18 +82,20 @@
     .game-type-item .game-type-text-content h3 {
         grid-column: 2;
         margin: 0;
-        font-size: 1.1rem;
+        /* АДАПТИВНЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
+        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
         overflow-wrap: break-word;
-        min-width: 0; /* <-- ВАЖНОЕ ДОПОЛНЕНИЕ */
+        min-width: 0;
     }
 
     .game-type-item .game-type-text-content p {
         grid-column: 1 / -1;
-        margin-top: 1rem;
+        margin-top: 0.75rem;
         text-align: left;
-        font-size: 0.9rem;
+        /* АДАПТИВНЫЙ ШРИФТ ДЛЯ ТЕКСТА */
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
         overflow-wrap: break-word;
-        min-width: 0; /* <-- ВАЖНОЕ ДОПОЛНЕНИЕ */
+        min-width: 0;
     }
 }
 
