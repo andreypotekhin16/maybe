@@ -56,18 +56,15 @@
 /* --- ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .games-grid {
-        display: flex; /* ИЗМЕНЕНИЕ: Возвращаем Flexbox */
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2.5rem 1.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem 1.5rem;
     }
     
     .game-type-item {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 0 1rem;
-        align-items: center;
-        width: calc(50% - 0.75rem); /* ИЗМЕНЕНИЕ: Задаем точную ширину */
+        align-items: start;
     }
 
     .game-type-item .game-type-icon-wrapper {
