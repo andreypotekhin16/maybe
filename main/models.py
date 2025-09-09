@@ -1,8 +1,10 @@
+# main/models.py
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from myproject.storages import RawMediaCloudinaryStorage
 
-font_storage = RawMediaCloudinaryStorage()
+# Убраны строки:
+# from myproject.storages import RawMediaCloudinaryStorage
+# font_storage = RawMediaCloudinaryStorage()
 
 class CompanyProfile(models.Model):
     site_name = models.CharField(max_length=200, default="Название вашего клуба", verbose_name="Название сайта (в Title)")
@@ -79,10 +81,11 @@ class CompanyProfile(models.Model):
 
 class CustomFont(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название шрифта (для CSS, напр. 'MyCoolFont')")
-    font_file_otf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .otf', storage=font_storage)
-    font_file_ttf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .ttf', storage=font_storage)
-    font_file_woff = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .woff', storage=font_storage)
-    font_file_woff2 = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .woff2', storage=font_storage)
+    # В полях ниже убран параметр storage=font_storage
+    font_file_otf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .otf')
+    font_file_ttf = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .ttf')
+    font_file_woff = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .woff')
+    font_file_woff2 = models.FileField(upload_to='custom_fonts/', blank=True, null=True, verbose_name='Файл шрифта .woff2')
 
     class Meta:
         verbose_name = "Кастомный шрифт"
