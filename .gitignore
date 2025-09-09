@@ -1,4 +1,4 @@
-# .gitignore
+# START OF FILE: .gitignore
 
 # Environments
 .env
@@ -9,7 +9,7 @@ env/
 db.sqlite3
 *.log
 staticfiles/
-
+media/     
 
 # Python
 *.pyc
