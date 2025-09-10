@@ -8,7 +8,7 @@
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding-bottom: 40px; /* ИЗМЕНЕНИЕ: Добавляем место для пагинации */
+    padding-bottom: 40px;
 }
 .simple-carousel {
     width: 100%;
@@ -81,9 +81,8 @@
     --swiper-navigation-size: 2.2rem;
 }
 
-/* ИЗМЕНЕНИЕ ЗДЕСЬ: СТИЛИ ДЛЯ ПАГИНАЦИИ */
 .swiper-pagination {
-    bottom: 0 !important; /* Располагаем внизу */
+    bottom: 0 !important;
 }
 .swiper-pagination-bullet {
     background-color: #fff;
@@ -108,7 +107,6 @@
     .hover-overlay p {
         font-size: 1rem;
     }
-    /* ИЗМЕНЕНИЕ ЗДЕСЬ: СКРЫВАЕМ СТРЕЛКИ НА МОБИЛКАХ */
     .swiper-button-prev, .swiper-button-next {
         display: none;
     }

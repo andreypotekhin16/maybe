@@ -53,15 +53,15 @@
 
 @media (max-width: 768px) {
     .section-about-us {
-        min-height: auto; /* ИЗМЕНЕНИЕ: Убираем мин. высоту, чтобы секция не растягивалась */
+        min-height: auto;
         align-items: flex-start;
         text-align: left;
-        padding-top: 4rem; /* Оставляем уменьшенный отступ сверху, чтобы было близко к шапке */
-        padding-bottom: var(--section-vertical-padding); /* ИЗМЕНЕНИЕ: Теперь нижний отступ берется из админки! */
+        padding-top: 4rem;
+        padding-bottom: var(--section-vertical-padding);
         justify-content: flex-start;
     }
     .about-us-content {
-        padding: 0; /* Убираем лишние боковые отступы, так как они есть у .container */
+        padding: 0;
     }
     .about-us-social-icons {
         justify-content: flex-start;

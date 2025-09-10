@@ -29,6 +29,7 @@
 }
 
 :root {
+    /* Старые переменные --font-sunday и --font-fortunec удалены */
     --color-white: #FFFFFF;         
     --color-green-accent: #44A56B;   
     --color-green-bg: #1E5C37;      
@@ -101,7 +102,7 @@ ul {
     max-width: 1600px; 
     margin-left: auto;
     margin-right: auto;
-    padding-left: 25px; /* Увеличиваем отступы по умолчанию */
+    padding-left: 25px;
     padding-right: 25px;
     box-sizing: border-box;
 }
@@ -308,7 +309,6 @@ main section {
         padding-top: 70px;
     }
     
-    /* ИЗМЕНЕНИЕ: Задаем отступы для контейнера шапки здесь, чтобы не конфликтовать */
     #site-header .container {
         padding-left: 15px;
         padding-right: 15px;
