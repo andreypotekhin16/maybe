@@ -1,12 +1,15 @@
+/* START OF FILE: main/static/main/css/sections/features.css */
+
 .section-features h2 {
     margin-bottom: 5rem;
 }
 
+/* --- ИЗМЕНЕНИЯ ЗДЕСЬ: ВОЗВРАЩАЕМ FLEXBOX --- */
 .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 3.5rem 5rem;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 3.5rem 5rem;
 }
 
 .feature-item {
@@ -15,7 +18,9 @@
     align-items: center; 
     text-align: left; 
     gap: 2rem;
+    max-width: 500px; /* <-- Эта строка не дает элементам слишком растягиваться */
 }
+/* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
 
 .feature-icon-wrapper {
     flex-shrink: 0;
@@ -27,14 +32,12 @@
     align-items: center;
     background-color: transparent;
     border: 3px solid var(--color-green-accent);
-    /* Добавляем overflow, чтобы картинка не вылезала за круг */
     overflow: hidden; 
 }
 
 .feature-icon-wrapper img {
     width: 100%;
     height: 100%;
-    /* Вот единственное важное свойство */
     object-fit: cover; 
 }
 
@@ -53,16 +56,18 @@
 
 @media (max-width: 992px) {
     .features-grid {
-        grid-template-columns: repeat(2, 1fr);
+        /* Для планшетов оставляем flex, он сам все сделает красиво */
         gap: 3rem 1.5rem;
     }
 
     .feature-item {
+        /* А вот для элемента вернем grid, он тут лучше подходит для мобилок */
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 0 1rem;
         align-items: center;
         min-width: 0;
+        max-width: 100%; /* Сбрасываем ограничение на мобилках */
     }
 
     .feature-icon-wrapper {
