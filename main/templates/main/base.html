@@ -43,11 +43,13 @@
       {% for font in custom_fonts %}
         @font-face {
             font-family: '{{ font.name }}';
-            src: {% if font.font_file_woff2 %}url('{{ font.font_file_woff2.url }}') format('woff2'),{% endif %}
-                 {% if font.font_file_woff %}url('{{ font.font_file_woff.url }}') format('woff'),{% endif %}
-                 {% if font.font_file_ttf %}url('{{ font.font_file_ttf.url }}') format('truetype'),{% endif %}
-                 {% if font.font_file_otf %}url('{{ font.font_file_otf.url }}') format('opentype'),{% endif %}
-                 ;
+            src: {% if font.font_file_woff2 %}url('{{ font.font_file_woff2.url }}') format('woff2'){% if font.font_file_woff or font.font_file_ttf or font.font_file_otf %},{% endif %}{% endif %}
+                 {% if font.font_file_woff %}url('{{ font.font_file_woff.url }}') format('woff'){% if font.font_file_ttf or font.font_file_otf %},{% endif %}{% endif %}
+                 {% if font.font_file_ttf %}url('{{ font.font_file_ttf.url }}') format('truetype'){% if font.font_file_otf %},{% endif %}{% endif %}
+                 {% if font.font_file_otf %}url('{{ font.font_file_otf.url }}') format('opentype'){% endif %};
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
       {% endfor %}
     </style>
@@ -94,12 +96,9 @@
                     {% for section in nav_sections %}
                         {% if section.is_active %}
                             <li>
-                                {# Вот наше условие-"костыль" #}
                                 {% if section.section_type == 'about_us' %}
-                                    {# Если это секция "О нас", ссылка ведет на главную, как логотип #}
                                     <a href="/">{{ section.title|default:section.get_section_type_display }}</a>
                                 {% else %}
-                                    {# Для всех остальных секций ссылка ведет на якорь #}
                                     <a href="/#{{ section.section_type }}-section">{{ section.title|default:section.get_section_type_display }}</a>
                                 {% endif %}
                             </li>
