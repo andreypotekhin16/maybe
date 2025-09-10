@@ -1,5 +1,3 @@
-/* START OF FILE: main/static/main/css/sections/about_us.css */
-
 .section-about-us {
     min-height: 80vh; 
     padding-top: 9rem; 
@@ -23,30 +21,15 @@
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
-
-/* --- ИЗМЕНЕНИЯ ЗДЕСЬ --- */
-.about-us-social-icons a {
-    display: block;
-    width: 50px; /* Задаем фиксированный размер */
-    height: 50px;
-    background-color: white; /* Делаем фон белым */
-    border-radius: 50%; /* Скругляем углы */
-    padding: 10px; /* Добавляем внутренний отступ, чтобы иконка была меньше */
-    box-sizing: border-box;
-    transition: transform 0.2s ease;
-}
-
-.about-us-social-icons a:hover {
-    transform: scale(1.1); /* Немного увеличиваем при наведении */
-}
-
 .about-us-social-icons img {
-    width: 100%; /* Растягиваем SVG на весь размер родителя (с учетом padding) */
-    height: 100%;
-    opacity: 1; /* Убираем полупрозрачность */
+    height: 40px;
+    width: 40px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease-in-out;
 }
-/* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
-
+.about-us-social-icons a:hover img {
+    opacity: 1;
+}
 .section-about-us .slogan {
     font-family: var(--font-headers); 
     font-size: var(--fs-main-slogan); 
@@ -86,11 +69,5 @@
     }
     .section-about-us .about-us-text {
         text-align: left;
-    }
-    /* Уменьшаем иконки на мобильных */
-    .about-us-social-icons a {
-        width: 40px;
-        height: 40px;
-        padding: 8px;
     }
 }
