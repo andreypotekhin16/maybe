@@ -1,6 +1,8 @@
+# START OF FILE: main/context_processors.py
 from .models import Section, CustomFont
 
-def nav_sections(request):
+def global_context(request):
+   
     sections_for_nav = Section.objects.filter(is_active=True).order_by('order')
     custom_fonts = CustomFont.objects.all()
     
