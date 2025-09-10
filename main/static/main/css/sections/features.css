@@ -27,12 +27,15 @@
     align-items: center;
     background-color: transparent;
     border: 3px solid var(--color-green-accent);
+    /* Добавляем overflow, чтобы картинка не вылезала за круг */
+    overflow: hidden; 
 }
 
 .feature-icon-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* <-- ИЗМЕНЕНИЕ ЗДЕСЬ */
+    /* Вот единственное важное свойство */
+    object-fit: cover; 
 }
 
 .feature-text-content h3 {
