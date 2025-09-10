@@ -17,7 +17,15 @@
     flex-direction: column;
     justify-content: space-between;
     width: 400px;
+    transition: transform 0.3s ease; /* Эта строка уже была, она правильная */
 }
+
+/* --- ВОТ ИЗМЕНЕНИЕ, КОТОРОЕ ВСЕ ИСПРАВИТ --- */
+.product-card:hover {
+    transform: scale(1.05); /* Увеличиваем карточку на 5% при наведении */
+}
+/* --- КОНЕЦ ИЗМЕНЕНИЯ --- */
+
 
 .product-content {
     /* Этот блок содержит все, кроме кнопки */
