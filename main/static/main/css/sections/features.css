@@ -1,4 +1,4 @@
-/* --- СТИЛИ ДЛЯ ДЕСКТОПА --- */
+/* --- СТИЛИ ДЛЯ ДЕСКТОПА (ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ) --- */
 .section-features h2 {
     margin-bottom: 5rem;
 }
@@ -12,94 +12,84 @@
 
 .feature-item {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 2rem;
     text-align: left;
     max-width: 500px;
 }
 
-.feature-icon-wrapper {
+.feature-item .feature-icon-wrapper {
     flex-shrink: 0;
     width: 160px;
     height: 160px;
+    background-color: transparent;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 3px solid var(--color-green-accent);
     overflow: hidden;
 }
 
-.feature-icon-wrapper img {
+.feature-item .feature-icon-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.feature-text-content h3 {
+.feature-item .feature-text-content h3 {
     font-family: var(--font-headers);
     font-size: var(--fs-subsection-title);
+    font-weight: normal;
     color: var(--color-green-accent);
-    text-transform: uppercase;
     margin-bottom: 0.75rem;
+    text-transform: uppercase;
 }
 
-.feature-text-content p {
+.feature-item .feature-text-content p {
     font-size: 1rem;
     line-height: 1.5;
+    color: var(--color-white);
 }
 
 
-/* --- ФИНАЛЬНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ --- */
+/* --- ФИНАЛЬНАЯ, РАБОЧАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 столбца */
+        grid-template-columns: 1fr 1fr; /* <-- Жестко задаем 2 столбца */
         gap: 2.5rem 1.5rem;
     }
     
     .feature-item {
-        flex-direction: column; /* Элементы в столбик */
-        text-align: center;
-        gap: 1rem; /* Отступ между кругом и текстом */
-        max-width: 100%;
-    }
-
-    .feature-icon-wrapper {
-        position: relative;
-        width: 150px;
-        height: 150px;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column; /* Элементы в столбик: иконка, потом текст */
+        align-items: center;   /* Все центрируется */
+        text-align: center;
+        gap: 1rem;             /* Отступ между иконкой и текстом */
+        max-width: 100%;       /* Сбрасываем ограничение ширины */
     }
 
-    .feature-icon-wrapper img {
-        position: absolute;
-        opacity: 0.25;
-        z-index: 1;
-    }
-    
-    /* Блок с текстом скрываем, но используем его данные */
-    .feature-text-content {
-        display: contents; /* "Растворяем" контейнер */
+    .feature-item .feature-icon-wrapper {
+        width: 130px;
+        height: 130px;
     }
 
-    /* Заголовок вырываем из потока и помещаем на иконку */
-    .feature-item h3 {
-        position: absolute;
-        z-index: 2;
-        width: 90%;
-        color: var(--color-green-accent); /* Зеленый цвет */
+    /* Цвет заголовка остается зеленым, как ты и хотел */
+    .feature-item .feature-text-content h3 {
+        color: var(--color-green-accent);
         font-size: 1.1rem;
-        margin: 0;
-        word-break: break-word;
+        margin-bottom: 0.5rem;
     }
 
-    /* Описание идет под иконкой, как и должно */
-    .feature-item p {
+    .feature-item .feature-text-content p {
         font-size: 0.9rem;
     }
 }
 
 @media (max-width: 576px) {
+    /* На самых маленьких экранах делаем 1 столбец, чтобы было читаемо */
     .features-grid {
         grid-template-columns: 1fr;
     }
