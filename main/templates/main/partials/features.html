@@ -6,13 +6,18 @@
             <h2>{{ section.title|default:"Что мы предлагаем" }}</h2>
         {% endif %}
 
-        
         <div class="swiper features-carousel">
-            <div class="swiper-wrapper features-grid">
+            <!-- Добавляем контейнер для стрелок -->
+            <div class="swiper-navigation-wrapper">
+                <div class="swiper-button-prev features-prev"></div>
+                <div class="swiper-button-next features-next"></div>
+            </div>
+            
+            <div class="swiper-wrapper">
                 
                 {% for feature in features %}
                     {% if forloop.counter0|divisibleby:2 %}
-                        <!-- Начало нового слайда каждые 2 элемента -->
+                        <!-- Начало нового слайда (столбца) -->
                         <div class="swiper-slide feature-slide">
                     {% endif %}
                     
@@ -29,16 +34,15 @@
                     </div>
 
                     {% if forloop.counter|divisibleby:2 or forloop.last %}
-                        <!-- Конец слайда каждые 2 элемента или если это последний элемент -->
+                        <!-- Конец слайда (столбца) -->
                         </div>
                     {% endif %}
                 {% empty %}
                     <div class="swiper-slide">
-                        <p>Преимущества не добавлены в админ-панели.</p>
+                        <p>Преимущества не добавлены.</p>
                     </div>
                 {% endfor %}
             </div>
-            <!-- Пагинация для новой карусели -->
             <div class="swiper-pagination features-pagination"></div>
         </div>
         

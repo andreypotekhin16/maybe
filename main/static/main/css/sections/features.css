@@ -1,23 +1,28 @@
-/* --- СТИЛИ ДЛЯ ДЕСКТОПА (КАРУСЕЛЬ ВЫКЛЮЧЕНА) --- */
+/* --- СТИЛИ ДЛЯ ДЕСКТОПА (КАК БЫЛО) --- */
 .section-features h2 {
     margin-bottom: 5rem;
 }
 
 .features-carousel {
-    /* На десктопе это просто контейнер, невидимый для Swiper */
+    /* На десктопе убираем все, что может намекать на карусель */
     overflow: visible;
+    padding-bottom: 0;
 }
 
-.features-grid {
+.features-carousel .swiper-wrapper {
+    /* На десктопе это просто flex-контейнер */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 3.5rem 5rem;
+    transform: none !important; /* Отключаем сдвиг слайдов от Swiper */
 }
 
-.feature-slide {
-    /* На десктопе слайды не ведут себя как слайды, а просто отдают контент */
-    display: contents; /* <-- Магия: обертка слайда исчезает, выпуская содержимое */
+.features-carousel .feature-slide {
+    /* На десктопе слайды не имеют ширины и отдают контент как есть */
+    width: auto !important;
+    margin-right: 0 !important;
+    display: contents;
 }
 
 .feature-item {
@@ -61,36 +66,43 @@
     line-height: 1.5;
 }
 
-.features-pagination {
-    display: none; /* На десктопе пагинация не нужна */
+/* На десктопе стрелки и пагинация не нужны */
+.features-carousel .swiper-navigation-wrapper,
+.features-carousel .features-pagination {
+    display: none;
 }
 
-/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (КАРУСЕЛЬ ВКЛЮЧЕНА) --- */
+
+/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (ПРОСТАЯ КАРУСЕЛЬ) --- */
 @media (max-width: 992px) {
     .features-carousel {
-        overflow: hidden; /* Возвращаем стандартное поведение Swiper */
+        overflow: hidden; /* Включаем обрезку для карусели */
         padding-bottom: 30px; /* Место для пагинации */
+        position: relative; /* Для позиционирования стрелок */
     }
 
-    .features-grid {
-        display: flex; /* Swiper сам управляет этим, но лучше указать */
-        justify-content: flex-start; /* Слайды начинаются слева */
+    .features-carousel .swiper-wrapper {
+        /* Возвращаем стандартное поведение для Swiper */
+        display: flex;
+        flex-wrap: nowrap; 
+        justify-content: flex-start;
+        gap: 0;
     }
-
-    .feature-slide {
-        display: flex; /* Слайд становится flex-контейнером */
-        flex-direction: column; /* Элементы внутри слайда - в столбик */
+    
+    .features-carousel .feature-slide {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem; /* Отступ между двумя преимуществами в одном столбце */
         align-items: center;
-        gap: 2rem;
-        /* Swiper сам задаст ширину, нам не нужно */
+        padding: 0 10px; /* Небольшие отступы по бокам слайда */
+        box-sizing: border-box;
     }
 
     .feature-item {
-        /* Меняем направление и центрируем все для мобильного вида */
         flex-direction: column;
         text-align: center;
         gap: 1rem;
-        max-width: 300px; /* Ограничиваем ширину элемента внутри слайда */
+        max-width: 280px;
     }
 
     .feature-icon-wrapper {
@@ -98,16 +110,25 @@
         height: 100px;
     }
 
-    .feature-text-content h3 {
-        font-size: 1.2rem;
+    /* Показываем стрелки и пагинацию */
+    .features-carousel .swiper-navigation-wrapper,
+    .features-carousel .features-pagination {
+        display: block;
     }
 
-    .feature-text-content p {
-        font-size: 0.9rem;
+    .swiper-navigation-wrapper {
+        position: static;
     }
 
-    .features-pagination {
-        display: block; /* Показываем пагинацию */
-        bottom: 0 !important;
+    .features-prev, .features-next {
+        color: var(--color-green-accent);
+        top: 40%; /* Располагаем по центру высоты слайдов */
+    }
+    .features-prev { left: 5px; }
+    .features-next { right: 5px; }
+
+    .swiper-button-disabled {
+        opacity: 0.2;
+        cursor: auto;
     }
 }
