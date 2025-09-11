@@ -54,12 +54,12 @@
 }
 
 
-/* --- ФИНАЛЬНАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ С АДАПТИВНЫМ ШРИФТОМ --- */
+/* --- ФИНАЛЬНАЯ, РАБОЧАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Жестко 2 столбца */
-        gap: 2.5rem 1rem; /* Уменьшаем боковой отступ */
+        grid-template-columns: 1fr 1fr; /* <-- Жестко 2 столбца */
+        gap: 2.5rem 1.5rem;
     }
     
     .feature-item {
@@ -69,7 +69,6 @@
         text-align: center;
         gap: 1rem;
         max-width: 100%;
-        overflow: hidden; /* Важно, чтобы текст не вылезал */
     }
 
     .feature-item .feature-icon-wrapper {
@@ -78,32 +77,17 @@
     }
     
     .feature-item .feature-icon-wrapper img {
-        opacity: 1; /* <-- 1. УБИРАЕМ ЗАТЕМНЕНИЕ */
+        opacity: 1; /* <-- УБРАЛ ЗАТЕМНЕНИЕ */
     }
 
-    .feature-item .feature-text-content h3,
+    .feature-item .feature-text-content h3 {
+        color: var(--color-green-accent);
+        font-size: 1rem; /* <-- УМЕНЬШИЛ ШРИФТ ЗАГОЛОВКА */
+        margin-bottom: 0.5rem;
+    }
+
     .feature-item .feature-text-content p {
-        /* --- 2. АДАПТИВНЫЙ ШРИФТ И ОГРАНИЧЕНИЯ --- */
-        
-        /* Устанавливаем базовый размер */
         font-size: 0.8rem;
-        
-        /* Магия: единицы vw (viewport width) делают шрифт зависимым от ширины экрана. */
-        /* clamp() не дает ему стать слишком большим или слишком маленьким. */
-        font-size: clamp(0.6rem, 3.5vw, 0.8rem);
-        
-        /* Еще магия: эта строка говорит, что размер контейнера для текста 
-           не может быть больше, чем размер самого текста. Это заставит
-           шрифт сжиматься, если слово не влезает. */
-        container-type: inline-size;
-    }
-
-    .feature-item .feature-text-content {
-        /* 3. ОГРАНИЧЕНИЕ ПО ШИРИНЕ */
-        /* Ограничиваем ширину текстового блока, чтобы он не вылезал */
-        width: 100%;
-        padding: 0 5px; /* Небольшие боковые отступы внутри */
-        box-sizing: border-box;
     }
 }
 
