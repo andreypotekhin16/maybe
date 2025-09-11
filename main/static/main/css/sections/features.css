@@ -53,67 +53,46 @@
     color: var(--color-white);
 }
 
-/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+
+/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ, НАДЕЖНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* Сетка в 2 столбца */
-        gap: 2rem; /* Отступы между элементами */
+        gap: 2.5rem 1.5rem; /* Отступы между элементами */
     }
     
     .feature-item {
         display: flex;
-        flex-direction: column; /* Элементы в столбик */
-        align-items: center; /* Центрируем все по горизонтали */
-        text-align: center; /* Центрируем текст по умолчанию */
+        flex-direction: column; /* Элементы в столбик: сначала иконка, потом текст */
+        align-items: center;   /* Все центрируется */
+        text-align: center;    /* Текст по центру */
         gap: 1rem;
     }
 
+    /* Управляем размером иконки */
     .feature-item .feature-icon-wrapper {
-        width: 150px; /* Увеличиваем размер иконки */
-        height: 150px;
-        position: relative; /* Нужно для позиционирования текста внутри */
+        width: 120px;
+        height: 120px;
     }
 
-    .feature-item .feature-icon-wrapper img {
-        opacity: 0.3; /* Делаем картинку полупрозрачной */
-    }
-
+    /* Блок с текстом теперь обычный, не абсолютный */
     .feature-item .feature-text-content {
-        /* Этот блок будет позиционироваться поверх картинки */
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        box-sizing: border-box;
+        /* Никаких специальных правил не нужно */
     }
 
+    /* Управляем размером текста */
     .feature-item .feature-text-content h3 {
-        color: var(--color-white); /* Заголовок делаем белым */
-        font-size: 1.1rem; /* Уменьшаем шрифт заголовка */
-        margin-bottom: 0.5rem;
-        /* Запрещаем перенос слов по буквам */
-        word-break: normal;
-        hyphens: none;
+        font-size: 1.1rem;
     }
 
     .feature-item .feature-text-content p {
-        font-size: 0.8rem; /* Уменьшаем шрифт описания */
-        color: var(--color-white);
-        text-align: left; /* Описание выравниваем по левому краю */
-        /* Запрещаем перенос слов по буквам */
-        word-break: normal;
-        hyphens: none;
-        max-width: 90%; /* Немного сужаем, чтобы выглядело аккуратнее */
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 576px) {
-    /* На самых маленьких экранах делаем 1 столбец */
+    /* На самых маленьких экранах делаем 1 столбец, чтобы ничего не сжималось */
     .features-grid {
         grid-template-columns: 1fr;
     }
