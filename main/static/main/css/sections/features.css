@@ -1,7 +1,6 @@
-/* --- СТИЛИ ДЛЯ СЕКЦИИ "ПРЕИМУЩЕСТВА", КОПИЯ СЕКЦИИ "ИГРЫ" --- */
-
+/* --- СТИЛИ ДЛЯ ДЕСКТОПА (ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ) --- */
 .section-features h2 {
-    /* Пусто */
+    margin-bottom: 5rem;
 }
 
 .features-grid { 
@@ -54,46 +53,68 @@
     color: var(--color-white);
 }
 
-/* --- АДАПТИВНЫЕ СТИЛИ --- */
+/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 3rem 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Сетка в 2 столбца */
+        gap: 2rem; /* Отступы между элементами */
     }
     
     .feature-item {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0 1rem;
-        align-items: center;
-        min-width: 0;
+        display: flex;
+        flex-direction: column; /* Элементы в столбик */
+        align-items: center; /* Центрируем все по горизонтали */
+        text-align: center; /* Центрируем текст по умолчанию */
+        gap: 1rem;
     }
 
     .feature-item .feature-icon-wrapper {
-        width: 60px;
-        height: 60px;
-        grid-row: 1;
-        grid-column: 1;
+        width: 150px; /* Увеличиваем размер иконки */
+        height: 150px;
+        position: relative; /* Нужно для позиционирования текста внутри */
+    }
+
+    .feature-item .feature-icon-wrapper img {
+        opacity: 0.3; /* Делаем картинку полупрозрачной */
     }
 
     .feature-item .feature-text-content {
-        display: contents;
+        /* Этот блок будет позиционироваться поверх картинки */
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
     }
 
     .feature-item .feature-text-content h3 {
-        grid-column: 2;
-        margin: 0;
-        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
-        overflow-wrap: break-word;
-        min-width: 0;
+        color: var(--color-white); /* Заголовок делаем белым */
+        font-size: 1.1rem; /* Уменьшаем шрифт заголовка */
+        margin-bottom: 0.5rem;
+        /* Запрещаем перенос слов по буквам */
+        word-break: normal;
+        hyphens: none;
     }
 
     .feature-item .feature-text-content p {
-        grid-column: 1 / -1;
-        margin-top: 0.75rem;
-        text-align: left;
-        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        overflow-wrap: break-word;
-        min-width: 0;
+        font-size: 0.8rem; /* Уменьшаем шрифт описания */
+        color: var(--color-white);
+        text-align: left; /* Описание выравниваем по левому краю */
+        /* Запрещаем перенос слов по буквам */
+        word-break: normal;
+        hyphens: none;
+        max-width: 90%; /* Немного сужаем, чтобы выглядело аккуратнее */
+    }
+}
+
+@media (max-width: 576px) {
+    /* На самых маленьких экранах делаем 1 столбец */
+    .features-grid {
+        grid-template-columns: 1fr;
     }
 }
