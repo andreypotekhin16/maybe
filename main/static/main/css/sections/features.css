@@ -23,11 +23,7 @@
     flex-shrink: 0;
     width: 160px;
     height: 160px;
-    background-color: transparent;
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border: 3px solid var(--color-green-accent);
     overflow: hidden;
 }
@@ -41,30 +37,28 @@
 .feature-item .feature-text-content h3 {
     font-family: var(--font-headers);
     font-size: var(--fs-subsection-title);
-    font-weight: normal;
     color: var(--color-green-accent);
-    margin-bottom: 0.75rem;
     text-transform: uppercase;
+    margin-bottom: 0.75rem;
 }
 
 .feature-item .feature-text-content p {
     font-size: 1rem;
     line-height: 1.5;
-    color: var(--color-white);
 }
 
 
-/* --- ПОЛНОСТЬЮ НОВЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (КАК В МАРКЕТЕ) --- */
+/* --- ФИНАЛЬНЫЕ, РАБОЧИЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* <-- Жестко 2 столбца */
+        grid-template-columns: 1fr 1fr; /* 2 столбца */
         gap: 2.5rem 1.5rem;
     }
     
     .feature-item {
         display: flex;
-        flex-direction: column; /* Элементы в столбик */
+        flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 1rem;
@@ -72,53 +66,46 @@
     }
 
     .feature-item .feature-icon-wrapper {
-        position: relative;
-        width: 150px; /* Размер иконки */
+        position: relative; /* Включаем позиционирование для дочерних элементов */
+        width: 150px;
         height: 150px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .feature-item .feature-icon-wrapper img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.25;
-        z-index: 1;
     }
     
-    /* Блок с текстом теперь делится на заголовок (внутри) и описание (снаружи) */
+    .feature-item .feature-icon-wrapper img {
+        /* Иконка становится фоном */
+        opacity: 0.25;
+    }
+    
+    /* Блок с текстом теперь позиционируется поверх иконки */
     .feature-item .feature-text-content {
-       /* Пусто */
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       padding: 10px;
+       box-sizing: border-box;
     }
 
+    /* Заголовок теперь внутри этого блока */
     .feature-item h3 {
-        /* Заголовок теперь внутри круга */
-        position: relative; /* Не absolute, чтобы быть внутри flex-контейнера иконки */
-        z-index: 2;
-        width: 90%;
-        color: var(--color-white); /* Белый цвет, как ты просил */
-        font-size: 1rem;
+        color: var(--color-green-accent); /* Зеленый цвет */
+        font-size: 1.1rem;
+        margin: 0;
         word-break: break-word;
     }
 
-    /* Описание идет под кругом */
+    /* Описание под иконкой мы просто скрываем */
     .feature-item p {
-        font-size: 0.8rem;
+        display: none;
     }
 }
 
 @media (max-width: 576px) {
-    .feature-item .feature-icon-wrapper {
-        width: 120px;
-        height: 120px;
-    }
-    .feature-item h3 {
-        font-size: 0.9rem;
-    }
-    .feature-item p {
-        font-size: 0.75rem;
+    .features-grid {
+        grid-template-columns: 1fr;
     }
 }
