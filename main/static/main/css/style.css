@@ -1,7 +1,7 @@
-/* Глобальные стили */
+
 @import url('base.css');
 
-/* Стили для секций */
+
 @import url('sections/about_us.css');
 @import url('sections/features.css');
 @import url('sections/carousel.css');

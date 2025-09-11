@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO -->
+    
     {% if seo_settings %}
         <title>{{ seo_settings.meta_title|default:company_profile.site_name }}</title>
         <meta name="description" content="{{ seo_settings.meta_description }}">
@@ -22,7 +22,7 @@
     
     {% if company_profile.favicon %}<link rel="icon" href="{{ company_profile.favicon.url }}">{% endif %}
 
-    <!-- Fonts & Styles -->
+    
     {% if company_profile %}
         
         {% if company_profile %}

@@ -308,11 +308,11 @@ main section {
         padding-top: 70px;
     }
     
-    /* --- ИЗМЕНЕНИЕ ЗДЕСЬ: УБИРАЕМ ФОНОВЫЕ ОБЪЕКТЫ --- */
+    
     .background-object {
         display: none !important;
     }
-    /* --- КОНЕЦ ИЗМЕНЕНИЯ --- */
+    
     
     #site-header .container {
         padding-left: 15px;

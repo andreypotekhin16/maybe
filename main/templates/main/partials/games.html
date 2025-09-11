@@ -4,21 +4,21 @@
             <h2>{{ section.title|default:"Игры" }}</h2>
         {% endif %}
         
-        <!-- Правильная сетка для карточек -->
+        
         <div class="games-grid">
             
             {% for type in game_types %}
-                <!-- Карточка игры -->
+                
                 <div class="game-type-item">
                     
-                    <!-- Обертка для иконки -->
+                    
                     <div class="game-type-icon-wrapper">
                         {% if type.icon %}
                             <img src="{{ type.icon.url }}" alt="{{ type.name }}">
                         {% endif %}
                     </div>
                     
-                    <!-- Текстовый блок -->
+                    
                     <div class="game-type-text-content">
                         <h3>{{ type.name }}</h3>
                         <p>{{ type.description }}</p>

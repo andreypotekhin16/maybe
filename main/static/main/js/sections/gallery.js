@@ -1,4 +1,4 @@
-// main/static/main/js/sections/gallery.js
+
 
 function getRandom(min, max) {
     return Math.random() * (max - min) + min;
@@ -8,15 +8,13 @@ export function initBubbleGallery() {
     const container = document.querySelector('.bubble-container');
     if (!container) return;
 
-    // --- ИЗМЕНЕНИЕ 1: Создаем "наблюдателя" ---
-    // Он будет следить за контейнером галереи
+    
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            // Если контейнер стал виден на экране...
+            
             if (entry.isIntersecting) {
                 
-                // --- ИЗМЕНЕНИЕ 2: Всю логику анимации переносим сюда ---
-                // Этот код теперь выполнится только один раз при появлении
+                
                 const bubbleCount = parseInt(container.dataset.bubbleCount || '0', 10);
                 const bubbles = Array.from(container.querySelectorAll('.gallery-card'));
 
@@ -110,16 +108,14 @@ export function initBubbleGallery() {
                         bubble.classList.add('is-visible');
                     }, Math.random() * 500 + 100);
                 });
-                // --- Конец логики анимации ---
-
-                // --- ИЗМЕНЕНИЕ 3: Отключаем наблюдателя, чтобы анимация не повторялась ---
+                
                 observer.disconnect();
             }
         });
     }, { 
-        threshold: 0.2 // Анимация начнется, когда 20% галереи будет видно
+        threshold: 0.2 
     });
 
-    // --- ИЗМЕНЕНИЕ 4: Запускаем наблюдение за контейнером ---
+    
     observer.observe(container);
 }

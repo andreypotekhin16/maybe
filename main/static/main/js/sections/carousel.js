@@ -6,10 +6,10 @@ export function setupSimpleCarousel() {
         loop: true,
         centeredSlides: true,
         grabCursor: true,
-        speed: 800, // Чуть медленнее для плавности
+        speed: 800, 
         spaceBetween: 0,
         
-        // --- ИЗМЕНЕНИЕ 1: Добавляем пагинацию ---
+        
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
@@ -36,25 +36,24 @@ export function setupSimpleCarousel() {
         }
     });
 
-    // --- ИЗМЕНЕНИЕ 2: Логика "подсказки" при скролле ---
-    // Создаем "наблюдателя", который следит за появлением карусели на экране
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // Если карусель появилась в видимой области
+           
             if (entry.isIntersecting) {
-                // Ждем полсекунды и плавно листаем на следующий слайд
+                
                 setTimeout(() => {
                     swiper.slideNext();
                 }, 500);
 
-                // После этого отключаем наблюдателя, чтобы это сработало только один раз
+                
                 observer.disconnect();
             }
         });
     }, {
-        threshold: 0.5 // Сработает, когда хотя бы 50% карусели видно
+        threshold: 0.5 
     });
 
-    // Начинаем наблюдать за элементом карусели
+    
     observer.observe(carouselEl);
 }

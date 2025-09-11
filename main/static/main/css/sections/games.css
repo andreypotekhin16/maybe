@@ -1,9 +1,4 @@
-/*
-    main/static/main/css/sections/games.css
-    ПОЛНОСТЬЮ ПЕРЕПИСАННЫЕ И ИСПРАВЛЕННЫЕ СТИЛИ (КОПИЯ features.css)
-*/
 
-/* --- СТИЛИ ДЛЯ БОЛЬШИХ ЭКРАНОВ (ДЕСКТОП) --- */
 .section-games h2 {
     margin-bottom: 5rem;
 }
@@ -58,17 +53,17 @@
 }
 
 
-/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ) --- */
+
 @media (max-width: 992px) {
     .games-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Создаем сетку из двух равных колонок */
+        grid-template-columns: 1fr 1fr; 
         gap: 3rem 1.5rem;
     }
     
     .game-type-item {
         display: flex;
-        flex-direction: column; /* Элементы внутри карточки располагаем вертикально */
+        flex-direction: column; 
         align-items: center;
         text-align: center;
         gap: 1rem;

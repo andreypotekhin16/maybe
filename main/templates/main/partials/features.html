@@ -6,21 +6,21 @@
             <h2>{{ section.title|default:"Что мы предлагаем" }}</h2>
         {% endif %}
         
-        <!-- Контейнер для сетки преимуществ -->
+        
         <div class="features-grid">
             
             {% for feature in features %}
-                <!-- Карточка одного преимущества -->
+                
                 <div class="feature-item">
                     
-                    <!-- Круглая обертка для иконки -->
+                    
                     <div class="feature-icon-wrapper">
                         {% if feature.icon %}
                             <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
                         {% endif %}
                     </div>
                     
-                    <!-- Текстовый контент карточки -->
+                    
                     <div class="feature-text-content">
                         <h3>{{ feature.title }}</h3>
                         <p>{{ feature.description }}</p>
