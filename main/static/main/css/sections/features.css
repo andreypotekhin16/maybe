@@ -54,7 +54,7 @@
 }
 
 
-/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ, НАДЕЖНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
@@ -63,48 +63,55 @@
     }
     
     .feature-item {
-        /* Создаем контейнер-сетку для одного элемента */
-        display: grid;
-        /* Все дочерние элементы будут в одной ячейке, друг над другом */
-        grid-template-areas: "content"; 
+        display: flex;
+        flex-direction: column; /* Элементы в столбик */
         align-items: center;
-        justify-items: center;
         text-align: center;
-        gap: 0; /* Убираем лишние отступы */
+        gap: 1rem; /* Отступ между кругом и текстом под ним */
     }
 
     .feature-item .feature-icon-wrapper {
-        /* Иконка занимает всю ячейку "content" */
-        grid-area: content;
+        position: relative;
         width: 150px;
         height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .feature-item .feature-icon-wrapper img {
-        opacity: 0.25; /* Делаем картинку фоном */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.25;
+        z-index: -1;
     }
     
-    /* Блок с текстом тоже занимает всю ячейку "content", накладываясь на иконку */
     .feature-item .feature-text-content {
-        grid-area: content;
-        padding: 10px;
-        box-sizing: border-box;
+        /* Теперь этот блок не позиционируется, а идет в потоке после иконки */
     }
 
     .feature-item .feature-text-content h3 {
+        /* Заголовок теперь находится ВНУТРИ круга */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%; /* Ограничиваем ширину, чтобы текст переносился */
         color: var(--color-white);
         font-size: 1.1rem;
-        margin-bottom: 0.5rem;
+        margin: 0; /* Убираем все отступы */
         word-break: break-word;
         hyphens: auto;
     }
 
     .feature-item .feature-text-content p {
-        font-size: 0.8rem;
+        /* А описание находится ПОД кругом */
+        font-size: 0.9rem;
         color: var(--color-white);
-        text-align: center; /* Центрируем описание */
-        word-break: break-word;
-        hyphens: auto;
     }
 }
 
