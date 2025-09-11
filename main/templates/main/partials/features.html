@@ -5,18 +5,18 @@
         {% if section.show_title %}
             <h2>{{ section.title|default:"Что мы предлагаем" }}</h2>
         {% endif %}
-
-        <!-- Простая сетка, как в секции "Игры" -->
         <div class="features-grid">
             {% for feature in features %}
                 <div class="feature-item">
                     <div class="feature-icon-wrapper">
                         {% if feature.icon %}
-                            <img src="{{ feature.icon.url }}" alt="">
+                            <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
                         {% endif %}
-                        <h3>{{ feature.title }}</h3>
                     </div>
-                    <p>{{ feature.description }}</p>
+                    <div class="feature-text-content">
+                        <h3>{{ feature.title }}</h3>
+                        <p>{{ feature.description }}</p>
+                    </div>
                 </div>
             {% empty %}
                 <p>Преимущества не добавлены в админ-панели.</p>
