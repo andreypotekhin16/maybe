@@ -1,11 +1,9 @@
 /*
     main/static/main/css/sections/features.css
-    Полностью переписанные стили для секции "Что мы предлагаем"
+    Стили для секции "Что мы предлагаем"
 */
 
 /* --- СТИЛИ ДЛЯ БОЛЬШИХ ЭКРАНОВ (ДЕСКТОП) --- */
-/* На больших экранах элементы идут в ряд: иконка слева, текст справа */
-
 .section-features h2 {
     margin-bottom: 5rem;
 }
@@ -19,7 +17,7 @@
 
 .feature-item {
     display: flex;
-    flex-direction: row; /* иконка и текст в строку */
+    flex-direction: row;
     align-items: center;
     gap: 2rem;
     text-align: left;
@@ -35,13 +33,13 @@
     justify-content: center;
     align-items: center;
     border: 3px solid var(--color-green-accent);
-    overflow: hidden; /* Обрезает изображение по кругу */
+    overflow: hidden;
 }
 
 .feature-item .feature-icon-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Масштабирует картинку, чтобы она заполнила круг */
+    object-fit: cover;
 }
 
 .feature-item .feature-text-content h3 {
@@ -61,39 +59,40 @@
 
 
 /* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ) --- */
-/* Здесь реализуется сетка 2x2 как на скриншоте */
-
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Создаем сетку из двух равных колонок */
-        gap: 3rem 1.5rem; /* Отступы между карточками (вертикальный и горизонтальный) */
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem 1.5rem;
     }
     
     .feature-item {
         display: flex;
-        flex-direction: column; /* Элементы внутри карточки располагаем вертикально */
-        align-items: center;   /* Выравниваем все по центру (иконку, текст) */
-        text-align: center;    /* Текст тоже выравниваем по центру */
-        gap: 1rem;             /* Отступ между иконкой и текстом */
-        max-width: 100%;       /* Сбрасываем ограничение ширины с десктопа */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+        max-width: 100%;
     }
 
     .feature-item .feature-icon-wrapper {
-        width: 140px;  /* Уменьшаем размер иконки для мобильных */
+        width: 140px;
         height: 140px;
     }
 
     .feature-item .feature-text-content h3 {
-        font-size: 1.1rem; /* Уменьшаем шрифт заголовка */
+        font-size: 1.1rem;
         margin-bottom: 0.5rem;
     }
 
     .feature-item .feature-text-content p {
-        font-size: 0.85rem;
-        /* Важное изменение: делаем текст описания в верхнем регистре, как на макете */
-        text-transform: uppercase; 
+        /* ИЗМЕНЕНИЕ 1: Уменьшаем шрифт основного текста */
+        font-size: 0.8rem; 
+        text-transform: uppercase;
+        
+        /* ИЗМЕНЕНИЕ 2: Запрещаем браузеру рвать слова при переносе */
+        word-break: normal; /* Сбрасываем агрессивные переносы */
+        hyphens: none;      /* Отключаем автоматические переносы по слогам */
     }
 }
-
 
