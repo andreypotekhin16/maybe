@@ -1,134 +1,99 @@
-/* --- СТИЛИ ДЛЯ ДЕСКТОПА (ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ) --- */
+/* --- СТИЛИ ДЛЯ СЕКЦИИ "ПРЕИМУЩЕСТВА", КОПИЯ СЕКЦИИ "ИГРЫ" --- */
+
 .section-features h2 {
-    margin-bottom: 5rem;
+    /* Пусто */
 }
 
-.features-carousel .swiper-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.features-grid { 
+    display: grid;
+    grid-template-columns: repeat(2, auto);
     gap: 3.5rem 5rem;
-    transform: none !important;
-}
-
-.features-carousel .feature-slide {
-    width: auto !important;
-    margin-right: 0 !important;
-    display: contents;
+    justify-content: center;
 }
 
 .feature-item {
     display: flex;
-    flex-direction: row; 
-    align-items: center; 
-    text-align: left; 
+    flex-direction: row;
+    align-items: center;
     gap: 2rem;
-    max-width: 500px;
+    text-align: left;
+    color: var(--color-white);
 }
 
-.feature-icon-wrapper {
+.feature-item .feature-icon-wrapper {
     flex-shrink: 0;
     width: 160px;
     height: 160px;
+    background-color: transparent;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 3px solid var(--color-green-accent);
-    overflow: hidden; 
+    overflow: hidden;
 }
 
-.feature-icon-wrapper img {
+.feature-item .feature-icon-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
-.feature-text-content h3 {
+.feature-item .feature-text-content h3 {
     font-family: var(--font-headers);
     font-size: var(--fs-subsection-title);
+    font-weight: normal;
     color: var(--color-green-accent);
-    text-transform: uppercase;
     margin-bottom: 0.75rem;
+    text-transform: uppercase;
 }
 
-.feature-text-content p {
+.feature-item .feature-text-content p {
     font-size: 1rem;
     line-height: 1.5;
+    color: var(--color-white);
 }
 
-/* На десктопе все элементы управления каруселью скрыты */
-.features-carousel-wrapper .swiper-button-prev,
-.features-carousel-wrapper .swiper-button-next,
-.features-carousel .features-pagination {
-    display: none;
-}
-
-
-/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+/* --- АДАПТИВНЫЕ СТИЛИ --- */
 @media (max-width: 992px) {
-    /* Главный контейнер карусели */
-    .features-carousel-wrapper {
-        position: relative;
-        padding: 0 35px; /* Добавляем боковые отступы для стрелок */
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem 1.5rem;
     }
     
-    .features-carousel {
-        overflow: hidden; /* Включаем обрезку */
-        padding-bottom: 30px; /* Место для пагинации */
-    }
-
-    /* Возвращаем стандартное поведение для Swiper */
-    .features-carousel .swiper-wrapper {
-        display: flex;
-        flex-wrap: nowrap; 
-        justify-content: flex-start;
-        gap: 0;
-    }
-    
-    /* Слайд теперь сам центрирует контент */
-    .features-carousel .feature-slide {
-        display: flex;
-        justify-content: center; /* Центрируем по горизонтали */
-        align-items: flex-start; /* Выравниваем по верху */
-        box-sizing: border-box;
-    }
-
-    /* Карточка преимущества внутри слайда */
     .feature-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 1rem;
+        align-items: center;
+        min-width: 0;
     }
 
-    .feature-icon-wrapper {
-        width: 100px;
-        height: 100px;
+    .feature-item .feature-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        grid-row: 1;
+        grid-column: 1;
     }
 
-    /* Показываем стрелки и пагинацию */
-    .features-carousel-wrapper .swiper-button-prev,
-    .features-carousel-wrapper .swiper-button-next,
-    .features-carousel .features-pagination {
-        display: flex;
+    .feature-item .feature-text-content {
+        display: contents;
     }
 
-    /* Стили для стрелок */
-    .features-prev, .features-next {
-        color: var(--color-green-accent);
-        top: 50%; /* Центрируем по вертикали */
-        transform: translateY(-100%); /* Корректируем позицию с учетом высоты пагинации */
-    }
-    .features-prev { left: 0px; }
-    .features-next { right: 0px; }
-
-    /* Стили для пагинации */
-    .features-pagination {
-        bottom: 0 !important;
+    .feature-item .feature-text-content h3 {
+        grid-column: 2;
+        margin: 0;
+        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
+        overflow-wrap: break-word;
+        min-width: 0;
     }
 
-    .swiper-button-disabled {
-        opacity: 0.2;
-        cursor: auto;
+    .feature-item .feature-text-content p {
+        grid-column: 1 / -1;
+        margin-top: 0.75rem;
+        text-align: left;
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        overflow-wrap: break-word;
+        min-width: 0;
     }
 }
