@@ -29,7 +29,6 @@
 }
 
 :root {
-    /* Старые переменные --font-sunday и --font-fortunec удалены */
     --color-white: #FFFFFF;         
     --color-green-accent: #44A56B;   
     --color-green-bg: #1E5C37;      
@@ -308,6 +307,12 @@ main section {
     main {
         padding-top: 70px;
     }
+    
+    /* --- ИЗМЕНЕНИЕ ЗДЕСЬ: УБИРАЕМ ФОНОВЫЕ ОБЪЕКТЫ --- */
+    .background-object {
+        display: none !important;
+    }
+    /* --- КОНЕЦ ИЗМЕНЕНИЯ --- */
     
     #site-header .container {
         padding-left: 15px;

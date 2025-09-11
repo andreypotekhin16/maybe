@@ -1,10 +1,7 @@
-/* START OF FILE: main/static/main/css/sections/features.css */
-
 .section-features h2 {
     margin-bottom: 5rem;
 }
 
-/* --- ИЗМЕНЕНИЯ ЗДЕСЬ: ВОЗВРАЩАЕМ FLEXBOX --- */
 .features-grid {
     display: flex;
     flex-wrap: wrap;
@@ -18,9 +15,8 @@
     align-items: center; 
     text-align: left; 
     gap: 2rem;
-    max-width: 500px; /* <-- Эта строка не дает элементам слишком растягиваться */
+    max-width: 500px;
 }
-/* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
 
 .feature-icon-wrapper {
     flex-shrink: 0;
@@ -54,53 +50,50 @@
     line-height: 1.5;
 }
 
+/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .features-grid {
-        /* Для планшетов оставляем flex, он сам все сделает красиво */
-        gap: 3rem 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Сетка в 2 столбца */
+        gap: 2.5rem; /* Отступы между элементами */
     }
 
     .feature-item {
-        /* А вот для элемента вернем grid, он тут лучше подходит для мобилок */
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0 1rem;
-        align-items: center;
-        min-width: 0;
-        max-width: 100%; /* Сбрасываем ограничение на мобилках */
-    }
-
-    .feature-icon-wrapper {
-        width: 60px;
-        height: 60px;
-        grid-row: 1;
-        grid-column: 1;
+        display: flex;
+        flex-direction: column; /* Элементы внутри карточки теперь в столбик */
+        text-align: center; /* Центрируем текст */
+        gap: 1rem; /* Отступ между элементами внутри карточки */
+        max-width: 100%; /* Убираем ограничение по ширине */
     }
     
     .feature-text-content {
-        display: contents;
+        /* Этот блок больше не нужен для управления порядком */
     }
-
+    
     .feature-text-content h3 {
-        grid-column: 2;
-        margin: 0;
-        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
-        overflow-wrap: break-word;
-        min-width: 0;
+        order: 1; /* 1. Сначала заголовок */
+        font-size: clamp(1rem, 4vw, 1.2rem); /* Адаптивный размер шрифта */
+    }
+    
+    .feature-icon-wrapper {
+        order: 2; /* 2. Потом иконка */
+        width: 120px; /* Фиксированный размер иконки */
+        height: 120px;
+        margin: 0 auto; /* Центрируем иконку */
     }
 
     .feature-text-content p {
-        grid-column: 1 / -1;
-        margin-top: 0.75rem;
-        text-align: left;
-        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        overflow-wrap: break-word;
-        min-width: 0;
+        order: 3; /* 3. Потом описание */
+        font-size: clamp(0.9rem, 2.5vw, 1rem); /* Адаптивный размер шрифта */
     }
 }
 
 @media (max-width: 576px) {
     .section-features h2 {
         margin-bottom: 3rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr; /* На очень маленьких экранах - 1 столбец */
     }
 }
