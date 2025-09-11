@@ -1,11 +1,11 @@
-/* --- СТИЛИ ДЛЯ ДЕСКТОПА (КАК БЫЛО) --- */
+/* --- СТИЛИ ДЛЯ ДЕСКТОПА --- */
 .section-features h2 {
     margin-bottom: 5rem;
 }
 
-.features-carousel {
-    overflow: visible;
-    padding-bottom: 0;
+/* На десктопе обертка - это просто div */
+.features-carousel-wrapper {
+    position: relative;
 }
 
 .features-carousel .swiper-wrapper {
@@ -39,7 +39,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
     border: 3px solid var(--color-green-accent);
     overflow: hidden; 
 }
@@ -63,18 +62,19 @@
     line-height: 1.5;
 }
 
-.features-carousel .swiper-navigation-wrapper,
+/* На десктопе стрелки и пагинация скрыты */
+.features-carousel-wrapper .swiper-button-prev,
+.features-carousel-wrapper .swiper-button-next,
 .features-carousel .features-pagination {
     display: none;
 }
 
 
-/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (ПРОСТАЯ КАРУСЕЛЬ) --- */
+/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 992px) {
     .features-carousel {
         overflow: hidden;
         padding-bottom: 30px;
-        position: relative;
     }
 
     .features-carousel .swiper-wrapper {
@@ -89,7 +89,7 @@
         flex-direction: column;
         gap: 2.5rem;
         align-items: center;
-        padding: 0 45px; /* <-- УВЕЛИЧИВАЕМ ОТСТУПЫ, ЧТОБЫ БЫЛО МЕСТО ДЛЯ СТРЕЛОК */
+        padding: 0 10px;
         box-sizing: border-box;
     }
 
@@ -105,26 +105,18 @@
         height: 100px;
     }
 
-    .features-carousel .swiper-navigation-wrapper,
+    /* ПОКАЗЫВАЕМ СТРЕЛКИ И ПАГИНАЦИЮ */
+    .features-carousel-wrapper .swiper-button-prev,
+    .features-carousel-wrapper .swiper-button-next,
     .features-carousel .features-pagination {
-        display: block;
-    }
-
-    /* --- ИЗМЕНЕНИЯ ЗДЕСЬ --- */
-    .swiper-navigation-wrapper {
-        position: absolute; /* Позиционируем контейнер стрелок */
-        top: 35%; /* Примерно по центру */
-        left: 0;
-        width: 100%;
-        z-index: 10;
-        transform: translateY(-50%);
+        display: flex;
     }
 
     .features-prev, .features-next {
         color: var(--color-green-accent);
-        /* Swiper сам добавит нужные стили для позиционирования */
+        top: 40%;
     }
-    
+
     .swiper-button-disabled {
         opacity: 0.2;
         cursor: auto;
