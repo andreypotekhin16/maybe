@@ -57,23 +57,27 @@
 /* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ, НАДЕЖНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
     .features-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Сетка в 2 столбца */
-        gap: 2.5rem 1.5rem;
+        display: flex; /* <-- Используем Flexbox */
+        flex-wrap: wrap; /* <-- Разрешаем перенос элементов */
+        justify-content: center; /* Центрируем по горизонтали */
+        gap: 2rem; /* Отступы между элементами */
     }
     
     .feature-item {
         display: flex;
-        flex-direction: column; /* Элементы в столбик */
+        flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 1rem; /* Отступ между кругом и текстом под ним */
+        gap: 1rem;
+        /* --- Вот магия для 2-х колонок --- */
+        flex-basis: calc(50% - 1rem); /* Каждый элемент занимает почти 50% ширины */
+        min-width: 150px; /* Минимальная ширина, чтобы не сжимались */
     }
 
     .feature-item .feature-icon-wrapper {
         position: relative;
-        width: 150px;
-        height: 150px;
+        width: 130px; /* Немного уменьшим иконки */
+        height: 130px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -87,36 +91,33 @@
         height: 100%;
         object-fit: cover;
         opacity: 0.25;
-        z-index: -1;
+        z-index: 1;
     }
     
     .feature-item .feature-text-content {
-        /* Теперь этот блок не позиционируется, а идет в потоке после иконки */
+        /* Этот блок идет под иконкой */
     }
 
     .feature-item .feature-text-content h3 {
-        /* Заголовок теперь находится ВНУТРИ круга */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%; /* Ограничиваем ширину, чтобы текст переносился */
-        color: var(--color-white);
-        font-size: 1.1rem;
-        margin: 0; /* Убираем все отступы */
+        position: relative; /* <-- Заголовку больше не нужно быть absolute */
+        z-index: 2;
+        color: var(--color-green-accent); /* <-- МЕНЯЕМ ЦВЕТ НА ЗЕЛЕНЫЙ */
+        font-size: 1rem;
         word-break: break-word;
         hyphens: auto;
+        padding-top: 45px; /* <-- Приподнимаем текст, чтобы он залез на иконку */
+        margin-bottom: -55px; /* <-- Компенсируем высоту, чтобы описание было ближе */
     }
 
     .feature-item .feature-text-content p {
-        /* А описание находится ПОД кругом */
         font-size: 0.9rem;
         color: var(--color-white);
     }
 }
 
 @media (max-width: 576px) {
-    .features-grid {
-        grid-template-columns: 1fr;
+    /* На самых маленьких экранах flex-basis сделает свое дело и будет 1 колонка */
+    .feature-item {
+        flex-basis: 100%; /* Один элемент на всю ширину */
     }
 }
