@@ -5,22 +5,42 @@
         {% if section.show_title %}
             <h2>{{ section.title|default:"Что мы предлагаем" }}</h2>
         {% endif %}
-        <div class="features-grid">
-            {% for feature in features %}
-                <div class="feature-item">
-                    <div class="feature-icon-wrapper">
-                        {% if feature.icon %}
-                            <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
-                        {% endif %}
+
+        
+        <div class="swiper features-carousel">
+            <div class="swiper-wrapper features-grid">
+                
+                {% for feature in features %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <!-- Начало нового слайда каждые 2 элемента -->
+                        <div class="swiper-slide feature-slide">
+                    {% endif %}
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            {% if feature.icon %}
+                                <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>{{ feature.title }}</h3>
+                            <p>{{ feature.description }}</p>
+                        </div>
                     </div>
-                    <div class="feature-text-content">
-                        <h3>{{ feature.title }}</h3>
-                        <p>{{ feature.description }}</p>
+
+                    {% if forloop.counter|divisibleby:2 or forloop.last %}
+                        <!-- Конец слайда каждые 2 элемента или если это последний элемент -->
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <div class="swiper-slide">
+                        <p>Преимущества не добавлены в админ-панели.</p>
                     </div>
-                </div>
-            {% empty %}
-                <p>Преимущества не добавлены в админ-панели.</p>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <!-- Пагинация для новой карусели -->
+            <div class="swiper-pagination features-pagination"></div>
         </div>
+        
     </div>
 </section>

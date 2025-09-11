@@ -1,5 +1,11 @@
+/* --- СТИЛИ ДЛЯ ДЕСКТОПА (КАРУСЕЛЬ ВЫКЛЮЧЕНА) --- */
 .section-features h2 {
     margin-bottom: 5rem;
+}
+
+.features-carousel {
+    /* На десктопе это просто контейнер, невидимый для Swiper */
+    overflow: visible;
 }
 
 .features-grid {
@@ -7,6 +13,11 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 3.5rem 5rem;
+}
+
+.feature-slide {
+    /* На десктопе слайды не ведут себя как слайды, а просто отдают контент */
+    display: contents; /* <-- Магия: обертка слайда исчезает, выпуская содержимое */
 }
 
 .feature-item {
@@ -50,50 +61,53 @@
     line-height: 1.5;
 }
 
-/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+.features-pagination {
+    display: none; /* На десктопе пагинация не нужна */
+}
+
+/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (КАРУСЕЛЬ ВКЛЮЧЕНА) --- */
 @media (max-width: 992px) {
+    .features-carousel {
+        overflow: hidden; /* Возвращаем стандартное поведение Swiper */
+        padding-bottom: 30px; /* Место для пагинации */
+    }
+
     .features-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Сетка в 2 столбца */
-        gap: 2.5rem; /* Отступы между элементами */
+        display: flex; /* Swiper сам управляет этим, но лучше указать */
+        justify-content: flex-start; /* Слайды начинаются слева */
+    }
+
+    .feature-slide {
+        display: flex; /* Слайд становится flex-контейнером */
+        flex-direction: column; /* Элементы внутри слайда - в столбик */
+        align-items: center;
+        gap: 2rem;
+        /* Swiper сам задаст ширину, нам не нужно */
     }
 
     .feature-item {
-        display: flex;
-        flex-direction: column; /* Элементы внутри карточки теперь в столбик */
-        text-align: center; /* Центрируем текст */
-        gap: 1rem; /* Отступ между элементами внутри карточки */
-        max-width: 100%; /* Убираем ограничение по ширине */
+        /* Меняем направление и центрируем все для мобильного вида */
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        max-width: 300px; /* Ограничиваем ширину элемента внутри слайда */
     }
-    
-    .feature-text-content {
-        /* Этот блок больше не нужен для управления порядком */
-    }
-    
-    .feature-text-content h3 {
-        order: 1; /* 1. Сначала заголовок */
-        font-size: clamp(1rem, 4vw, 1.2rem); /* Адаптивный размер шрифта */
-    }
-    
+
     .feature-icon-wrapper {
-        order: 2; /* 2. Потом иконка */
-        width: 120px; /* Фиксированный размер иконки */
-        height: 120px;
-        margin: 0 auto; /* Центрируем иконку */
+        width: 100px;
+        height: 100px;
+    }
+
+    .feature-text-content h3 {
+        font-size: 1.2rem;
     }
 
     .feature-text-content p {
-        order: 3; /* 3. Потом описание */
-        font-size: clamp(0.9rem, 2.5vw, 1rem); /* Адаптивный размер шрифта */
+        font-size: 0.9rem;
     }
-}
 
-@media (max-width: 576px) {
-    .section-features h2 {
-        margin-bottom: 3rem;
-    }
-    
-    .features-grid {
-        grid-template-columns: 1fr; /* На очень маленьких экранах - 1 столбец */
+    .features-pagination {
+        display: block; /* Показываем пагинацию */
+        bottom: 0 !important;
     }
 }
