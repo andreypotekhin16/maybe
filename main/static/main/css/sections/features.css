@@ -54,71 +54,61 @@
 }
 
 
-/* --- ПОЛНОСТЬЮ НОВЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (КАК В МАРКЕТЕ) --- */
+/* --- ФИНАЛЬНАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ С АДАПТИВНЫМ ШРИФТОМ --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* <-- Жестко 2 столбца */
-        gap: 2.5rem 1.5rem;
+        grid-template-columns: 1fr 1fr; /* Жестко 2 столбца */
+        gap: 2.5rem 1rem; /* Уменьшаем боковой отступ */
     }
     
     .feature-item {
         display: flex;
-        flex-direction: column; /* Элементы в столбик */
+        flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 1rem;
         max-width: 100%;
+        overflow: hidden; /* Важно, чтобы текст не вылезал */
     }
 
     .feature-item .feature-icon-wrapper {
-        position: relative;
-        width: 150px; /* Размер иконки */
-        height: 150px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .feature-item .feature-icon-wrapper img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.25;
-        z-index: 1;
+        width: 130px;
+        height: 130px;
     }
     
-    /* Блок с текстом теперь делится на заголовок (внутри) и описание (снаружи) */
-    .feature-item .feature-text-content {
-       /* Пусто */
+    .feature-item .feature-icon-wrapper img {
+        opacity: 1; /* <-- 1. УБИРАЕМ ЗАТЕМНЕНИЕ */
     }
 
-    .feature-item h3 {
-        /* Заголовок теперь внутри круга */
-        position: relative; /* Не absolute, чтобы быть внутри flex-контейнера иконки */
-        z-index: 2;
-        width: 90%;
-        color: var(--color-white); /* Белый цвет, как ты просил */
-        font-size: 1rem;
-        word-break: break-word;
-    }
-
-    /* Описание идет под кругом */
-    .feature-item p {
+    .feature-item .feature-text-content h3,
+    .feature-item .feature-text-content p {
+        /* --- 2. АДАПТИВНЫЙ ШРИФТ И ОГРАНИЧЕНИЯ --- */
+        
+        /* Устанавливаем базовый размер */
         font-size: 0.8rem;
+        
+        /* Магия: единицы vw (viewport width) делают шрифт зависимым от ширины экрана. */
+        /* clamp() не дает ему стать слишком большим или слишком маленьким. */
+        font-size: clamp(0.6rem, 3.5vw, 0.8rem);
+        
+        /* Еще магия: эта строка говорит, что размер контейнера для текста 
+           не может быть больше, чем размер самого текста. Это заставит
+           шрифт сжиматься, если слово не влезает. */
+        container-type: inline-size;
+    }
+
+    .feature-item .feature-text-content {
+        /* 3. ОГРАНИЧЕНИЕ ПО ШИРИНЕ */
+        /* Ограничиваем ширину текстового блока, чтобы он не вылезал */
+        width: 100%;
+        padding: 0 5px; /* Небольшие боковые отступы внутри */
+        box-sizing: border-box;
     }
 }
 
 @media (max-width: 576px) {
-    .feature-item .feature-icon-wrapper {
-        width: 120px;
-        height: 120px;
-    }
-    .feature-item h3 {
-        font-size: 0.9rem;
-    }
-    .feature-item p {
-        font-size: 0.75rem;
+    .features-grid {
+        grid-template-columns: 1fr;
     }
 }
