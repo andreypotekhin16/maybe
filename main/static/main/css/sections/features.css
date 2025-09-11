@@ -1,4 +1,11 @@
-/* --- СТИЛИ ДЛЯ ДЕСКТОПА (ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ) --- */
+/*
+    main/static/main/css/sections/features.css
+    Полностью переписанные стили для секции "Что мы предлагаем"
+*/
+
+/* --- СТИЛИ ДЛЯ БОЛЬШИХ ЭКРАНОВ (ДЕСКТОП) --- */
+/* На больших экранах элементы идут в ряд: иконка слева, текст справа */
+
 .section-features h2 {
     margin-bottom: 5rem;
 }
@@ -12,7 +19,7 @@
 
 .feature-item {
     display: flex;
-    flex-direction: row;
+    flex-direction: row; /* иконка и текст в строку */
     align-items: center;
     gap: 2rem;
     text-align: left;
@@ -23,19 +30,18 @@
     flex-shrink: 0;
     width: 160px;
     height: 160px;
-    background-color: transparent;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 3px solid var(--color-green-accent);
-    overflow: hidden;
+    overflow: hidden; /* Обрезает изображение по кругу */
 }
 
 .feature-item .feature-icon-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Масштабирует картинку, чтобы она заполнила круг */
 }
 
 .feature-item .feature-text-content h3 {
@@ -54,45 +60,54 @@
 }
 
 
-/* --- ПРАВИЛЬНАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ (СЕТКА 2x2) --- */
+/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ) --- */
+/* Здесь реализуется сетка 2x2 как на скриншоте */
+
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* <-- Жестко 2 столбца */
-        gap: 2.5rem 1.5rem;
+        grid-template-columns: 1fr 1fr; /* Создаем сетку из двух равных колонок */
+        gap: 3rem 1.5rem; /* Отступы между карточками (вертикальный и горизонтальный) */
     }
     
     .feature-item {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 1rem;
-        max-width: 100%;
+        flex-direction: column; /* Элементы внутри карточки располагаем вертикально */
+        align-items: center;   /* Выравниваем все по центру (иконку, текст) */
+        text-align: center;    /* Текст тоже выравниваем по центру */
+        gap: 1rem;             /* Отступ между иконкой и текстом */
+        max-width: 100%;       /* Сбрасываем ограничение ширины с десктопа */
     }
 
     .feature-item .feature-icon-wrapper {
-        width: 130px;
-        height: 130px;
-    }
-    
-    .feature-item .feature-icon-wrapper img {
-        opacity: 1;
+        width: 140px;  /* Уменьшаем размер иконки для мобильных */
+        height: 140px;
     }
 
     .feature-item .feature-text-content h3 {
-        color: var(--color-green-accent);
-        font-size: 1rem;
+        font-size: 1.1rem; /* Уменьшаем шрифт заголовка */
         margin-bottom: 0.5rem;
     }
 
     .feature-item .feature-text-content p {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
+        /* Важное изменение: делаем текст описания в верхнем регистре, как на макете */
+        text-transform: uppercase; 
     }
 }
 
+
+/* --- СТИЛИ ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ --- */
+/* На самых узких экранах переходим в одну колонку для читаемости */
+
 @media (max-width: 576px) {
     .features-grid {
-        grid-template-columns: 1fr; /* На очень маленьких экранах переходим в 1 колонку */
+        grid-template-columns: 1fr; /* Одна колонка */
+        gap: 3.5rem; /* Увеличиваем вертикальный отступ */
+    }
+    
+    .feature-item .feature-icon-wrapper {
+        width: 160px; /* Можно снова сделать иконку чуть побольше */
+        height: 160px;
     }
 }
