@@ -54,7 +54,7 @@
 }
 
 
-/* --- ФИНАЛЬНАЯ, РАБОЧАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ --- */
+/* --- ПРАВИЛЬНАЯ ВЕРСИЯ ДЛЯ МОБИЛЬНЫХ (СЕТКА 2x2) --- */
 @media (max-width: 992px) {
     .features-grid {
         display: grid;
@@ -77,12 +77,12 @@
     }
     
     .feature-item .feature-icon-wrapper img {
-        opacity: 1; /* <-- УБРАЛ ЗАТЕМНЕНИЕ */
+        opacity: 1;
     }
 
     .feature-item .feature-text-content h3 {
         color: var(--color-green-accent);
-        font-size: 1rem; /* <-- УМЕНЬШИЛ ШРИФТ ЗАГОЛОВКА */
+        font-size: 1rem;
         margin-bottom: 0.5rem;
     }
 
@@ -93,6 +93,6 @@
 
 @media (max-width: 576px) {
     .features-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* На очень маленьких экранах переходим в 1 колонку */
     }
 }
