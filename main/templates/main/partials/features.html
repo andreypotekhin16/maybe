@@ -14,22 +14,28 @@
             
             <div class="swiper-wrapper">
                 
-                <!-- НОВАЯ, УПРОЩЕННАЯ ЛОГИКА -->
                 {% for feature in features %}
-                    <!-- Теперь каждое преимущество - это отдельный слайд -->
-                    <div class="swiper-slide feature-slide">
-                        <div class="feature-item">
-                            <div class="feature-icon-wrapper">
-                                {% if feature.icon %}
-                                    <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
-                                {% endif %}
-                            </div>
-                            <div class="feature-text-content">
-                                <h3>{{ feature.title }}</h3>
-                                <p>{{ feature.description }}</p>
-                            </div>
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <!-- Начало нового слайда (столбца) -->
+                        <div class="swiper-slide feature-slide">
+                    {% endif %}
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">
+                            {% if feature.icon %}
+                                <img src="{{ feature.icon.url }}" alt="{{ feature.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>{{ feature.title }}</h3>
+                            <p>{{ feature.description }}</p>
                         </div>
                     </div>
+
+                    {% if forloop.counter|divisibleby:2 or forloop.last %}
+                        <!-- Конец слайда (столбца) -->
+                        </div>
+                    {% endif %}
                 {% empty %}
                     <div class="swiper-slide">
                         <p>Преимущества не добавлены.</p>
@@ -39,5 +45,6 @@
             </div>
             <div class="swiper-pagination features-pagination"></div>
         </div>
+        
     </div>
 </section>
