@@ -7,22 +7,33 @@ export function setupFeaturesCarousel() {
     function initSwiper(isMobile) {
         if (isMobile && !swiperInstance) {
             swiperInstance = new Swiper('.features-carousel', {
-                // Это самая простая конфигурация
-                slidesPerView: 1,
-                spaceBetween: 20,
-                // Бесконечная прокрутка отключена по умолчанию
+                // --- ИЗМЕНЕНИЯ ЗДЕСЬ ---
+                slidesPerView: 2, // Показываем по 2 слайда (преимущества) на экране
+                spaceBetween: 10, // Небольшой отступ между ними
                 
-                // Подключаем пагинацию
                 pagination: {
                     el: '.features-pagination',
                     clickable: true,
                 },
 
-                // Подключаем стрелки
                 navigation: {
                     nextEl: '.features-next',
                     prevEl: '.features-prev',
                 },
+                
+                // Добавим адаптивность для самых маленьких экранов
+                breakpoints: {
+                    // Ширина < 576px
+                    320: {
+                        slidesPerView: 1, // Показываем по одному
+                        spaceBetween: 10
+                    },
+                    // Ширина >= 576px
+                    576: {
+                        slidesPerView: 2, // Показываем по два
+                        spaceBetween: 10
+                    }
+                }
             });
         } else if (!isMobile && swiperInstance) {
             swiperInstance.destroy(true, true);
