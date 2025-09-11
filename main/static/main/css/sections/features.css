@@ -1,11 +1,6 @@
-/* --- СТИЛИ ДЛЯ ДЕСКТОПА --- */
+/* --- СТИЛИ ДЛЯ ДЕСКТОПА (ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ) --- */
 .section-features h2 {
     margin-bottom: 5rem;
-}
-
-/* На десктопе обертка - это просто div */
-.features-carousel-wrapper {
-    position: relative;
 }
 
 .features-carousel .swiper-wrapper {
@@ -62,7 +57,7 @@
     line-height: 1.5;
 }
 
-/* На десктопе стрелки и пагинация скрыты */
+/* На десктопе все элементы управления каруселью скрыты */
 .features-carousel-wrapper .swiper-button-prev,
 .features-carousel-wrapper .swiper-button-next,
 .features-carousel .features-pagination {
@@ -70,13 +65,20 @@
 }
 
 
-/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ --- */
+/* --- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 992px) {
+    /* Главный контейнер карусели */
+    .features-carousel-wrapper {
+        position: relative;
+        padding: 0 35px; /* Добавляем боковые отступы для стрелок */
+    }
+    
     .features-carousel {
-        overflow: hidden;
-        padding-bottom: 30px;
+        overflow: hidden; /* Включаем обрезку */
+        padding-bottom: 30px; /* Место для пагинации */
     }
 
+    /* Возвращаем стандартное поведение для Swiper */
     .features-carousel .swiper-wrapper {
         display: flex;
         flex-wrap: nowrap; 
@@ -84,20 +86,19 @@
         gap: 0;
     }
     
+    /* Слайд теперь сам центрирует контент */
     .features-carousel .feature-slide {
         display: flex;
-        flex-direction: column;
-        gap: 2.5rem;
-        align-items: center;
-        padding: 0 10px;
+        justify-content: center; /* Центрируем по горизонтали */
+        align-items: flex-start; /* Выравниваем по верху */
         box-sizing: border-box;
     }
 
+    /* Карточка преимущества внутри слайда */
     .feature-item {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
-        max-width: 280px;
     }
 
     .feature-icon-wrapper {
@@ -105,16 +106,25 @@
         height: 100px;
     }
 
-    /* ПОКАЗЫВАЕМ СТРЕЛКИ И ПАГИНАЦИЮ */
+    /* Показываем стрелки и пагинацию */
     .features-carousel-wrapper .swiper-button-prev,
     .features-carousel-wrapper .swiper-button-next,
     .features-carousel .features-pagination {
         display: flex;
     }
 
+    /* Стили для стрелок */
     .features-prev, .features-next {
         color: var(--color-green-accent);
-        top: 40%;
+        top: 50%; /* Центрируем по вертикали */
+        transform: translateY(-100%); /* Корректируем позицию с учетом высоты пагинации */
+    }
+    .features-prev { left: 0px; }
+    .features-next { right: 0px; }
+
+    /* Стили для пагинации */
+    .features-pagination {
+        bottom: 0 !important;
     }
 
     .swiper-button-disabled {
