@@ -1,8 +1,18 @@
+/*
+    main/static/main/css/sections/games.css
+    Полностью переписанные стили по аналогии с секцией "Что мы предлагаем"
+*/
+
+/* --- СТИЛИ ДЛЯ БОЛЬШИХ ЭКРАНОВ (ДЕСКТОП) --- */
+.section-games h2 {
+    margin-bottom: 5rem;
+}
+
 .games-grid { 
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    gap: 3.5rem 5rem;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 3.5rem 5rem;
 }
 
 .game-type-item {
@@ -11,25 +21,25 @@
     align-items: center;
     gap: 2rem;
     text-align: left;
-    color: var(--color-white);
+    max-width: 500px;
 }
 
 .game-type-item .game-type-icon-wrapper {
     flex-shrink: 0;
     width: 160px;
     height: 160px;
-    background-color: transparent;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 3px solid var(--color-green-accent);
+    overflow: hidden;
 }
 
 .game-type-item .game-type-icon-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .game-type-item .game-type-text-content h3 {
@@ -47,45 +57,39 @@
     color: var(--color-white);
 }
 
+
+/* --- СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ) --- */
 @media (max-width: 992px) {
     .games-grid {
-        grid-template-columns: repeat(2, 1fr);
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Сетка из двух равных колонок */
         gap: 3rem 1.5rem;
     }
     
     .game-type-item {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0 1rem;
+        display: flex;
+        flex-direction: column; /* Элементы внутри карточки располагаем вертикально */
         align-items: center;
-        min-width: 0;
+        text-align: center;
+        gap: 1rem;
+        max-width: 100%;
     }
 
     .game-type-item .game-type-icon-wrapper {
-        width: 60px;
-        height: 60px;
-        grid-row: 1;
-        grid-column: 1;
-    }
-
-    .game-type-item .game-type-text-content {
-        display: contents;
+        width: 140px;
+        height: 140px;
     }
 
     .game-type-item .game-type-text-content h3 {
-        grid-column: 2;
-        margin: 0;
-        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
-        overflow-wrap: break-word;
-        min-width: 0;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
     }
 
     .game-type-item .game-type-text-content p {
-        grid-column: 1 / -1;
-        margin-top: 0.75rem;
-        text-align: left;
-        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        overflow-wrap: break-word;
-        min-width: 0;
+        font-size: 0.8rem; 
+        text-transform: uppercase;
+        word-break: normal;
+        hyphens: none;
     }
 }
+
